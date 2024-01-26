@@ -22,7 +22,11 @@
     text-decoration: none;
 }
 
-.NavLink:hover{
+.NavLink:active{
+    color: aqua;
+}
+
+.NavLink:hover:not(.NavLink:active){
     background-color: darkorange;
     color: whitesmoke;
 }
