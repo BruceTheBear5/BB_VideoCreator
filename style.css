@@ -5,9 +5,8 @@
 
 #MainNav {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: left;
-    gap: 8%;
     flex-direction: column;
     width: 10%;  
     height: 100%;
@@ -22,11 +21,22 @@
     text-decoration: none;
 }
 
-.NavLink:active{
-    color: aqua;
-}
-
-.NavLink:hover:not(.NavLink:active){
+.NavLink:hover{
     background-color: darkorange;
     color: whitesmoke;
+}
+
+#LoginSignUp{
+    margin-bottom: 20px;
+    font-size: large;
+}
+
+#HomePage{
+    text-align: center;
+    margin-top: 20px;
+}
+
+#HomePage:hover{
+    font-size: larger;
+    transition: all 0.2s;
 }
