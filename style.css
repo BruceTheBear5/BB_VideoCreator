@@ -40,3 +40,7 @@
     font-size: larger;
     transition: all 0.2s;
 }
+
+.MainBody{
+    padding-left: 10%;
+}
