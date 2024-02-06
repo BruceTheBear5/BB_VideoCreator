@@ -1,5 +1,12 @@
 @import "root.css";
 
+*{
+    padding: 0;
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--font);
+}
+
 #MainNav {
     display: flex;
     justify-content: space-between;
@@ -7,8 +14,8 @@
     flex-direction: column;
     width: 10%;  
     height: 100%;
-    background-color: #010101;
-    color: whitesmoke;
+    background: var(--bg);
+    color: var(--font);
     position: fixed;
     overflow: auto;
 }
@@ -19,8 +26,8 @@
 }
 
 .NavLink:hover{
-    background-color: darkorange;
-    color: whitesmoke;
+    background-color: var(--accent);
+    color: var(--font);
 }
 
 #LoginSignUp{
@@ -30,7 +37,6 @@
 
 #HomePage{
     text-align: center;
-    margin-top: 20px;
 }
 
 #HomePage:hover{
@@ -39,5 +45,37 @@
 }
 
 .MainBody{
+    padding-top: 5%;
     padding-left: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.LogoName{
+    font-size: 8rem;
+    font-weight: 800;
+    background: linear-gradient(to right, var(--accent), #B118C8);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: gradientTransition 5s infinite ease;
+}
+
+@keyframes gradientTransition {
+    0% {
+        background-position: 0% 50%;
+    }
+    50%{
+        background-position: 50% 100%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+#IntroToSite{
+    font-size: 2rem;
+    padding-top: 5vh;
 }

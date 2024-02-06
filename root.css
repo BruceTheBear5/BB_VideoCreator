@@ -18,10 +18,22 @@
     --bg: #ffffff;
     --alter-bg: whitesmoke;
     --font: #010101;
-    --accent: #FFA3A5;
+    --accent: #C95EFB;
     --shadow: rgba(200,200,200,9);
 }
 
 h2{
     font-weight: 300;
+}
+
+.Logo{
+    margin-top: 0;
+    padding-top: 0;
+    height: 10vw;
+    width: 10vw;
+}
+
+.Logo:hover{
+    background-color: var(--bg);
+    color: var(--font);
 }
