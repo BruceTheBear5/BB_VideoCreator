@@ -13,18 +13,44 @@
     color: var(--accent);
 }
 
+.Controls{
+    padding-top: 5vh;
+}
+
+.smallFeatures{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.activeAccounts{
+    font-size: 2rem;
+}
+
+#activeAccounts{
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.createdAccounts{
+    font-size: 2rem;
+}
+
+#createdAccounts{
+    font-size: 1.5rem;
+    text-align: center;
+}
+
 .viewAccounts{
     display: flex;
     justify-content: center;
     padding-top: 5vh;
     font-size: 2rem;
-}
-
-#viewAccounts{
-    padding-top: 5vh;
+    border-bottom: solid 1px var(--accent);
+    padding-bottom: 1vh;
 }
 
 #viewAccountsList{
+    padding-top: 1.5vh;
     display: flex;
     justify-content: left;
     flex-direction: column;
