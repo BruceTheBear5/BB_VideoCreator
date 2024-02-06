@@ -1,53 +1,11 @@
 @import "./root.css";
 
 *{
-    padding: 0;
-    margin: 0;
     background-color: var(--bg);
     color: var(--font);
 }
 
-#MainNav {
-    display: flex;
-    justify-content: space-between;
-    align-items: left;
-    flex-direction: column;
-    width: 10%;  
-    height: 100%;
-    background: var(--bg);
-    color: var(--font);
-    position: fixed;
-    overflow: auto;
-}
-
-.NavLink{
-    color: inherit;
-    text-decoration: none;
-}
-
-.NavLink:hover{
-    background-color: var(--accent);
-    color: var(--font);
-}
-
-#LoginSignUp{
-    margin-bottom: 20px;
-    font-size: large;
-}
-
-#HomePage{
-    text-align: center;
-}
-
-#HomePage:hover{
-    font-size: larger;
-    transition: all 0.2s;
-}
-
 .MainBody{
-    padding-top: 5%;
-    padding-left: 10%;
-    padding-bottom: 5%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -89,16 +47,6 @@
 #UsageOfSite{
     font-size: 2rem;
     padding-top: 5vh;
-}
-
-.footer{
-    padding-left: 10%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 20vh;
-    /* background-color: white; */
 }
 
 .AboutUs{

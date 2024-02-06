@@ -1,0 +1,40 @@
+@import url(./root.css);
+
+*{
+    background-color: var(--bg);
+    color: var(--font);
+}
+
+.Heading{
+    display: flex;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 4rem;
+    color: var(--accent);
+}
+
+.viewAccounts{
+    display: flex;
+    justify-content: center;
+    padding-top: 5vh;
+    font-size: 2rem;
+}
+
+#viewAccounts{
+    padding-top: 5vh;
+}
+
+#viewAccountsList{
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    gap: 1.5vh;
+    font-size: 1.5rem;
+    list-style: none;
+}
+
+#viewAccountsList li{
+    padding-left: 13%;
+    border-bottom: solid 1px var(--accent);
+    padding-bottom: 1vh;
+}
