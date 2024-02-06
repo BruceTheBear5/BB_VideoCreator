@@ -1,0 +1,6 @@
+@import url(./root.css);
+
+*{
+    background-color: var(--bg);
+    color: var(--font);
+}
