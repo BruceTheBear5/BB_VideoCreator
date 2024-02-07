@@ -13,9 +13,11 @@
 }
 
 .LogoName{
-    font-size: 8rem;
+    font-size: 14rem;
     font-weight: 800;
-    background: linear-gradient(to right, var(--accent), #B118C8);
+    padding-left: 15%;
+    padding-bottom: 5%;
+    background: linear-gradient(to right, var(--accent), royalblue);
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
