@@ -75,33 +75,20 @@ body{
   100% { transform: translateX(0); }
 }
 
-.AboutUs {
-  font-size: 1.5rem;
+#buttonContainer{
+  width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-#AboutUs {
-  padding-top: 4vh;
-  font-size: 1.1rem;
-}
-
-.social-media {
-  padding-top: 3vh;
-  font-size: 1.1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-#uploadButton {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
   cursor: pointer;
 }
+
+button{
+  font-size: 1.5rem;
+  padding: 1rem 1rem;
+  border: none;
+  border-radius: 5vh;
+  width: 33%;
+  background: var(--accent-hover);
+  cursor: pointer;
+}
+

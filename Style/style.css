@@ -16,9 +16,10 @@ body{
 }
 
 .LogoName{
-    font-size: 14rem;
+    line-height: 100%;
+    font-size: 16rem;
     font-weight: 800;
-    padding-left: 15%;
+    padding-left: 5%;
     padding-bottom: 5%;
     background: linear-gradient(to right, var(--accent), var(--accent2));
     background-clip: text;
@@ -54,25 +55,5 @@ body{
     padding-top: 5vh;
 }
 
-.AboutUs{
-    padding-top: 4vh;
-    font-size: 1.1rem;
-}
-
-.AboutUs p{
-    font-size: 1.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
 
 
-.social-media{
-    padding-top: 3vh;
-    font-size: 1.1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}

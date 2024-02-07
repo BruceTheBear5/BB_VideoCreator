@@ -12,7 +12,7 @@
     --font2: rgb(0, 13, 16);
     --accent: #C95EFB;
     --accent-hover: #7F3A99;
-    --alter: #430074;
+    --alter: #4400748b;
     --accent2: royalblue;
     --isAdmin: false;
     --isLogin: false;
@@ -44,13 +44,13 @@ nav {
     align-items: left;
     flex-direction: column;
     font-size: 2rem;
-    width: 12%;  
+    width: 10%;  
     height: 100%;
     background: var(--accent);
     color: var(--font);
     position: fixed;
     overflow: auto;
-    padding-left: 1%;
+    padding: 0rem 0.5rem 4rem 1rem;
     margin-bottom: 5%;
 }
 
@@ -117,29 +117,16 @@ nav {
     padding-bottom: 5%;
 }
 
-button{
-    margin-top: 3rem;
-    font-size: 1.5rem;
-    padding: 1rem 1rem;
-    border: none;
-    border-radius: 5vh;
-    width: 33%;
-    background: var(--accent-hover);
-}
-
 #footer {
     background-color: #000000; /* Set a dark background color */
     color: var(--font); /* Use the font color variable */
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     /* padding: 2rem; */
     min-height: 15vh;
-}
-
-#footer h3 {
-    margin-bottom: 1rem;
+    width: 90%;
+    float: right;
 }
 
 #footer p {
