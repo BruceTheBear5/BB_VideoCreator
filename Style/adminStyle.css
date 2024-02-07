@@ -5,42 +5,41 @@
     color: var(--font);
 }
 
-.Heading{
+.Heading {
     display: flex;
     justify-content: center;
     font-weight: 500;
     font-size: 4rem;
-    color: var(--accent);
 }
 
-.Controls{
+.Controls {
     padding-top: 5vh;
 }
 
-.smallFeatures{
+.smallFeatures {
     display: flex;
     justify-content: space-evenly;
 }
 
-.activeAccounts{
+.activeAccounts {
     font-size: 2rem;
 }
 
-#activeAccounts{
+#activeAccounts {
     font-size: 1.5rem;
     text-align: center;
 }
 
-.createdAccounts{
+.createdAccounts {
     font-size: 2rem;
 }
 
-#createdAccounts{
+#createdAccounts {
     font-size: 1.5rem;
     text-align: center;
 }
 
-.viewAccounts{
+.viewAccounts {
     display: flex;
     justify-content: center;
     padding-top: 5vh;
@@ -49,18 +48,64 @@
     padding-bottom: 1vh;
 }
 
-#viewAccountsList{
-    padding-top: 1.5vh;
-    display: flex;
-    justify-content: left;
-    flex-direction: column;
-    gap: 1.5vh;
-    font-size: 1.5rem;
-    list-style: none;
+.accountBox {
+    padding: 1rem;
+    margin: 1rem;
+    border: 1px solid var(--accent);
+    border-radius: 5px;
 }
 
-#viewAccountsList li{
-    padding-left: 13%;
-    border-bottom: solid 1px var(--accent);
-    padding-bottom: 1vh;
+.accountName {
+    font-size: 1.5rem;
+}
+.MainBody {
+    padding-top: 5%;
+    padding-left: 15%;
+    padding-bottom: 5%;
+    text-align: center;
+}
+
+.accountList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.accountCell {
+    flex: 0 0 calc(50% - 1rem);
+    padding: 1rem;
+    margin: 0.5rem;
+    border: 1px solid var(--accent);
+    border-radius: 5px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.accountDetails {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.leftDetails {
+    flex: 1;
+    text-align: left;
+}
+
+.profilePicture {
+    margin-left: 27rem;
+}
+
+.profilePicture img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.username, .email, .activeStatus {
+    font-size: 1rem;
 }

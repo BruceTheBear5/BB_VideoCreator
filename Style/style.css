@@ -1,8 +1,11 @@
 @import "./root.css";
 
 *{
-    background-color: var(--bg);
     color: var(--font);
+}
+
+body{
+    background-color: var(--bg);
 }
 
 .MainBody{
@@ -17,7 +20,7 @@
     font-weight: 800;
     padding-left: 15%;
     padding-bottom: 5%;
-    background: linear-gradient(to right, var(--accent), royalblue);
+    background: linear-gradient(to right, var(--accent), var(--accent2));
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
