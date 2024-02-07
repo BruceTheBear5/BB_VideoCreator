@@ -8,13 +8,6 @@ body{
     background-color: var(--bg);
 }
 
-.Heading {
-    display: flex;
-    justify-content: center;
-    font-weight: 500;
-    font-size: 4rem;
-}
-
 .Controls {
     padding-top: 5vh;
 }

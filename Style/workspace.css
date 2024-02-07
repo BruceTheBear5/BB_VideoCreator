@@ -1,0 +1,90 @@
+@import url('./root.css');
+
+*{
+    color: var(--font);
+}
+
+body{
+    background-color: var(--bg);
+}
+
+.MainBody{
+    padding-left: 20%;
+    padding-right: 10%;
+}
+
+#imageContainer {
+    background-color: rgba(65, 105, 225, 0.4);
+    justify-content: center;
+    align-items: center;
+    border-radius: 10vh;
+    border: dashed 0.25rem rgba(255, 255, 255, 0.5);
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    height: 70vh;
+    overflow: auto;
+    scrollbar-width: none;
+}
+
+#imageContainer::-webkit-scrollbar {
+    height: 0;
+    width: 0;
+}
+
+#imageContainer img {
+    opacity: 1;
+    justify-self: center;
+    align-self: center;
+    padding: 1rem;
+    width: 75%;
+    height: auto; 
+}
+
+#controlContainer{
+    width: 100%;
+    padding-top: 15vh;
+}
+
+#videoContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding-top: 15vh;
+}
+
+#videoContainer video{
+    padding-top: 1.5%;
+    padding-bottom: 1.5%;
+    max-width: 100%;
+
+}
+
+.videoDisplay{
+    height: 60vh;
+    width: 60vw;
+    background-color: grey;
+    margin-bottom: 10vh;
+}
+
+.control-bar {
+    padding: 1rem; 
+    display: flex; 
+    justify-content: center;
+}
+
+.control-button {
+    background-color: var(--accent); 
+    color: #fff; 
+    border: none; 
+    padding: 1rem 2rem;
+    margin: 0 0.7rem;
+    cursor: pointer;
+}
+
+.control-button:hover {
+    background-color: var(--accent-hover);
+}

@@ -20,8 +20,22 @@
     font-size: 1vw;
 }
 
+h1{
+    font-size: 2rem;
+    text-align: left;
+    margin: 0rem 1rem;
+    color: var(--accent);
+}
+
 h2{
     font-weight: 300;
+}
+
+.Heading {
+    display: flex;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 4rem;
 }
 
 nav {
@@ -103,19 +117,15 @@ nav {
     padding-bottom: 5%;
 }
 
-/* #footer{
-    width: 90%;
-    background-color: #000000;
-    align-self: right;
-    padding-left: 16%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    min-height: 15vh;
-    max-height: 20vh;
-    /* padding: 3vh 10vh 3vh */
-/* } */
+button{
+    margin-top: 3rem;
+    font-size: 1.5rem;
+    padding: 1rem 1rem;
+    border: none;
+    border-radius: 5vh;
+    width: 33%;
+    background: var(--accent-hover);
+}
 
 #footer {
     background-color: #000000; /* Set a dark background color */
@@ -137,20 +147,3 @@ nav {
     max-width: 80%; 
     margin-bottom: 1rem; /* Add spacing below the paragraph */
 }
-
-/* Style the social media icons */
-.social-media {
-    margin-top: 1rem; /* Add spacing above the icons */
-}
-
-.social-icons a {
-    color: var(--accent); /* Use the accent color for the icons */
-    font-size: 1.5rem; /* Adjust the size of the icons */
-    margin-right: 1rem; /* Add spacing between the icons */
-}
-
-/* Add hover effect to the social media icons */
-.social-icons a:hover {
-    color: var(--accent-hover); /* Change color on hover */
-}
-
