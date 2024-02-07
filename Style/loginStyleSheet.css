@@ -144,8 +144,8 @@ body
 
 .sign .content .form .inputBox input:focus ~ i, .sign .content .form .inputBox input:valid ~ i
 {
-  transform: translateY(-7.5px);
-  font-size: 0.8rem;
+  transform: translateY(-1rem);
+  font-size: 0.5rem;
   color: var(--font);
 }
 

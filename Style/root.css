@@ -77,30 +77,6 @@ nav {
     display: none;
 }
 
-[data-is-login="false"] #SignInUp {
-    display: block;
-}
-
-[data-is-login="true"] #SignInUp {
-    display: none;
-}
-
-[data-is-login="false"] #Profile {
-    display: none;
-}
-
-[data-is-login="true"] #Profile {
-    display: block;
-}
-
-[data-is-admin="false"] #Admin {
-    display: none;
-}
-
-[data-is-admin="true"] #Admin {
-    display: none;
-}
-
 #HomePage{
     text-align: center;
 }

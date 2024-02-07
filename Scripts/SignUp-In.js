@@ -6,11 +6,11 @@ let error = document.getElementById("Error");
 
 function toggleForms() {
     if (signin.style.display === "none") {
-        signin.style.display = "flex";
+        signin.style.display = "block";
         signup.style.display = "none";
     } else {
         signin.style.display = "none";
-        signup.style.display = "flex";
+        signup.style.display = "";
         admin.style.display = "none";
         normal.style.display = "none";
         error.style.display = "none";
@@ -24,21 +24,21 @@ function signIn() {
     if (username == "admin" && password == "admin") {
         document.documentElement.style.setProperty('--isAdmin', 'true');
         document.documentElement.style.setProperty('--isLogin', 'false');
-        admin.style.display = "flex";
+        admin.style.display = "block";
         normal.style.display = "none";
         error.style.display = "none";
     }
     else if (username == "user" && password == "1234") {
         document.documentElement.style.setProperty('--isLogin', 'true');
         document.documentElement.style.setProperty('--isAdmin', 'false');
-        normal.style.display = "flex";
+        normal.style.display = "block";
         admin.style.display = "none";
         error.style.display = "none";
     }
     else {
         document.documentElement.style.setProperty('--isAdmin', 'false');
         document.documentElement.style.setProperty('--isLogin', 'false');
-        error.style.display = "flex";
+        error.style.display = "block";
         admin.style.display = "none";
         normal.style.display = "none";
         return;
