@@ -1,0 +1,51 @@
+@import url(./root.css);
+
+*{
+    background-color: var(--bg);
+    color: var(--font);
+}
+
+#drop-area {
+    border: 2px dashed #ccc;
+    border-radius: 20px;
+    width: 300px;
+    height: 200px;
+    padding: 20px;
+    text-align: center;
+    margin: 0 auto;
+  }
+  #drop-area.highlight {
+    border-color: purple;
+  }
+
+.AboutUs{
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#AboutUs{
+    padding-top: 4vh;
+    font-size: 1.1rem;
+}
+
+.social-media{
+    padding-top: 3vh;
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#submit-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
