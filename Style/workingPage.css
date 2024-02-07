@@ -8,10 +8,19 @@ body{
   background-color: var(--bg);
 } 
 
+.Heading{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 5vh;
+}
+
 .drop-area {
   border: 2px dashed #ccc;
   border-radius: 5px;
   padding: 20px;
+  width: 70vw;
+  height: 40vh;
   text-align: center;
   cursor: pointer;
   transition: border-color 0.3s ease-in-out;
@@ -21,21 +30,36 @@ body{
   background-color: #f0f0f0;
 }
 
-ul {
+.imageInput{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 5vh;
+}
+
+.imageList{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.imageList ul {
   list-style-type: none;
   padding: 0;
 }
 
-li {
+.imageList li {
+  list-style: none;
   margin-bottom: 5px;
 }
 
-/* img {
+.imageList img {
   max-width: 100px;
   max-height: 100px;
   margin-right: 10px;
   vertical-align: middle;
-} */
+}
 
 .error {
   animation: shake 0.5s;
@@ -73,8 +97,7 @@ li {
   flex-direction: column;
 }
 
-#submit-btn {
-  margin-top: 20px;
+#uploadButton {
   padding: 10px 20px;
   background-color: #007bff;
   color: white;
