@@ -1,33 +1,41 @@
-function listUploadedImages() {
-    const fileInput = document.getElementById('fileInput');
-    const imageList = document.getElementById('imageList');
+const gridItems = document.querySelectorAll('.grid-item img');
 
-    const files = fileInput.files;
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        if (file.type.startsWith('image/')) {
-            const listItem = document.createElement('li');
-            const image = document.createElement('img');
-            image.src = URL.createObjectURL(file);
-            image.alt = file.name;
-            listItem.appendChild(image);
-            imageList.appendChild(listItem);
-        }
-    }
+gridItems.forEach(item => {
+    item.addEventListener('dragstart', handleDragStart);
+    item.addEventListener('dragover', handleDragOver);
+    item.addEventListener('dragenter', handleDragEnter);
+    item.addEventListener('dragleave', handleDragLeave);
+    item.addEventListener('drop', handleDrop);
+});
+
+let draggedItem = null;
+
+function handleDragStart(event) {
+    draggedItem = event.target.parentElement;
 }
 
-function uploadImages() {
-    const files = document.getElementById('fileInput').files;
-
-    if (files.length === 0) {
-        alert('No files selected for upload.');
-        return;
-    }
-    
-    console.log('Uploading files:', files);
-    const imageList = document.getElementById('imageList');
-    imageList.innerHTML = '';
+function handleDragOver(event) {
+    event.preventDefault();
 }
 
-document.getElementById('fileInput').addEventListener('change', listUploadedImages);
-document.getElementById('uploadButton').addEventListener('click', uploadImages);
+function handleDragEnter(event) {
+    event.target.parentElement.classList.add('drag-over');
+}
+
+function handleDragLeave(event) {
+    event.target.parentElement.classList.remove('drag-over');
+}
+
+function handleDrop(event) {
+    event.preventDefault();
+    const targetItem = event.target.closest('.grid-item');
+    if (draggedItem && targetItem && draggedItem !== targetItem) {
+        event.target.parentElement.classList.remove('drag-over');
+        const tempContainer = document.createElement('div');
+        targetItem.insertAdjacentElement('afterend', tempContainer);
+        draggedItem.insertAdjacentElement('beforebegin', targetItem);
+        tempContainer.insertAdjacentElement('beforebegin', draggedItem);
+        tempContainer.remove();
+    }
+    draggedItem = null;
+}
