@@ -1,9 +1,12 @@
 @import url(./root.css);
 
 * {
-  background-color: var(--bg);
   color: var(--font);
 }
+
+body{
+  background-color: var(--bg);
+} 
 
 .drop-area {
   border: 2px dashed #ccc;
@@ -27,12 +30,12 @@ li {
   margin-bottom: 5px;
 }
 
-img {
+/* img {
   max-width: 100px;
   max-height: 100px;
   margin-right: 10px;
   vertical-align: middle;
-}
+} */
 
 .error {
   animation: shake 0.5s;

@@ -13,6 +13,8 @@
     --accent: #C95EFB;
     --alter: #430074;
     --accent2: royalblue;
+    --isAdmin: false;
+    --isLogin: false;
     --shadow: rgba(0,0,0,9);
     font-size: 1vw;
 }
@@ -27,7 +29,7 @@ nav {
     align-items: left;
     flex-direction: column;
     font-size: 2rem;
-    width: 14%;  
+    width: 12.5%;  
     height: 100%;
     background: var(--accent);
     color: var(--font);
@@ -39,7 +41,6 @@ nav {
 
 .NavLink{
     text-decoration: none;
-    padding-left: 1%;
 }
 
 .NavLink:hover{
@@ -53,9 +54,36 @@ nav {
     width: 10vw;
 }
 
-#LoginSignUp{
-    margin-bottom: 20px;
-    font-size: large;
+#SignInUp {
+    display: flex;
+}
+
+#Profile {
+    display: none;
+}
+
+[data-is-login="false"] #SignInUp {
+    display: flex;
+}
+
+[data-is-login="true"] #SignInUp {
+    display: none;
+}
+
+[data-is-login="false"] #Profile {
+    display: none;
+}
+
+[data-is-login="true"] #Profile {
+    display: flex;
+}
+
+[data-is-admin="false"] #Admin {
+    display: none;
+}
+
+[data-is-admin="true"] #Admin {
+    display: flex;
 }
 
 #HomePage{

@@ -22,17 +22,22 @@ function signIn() {
     let password = document.getElementById("password").value;
 
     if (username == "admin" && password == "admin") {
-        console.log("1");
+        document.documentElement.style.setProperty('--isAdmin', 'true');
+        document.documentElement.style.setProperty('--isLogin', 'false');
         admin.style.display = "flex";
         normal.style.display = "none";
         error.style.display = "none";
     }
     else if (username == "user" && password == "1234") {
+        document.documentElement.style.setProperty('--isLogin', 'true');
+        document.documentElement.style.setProperty('--isAdmin', 'false');
         normal.style.display = "flex";
         admin.style.display = "none";
         error.style.display = "none";
     }
     else {
+        document.documentElement.style.setProperty('--isAdmin', 'false');
+        document.documentElement.style.setProperty('--isLogin', 'false');
         error.style.display = "flex";
         admin.style.display = "none";
         normal.style.display = "none";

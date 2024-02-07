@@ -1,8 +1,11 @@
 @import url(./root.css);
 
 *{
-    background-color: var(--bg);
     color: var(--font);
+}
+
+body{
+    background-color: var(--bg);
 }
 
 .Heading {
