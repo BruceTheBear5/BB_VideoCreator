@@ -28,10 +28,11 @@ body{
 }
 
 #profilePic{
+    padding-top: 5rem;
     font-size: 2rem;
     height: 30vh;
     width: 30vh;
-    border: 50%;
+    border-radius: 50%;
 }
 
 .Heading{
