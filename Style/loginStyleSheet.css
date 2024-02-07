@@ -125,7 +125,7 @@ body
   background: #333;
   border: none;
   outline: none;
-  padding: 25px 10px 7.5px;
+  padding: 1rem 0.5rem 1rem;
   border-radius: 4px;
   color: var(--font);
   font-weight: 500;
@@ -149,25 +149,31 @@ body
   color: var(--font);
 }
 
-.sign .content .form .links 
-{
+.sign .content .form .links {
   position: relative;
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between;
+   */
+   justify-content: flex-end;
 }
 
-.sign .content .form .links a 
-{
-  color: var(--font);
-  text-decoration: none;
-}
-
-.sign .content .form .links a:nth-child(2)
-{
+.sign .content .form .links a {
   color: var(--accent);
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease; /* Add transition effect for smooth hover */
+}
+
+.sign .content .form .links a:hover {
+  color: var(--accent-hover);
+}
+
+.sign .content .form .links a:nth-child(2) {
   font-weight: 600;
 }
+
+
 
 .sign .content .form .inputBox
 {
@@ -226,4 +232,36 @@ input[type="submit"]:active {
 .prompt{
   display: none;
   color: var(--accent);
+}
+
+#signinButton {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  margin-left: auto;
+}
+
+/* Change color on hover */
+#signinButton:hover {
+  color: var(--accent-hover);
+}
+
+#signupButton {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  margin-left: auto;
+}
+
+/* Change color on hover */
+#signupButton:hover {
+  color: var(--accent-hover);
 }
