@@ -4,3 +4,64 @@
     background-color: var(--bg);
     color: var(--font);
 }
+
+.finalVideo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.Heading{
+    display: flex;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 2rem;
+    color: var(--accent);
+    padding-bottom: 5vh;
+}
+
+.videoDisplay{
+    height: 60vh;
+    width: 60vw;
+    background-color: grey;
+    margin-bottom: 10vh;
+}
+
+.AboutUs{
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#AboutUs{
+    padding-top: 4vh;
+    font-size: 1.1rem;
+}
+
+.social-media{
+    padding-top: 3vh;
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.downloadButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#download{
+    height: 5vh;
+    width: 15vw;
+    cursor: pointer;
+    border: 0;
+    border-radius: 0.5vw;
+    background-color: var(--accent);
+    color: var(--bg);
+}

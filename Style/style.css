@@ -50,10 +50,23 @@
 }
 
 .AboutUs{
-    font-size: 2.5rem;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 #AboutUs{
     padding-top: 4vh;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.social-media{
+    padding-top: 3vh;
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
