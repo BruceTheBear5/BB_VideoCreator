@@ -201,9 +201,6 @@ input[type="submit"]:active {
   opacity: 0.8;
 }
 
-
-
-
 @media (max-width: 900px)
 {
   #pulse  span 
@@ -224,4 +221,9 @@ input[type="submit"]:active {
     width: calc(33.33% - 2px);
     height: calc(33.33% - 2px);
   }
+}
+
+.prompt{
+  display: none;
+  color: var(--accent);
 }

@@ -50,11 +50,11 @@
 
         <div class="form">
           <div class="inputBox">
-            <input type="text" required> <i>Username</i>
+            <input type="text" required id="username"> <i>Username</i>
           </div>
 
           <div class="inputBox">
-            <input type="password" required> <i>Password</i>
+            <input type="password" required id="password"> <i>Password</i>
           </div>
 
           <div class="links">
@@ -63,8 +63,20 @@
           </div>
 
           <div class="inputBox">
-            <input type="submit" value="Sign In">
+            <input type="submit" value="Sign In" id="signInButton" onclick="signIn()">
           </div>
+        </div>
+
+        <div class="prompt" id="Normal">
+          SignIn Successfull<br>
+          Redirecting to Home Page
+        </div>
+        <div class="prompt" id="Admin">
+          Admin SignIn Successfull<br>
+          Redirecting to Home Page
+        </div>
+        <div class="prompt" id="Error">
+          No User Found
         </div>
       </div>
     </div>
