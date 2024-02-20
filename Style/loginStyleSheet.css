@@ -162,7 +162,7 @@ body
   color: var(--accent);
   text-decoration: none;
   font-size: 1rem;
-  transition: color 0.3s ease; /* Add transition effect for smooth hover */
+  transition: color 0.3s ease;
 }
 
 .sign .content .form .links a:hover {
@@ -245,7 +245,6 @@ input[type="submit"]:active {
   margin-left: auto;
 }
 
-/* Change color on hover */
 #signinButton:hover {
   color: var(--accent-hover);
 }
@@ -261,7 +260,19 @@ input[type="submit"]:active {
   margin-left: auto;
 }
 
-/* Change color on hover */
 #signupButton:hover {
   color: var(--accent-hover);
+}
+
+@media (max-width: 900px) {
+  section span {
+    width: calc(10vw - 2px);
+    height: calc(10vw - 2px);
+  }
+}
+
+@media (max-width: 600px) {
+  section span {
+    width: calc(20vw - 2px);
+  }
 }
