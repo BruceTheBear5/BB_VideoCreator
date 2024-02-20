@@ -1,5 +1,6 @@
 let signin = document.getElementById("signin");
 let signup = document.getElementById("signup");
+let forget = document.getElementById("forgetPassword");
 let admin = document.getElementById("Admin");
 let normal = document.getElementById("Normal");
 let error = document.getElementById("Error");
@@ -8,13 +9,39 @@ function toggleForms() {
     if (signin.style.display === "none") {
         signin.style.display = "block";
         signup.style.display = "none";
+        forget.style.display = "none";
     } else {
         signin.style.display = "none";
-        signup.style.display = "";
+        signup.style.display = "block";
+        forget.style.display = "none";
         admin.style.display = "none";
         normal.style.display = "none";
         error.style.display = "none";
     }
+}
+
+function forgetPass() {
+    forget.style.display = "block";
+    signin.style.display = "none";
+    signup.style.display = "none";
+    admin.style.display = "none";
+    normal.style.display = "none";
+    error.style.display = "none";
+}
+
+function forgetToggleFormsSignIn() {
+    signin.style.display = "block";
+    signup.style.display = "none";
+    forget.style.display = "none";
+}
+
+function forgetToggleFormsSignUp() {
+    signin.style.display = "none";
+    signup.style.display = "block";
+    forget.style.display = "none";
+    admin.style.display = "none";
+    normal.style.display = "none";
+    error.style.display = "none";
 }
 
 function signIn() {
