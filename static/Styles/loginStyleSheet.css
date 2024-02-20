@@ -228,7 +228,7 @@ input[type="submit"]:active {
 }
 
 .prompt {
-  display: none;
+  /* display: none; */
   color: var(--accent);
 }
 
@@ -271,4 +271,8 @@ input[type="submit"]:active {
   cursor: pointer;
   transition: color 0.3s ease;
   margin-left: 0;
+}
+
+.signin_condition .signup_condition .forgetPassword_condition{
+  display: none;
 }

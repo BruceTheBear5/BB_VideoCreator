@@ -105,13 +105,12 @@ def retrieve_users_from_mysql(email):
 
         for (id, name, email, password, isAdmin, username) in cursor:
             users = User(name, username, email, password, id, isAdmin)
-
-        if(users):
-            print("Data retrieved from MySQL database successfully.")    
-            return users
-        else:
-            print("Failed to retrieve data from MySQL database:")
-            return None
+            if(users):
+                print("Data retrieved from MySQL database successfully.")    
+                return users
+            else:
+                print("Failed to retrieve data from MySQL database:")
+                return None
 
     except mysql.connector.Error as error:
         print("Failed to retrieve data from MySQL database:", error)
@@ -281,7 +280,6 @@ def save_audio_to_mysql(user_id, relative_file_path):
             cursor.close()
             connection.close()
 
-                
 # users = [
 #     User("John Doe", "johndoe", "john@example.com", "password123", isAdmin="False"),
 #     User("Jane Smith", "janesmith", "jane@example.com", "password456", isAdmin="True")
