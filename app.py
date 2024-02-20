@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import time
 from werkzeug.security import generate_password_hash, check_password_hash
-from MySQL import User ,retrieve_users_from_mysql
+from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql
 import os
 
 app = Flask(__name__)
@@ -14,8 +14,7 @@ def home():
 
 @app.route('/login.html')
 def index():
-    signin_condition = True
-    return render_template('login.html', condition = signin_condition)
+    return render_template('login.html')
 
 @app.route('/SignIn', methods=['POST'])
 def login():
@@ -26,30 +25,36 @@ def login():
     user = retrieve_users_from_mysql(email)
     if user == None:
         flash('No User Found')
-        signin_condition = True
-        render_template('login.html', condition = signin_condition)
+        return redirect(url_for('index'))
+    elif check_password_hash(user.password, password):
+        if user.isAdmin:
+            flash('Admin SignIn Successfull')
+        else:
+            flash('SignIn Successfull')
         time.sleep(3)
         return redirect(url_for('home'))
-    elif user.password == hashPassword:
-        if check_password_hash(user.password, password):
-            if user.isAdmin:
-                flash('Admin SignIn Successfull')
-            else:
-                flash('SignIn Successfull')
-            time.sleep(3)
-            return redirect(url_for('home'))
     else:
         flash('Incorect password')
-        # time.sleep(3)
         return redirect(url_for('index'))
 
-# @app.route('/SignUp', methods=['POST'])
-# def signup():
-#     username = request.form['username']
-#     password = request.form['password']
+@app.route('/SignUp', methods=['POST'])
+def signup():
+    name = request.form['name']
+    username = request.form['username']
+    password = request.form['password']
+    email = request.form['email']
+    hashPassword = generate_password_hash(password, method='pbkdf2')
 
-#     signup_data[username] = password
-#     return redirect(url_for('index'))
+    if retrieve_users_from_mysql(email) == None:
+        user = User(name, username, email, hashPassword)
+        save_data_to_mysql(user)
+        flash('Registration Successful')
+        return redirect(url_for('index'))
+        
+    else:
+        flash('Email already exists')
+        return redirect(url_for('index'))
+    
 
 # @app.route('/success')
 # def success():
