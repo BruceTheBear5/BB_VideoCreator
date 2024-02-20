@@ -23,13 +23,13 @@
         <div class="Profile">
             <div id="profileContent">
                 <ul>
-                    <li>Name : User</li>
-                    <li>UserName : User</li>
-                    <li>Email : user@gmail.com</li>
+                    <li>Name : {{user.name}}</li>
+                    <li>UserName : {{user.username}}</li>
+                    <li>Email : {{user.email}}</li>
                 </ul>
             </div> 
             <div id="profilePhoto">
-                <img src="../Images/alt_image.jpg" alt="Profile Pic" id="profilePic">
+                <img src="data:image/jpeg;base64,{{ profileImage }}" alt="Profile Pic" id="profilePic">
             </div> 
         </div>
 
@@ -37,7 +37,9 @@
             <div id="uploadedImages">
                 <h3 class="Heading">Previously uploaded Images</h3>
                 <div class="showCase">
-                    will show previously uploaded images
+                    {% for image in images %}
+                        <img src="data:image/jpeg;base64,{{ image }}" alt="Image">
+                    {% endfor %}
                 </div>
             </div>
             <div id="madeVideos">

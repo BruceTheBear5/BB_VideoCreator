@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session, Response
 import time
 from werkzeug.security import generate_password_hash, check_password_hash
-from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql
+from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image
 import os
+import base64
 
 app = Flask(__name__)
 SECRET_KEY =  os.urandom(24)
@@ -20,13 +21,12 @@ def index():
 def login():
     email = request.form['email']
     password = request.form['password']
-    hashPassword = generate_password_hash(password, method='pbkdf2')
-
     user = retrieve_users_from_mysql(email)
     if user == None:
         flash('No User Found')
         return redirect(url_for('index'))
     elif check_password_hash(user.password, password):
+        session["user"] = user.email
         if user.isAdmin:
             flash('Admin SignIn Successfull')
         else:
@@ -48,6 +48,7 @@ def signup():
     if retrieve_users_from_mysql(email) == None:
         user = User(name, username, email, hashPassword)
         save_data_to_mysql(user)
+        session["user"] = user.email
         flash('Registration Successful')
         return redirect(url_for('index'))
         
@@ -55,10 +56,25 @@ def signup():
         flash('Email already exists')
         return redirect(url_for('index'))
     
-
-# @app.route('/success')
-# def success():
-#     return 'Login successful!'
+@app.route('/profile.html')
+def profileData():
+    try:
+        if "user" in session:
+            UserEmail = session["user"]
+            user = retrieve_users_from_mysql(UserEmail)
+            profile_image = retrieve_profile_image(user.id)
+            profileImage = base64.b64encode(profile_image.file_data).decode('utf-8')
+            images = retrieve_image_from_mysql(user.id)
+            imageData = []
+            for i in images:
+                encoded_image = base64.b64encode(i.file_data).decode('utf-8')
+                imageData.append(encoded_image)
+            return render_template('profile.html', user = user, profileImage = profileImage, images = imageData)
+        else:
+            return render_template('index.html')
+    except Exception as e:
+        print("Error:", e)
+        return Response(status=500)
 
 if __name__ == '__main__':
     app.run(debug=True)
