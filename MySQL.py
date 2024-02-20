@@ -1,7 +1,9 @@
 import mysql.connector
+import cv2
+import numpy as np
 
 class User:
-    def __init__(self, name, username, email, password, id=-1, isAdmin=False):
+    def __init__(self, name, username, email, password, id=-1, isAdmin="False"):
         self.id = id
         self.name = name
         self.username = username
@@ -20,6 +22,10 @@ class User:
         else:
             print("User not found.")
         
+    def UploadData(self, cursor):
+        cursor.execute("INSERT INTO Users (name, username, email, password, isAdmin) VALUES (%s, %s, %s, %s, %s)", (self.name, self.username, self.email, self.password, self.isAdmin))
+        
+    
 class Image:
     def __init__(self, file_name, image_len, file_type, file_data):
         self.file_name = file_name
@@ -27,7 +33,7 @@ class Image:
         self.file_type = file_type
         self.file_data = file_data
 
-def save_data_mysql(data):
+def save_data_to_mysql(data):
     try:
         connection = mysql.connector.connect(
             host="localhost",
@@ -38,13 +44,7 @@ def save_data_mysql(data):
 
         cursor = connection.cursor()
 
-        for x in data:
-            name = x.name
-            username = x.username
-            email = x.email
-            password = x.password
-            isAdmin = x.isAdmin
-            cursor.execute("INSERT INTO Users (name, username, email, password, isAdmin) VALUES (%s, %s, %s, %s, %s)", (name, username, email, password, isAdmin))
+        data.UploadData(cursor)
 
         connection.commit()
         print("Data saved to MySQL database successfully.")
@@ -100,7 +100,7 @@ def retrieve_users_from_mysql(email):
         query = "SELECT * FROM Users WHERE Users.email = %s"
         cursor.execute(query, (email, ))
 
-        for (id, name, username, email, password, isAdmin) in cursor:
+        for (id, name, email, password, isAdmin, username) in cursor:
             users = User(name, username, email, password, id, isAdmin)
 
         if(users):
@@ -118,12 +118,53 @@ def retrieve_users_from_mysql(email):
             cursor.close()
             connection.close()
 
-users = [
-    User("John Doe", "johndoe", "john@example.com", "password123"),
-    User("Jane Smith", "janesmith", "jane@example.com", "password456", isAdmin=True)
-]
+def retrieve_image_from_mysql(userId):
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="Saiyam20_",
+            database="Project"
+        )
 
-# save_data_mysql(users)
-user = retrieve_users_from_mysql("jane@example.com")
-if(user):
-    user.printUser()
+        cursor = connection.cursor()
+        query = "SELECT file_data FROM images WHERE user_id = %s"
+        
+        cursor.execute(query, (userId, ))
+        rows = cursor.fetchall()
+        
+        if rows:
+            for i, row in enumerate(rows):
+                image_data = row[0]
+                nparr = np.frombuffer(image_data, np.uint8)
+                image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+                cv2.imshow('Image {}'.format(i+1), image)
+                cv2.waitKey(0)
+                cv2.destroyAllWindows()
+
+            print("Image retrieved from MySQL database successfully.")
+        else:
+            print("Image not found in the database.")
+
+    except mysql.connector.Error as error:
+        print("Failed to retrieve image from MySQL database:", error)
+
+    finally:
+        if 'connection' in locals() and connection.is_connected():
+            cursor.close()
+            connection.close()
+
+
+# users = [
+#     User("John Doe", "johndoe", "john@example.com", "password123", isAdmin="False"),
+#     User("Jane Smith", "janesmith", "jane@example.com", "password456", isAdmin="True")
+# ]
+
+# save_data_to_mysql(users[0])
+# save_data_to_mysql(users[1])
+# user = retrieve_users_from_mysql("jane@example.com")
+# if(user):
+#     user.printUser()
+
+# save_image_to_mysql(2, "./Images/Logo.png")
+# retrieve_image_from_mysql(1)
