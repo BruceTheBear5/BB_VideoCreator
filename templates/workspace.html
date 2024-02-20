@@ -39,13 +39,17 @@
         </div>
 
         <div id="videoContainer">
-            <h1 style="width:100%">Video Preview: </h1>
-            <video autoplay src="../Images/WhatsApp Video 2024-02-07 at 21.42.16.mp4">For video display at the end</video>
-            <div class="control-bar">
-                <button class="control-button">Play</button>
-                <button class="control-button">Pause</button>
-                <button class="control-button">Stop</button>
-            </div>
+            <h1 style="width:100%">Video Preview:</h1>
+            <video id="videoPlayer" controls autoplay muted loop>
+                <source src="../static/Images/WhatsApp Video 2024-02-07 at 21.42.16.mp4">
+                <source src="../static/Images/WhatsApp Video 2024-02-07 at 21.42.16.WebM">
+                Your Browser does not support HTML5
+            </video>
+            <!-- <div class="control-bar">
+                <button id="playButton" class="control-button">Play</button>
+                <button id="pauseButton" class="control-button">Pause</button>
+                <button id="rewindButton" class="control-button">Rewind</button>
+            </div> -->
         </div>
     </div>
 
