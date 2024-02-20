@@ -154,7 +154,72 @@ def retrieve_image_from_mysql(userId):
             cursor.close()
             connection.close()
 
+def upload_profile_image(user_id, image_name):
+    """When user is created, use upload_profile_image(user_id, "./Images/alt_image.jpg")"""
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="Saiyam20_",
+            database="Project"
+        )
 
+        cursor = connection.cursor()
+        
+        with open(image_name, "rb") as file:
+            image_data = file.read()
+
+        query = "INSERT INTO profile_pictures (user_id, filename, filesize, file_type, file_data) VALUES (%s, %s, %s, %s, %s)"
+        profileData = (user_id, image_name, len(image_data), "image/jpeg", image_data)
+        
+        cursor.execute(query, profileData)
+        connection.commit()
+
+        print("Profile image uploaded successfully.")
+
+    except mysql.connector.Error as error:
+        print("Failed to upload profile image:", error)
+
+    finally:
+        if 'connection' in locals() and connection.is_connected():
+            cursor.close()
+            connection.close()
+
+def retrieve_profile_image(userId):
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="Saiyam20_",
+            database="Project"
+        )
+        
+        cursor = connection.cursor()
+        query = "SELECT file_data FROM profile_pictures WHERE user_id = %s"
+        
+        cursor.execute(query, (userId, ))
+        row = cursor.fetchone()
+        
+        if row:
+            image_data = row[0]
+            nparr = np.frombuffer(image_data, np.uint8)
+            image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+            cv2.imshow('Image', image)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+            print("Image retrieved from MySQL database successfully.")
+        else:
+            print("Image not found in the database.")
+     
+    except mysql.connector.Error as error:
+        print("Failed to upload profile image:", error)
+
+    finally:
+        if 'connection' in locals() and connection.is_connected():
+            cursor.close()
+            connection.close()   
+    
 # users = [
 #     User("John Doe", "johndoe", "john@example.com", "password123", isAdmin="False"),
 #     User("Jane Smith", "janesmith", "jane@example.com", "password456", isAdmin="True")
@@ -168,3 +233,5 @@ def retrieve_image_from_mysql(userId):
 
 # save_image_to_mysql(2, "./Images/Logo.png")
 # retrieve_image_from_mysql(1)
+# upload_profile_image(1, "./Images/alt_image.jpg")
+# retrieve_profile_image(1)
