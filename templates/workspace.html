@@ -24,18 +24,57 @@
         <div class="Heading">The Workspace</div>
         <h1 style="width:100%">Your images: </h1><br>
         <div id="imageContainer">
-            <div class="grid-item" draggable="true"><img src="../Images/WhatsApp Image 2024-02-07 at 7.18.29 PM.jpeg" alt="Image 1" ></div>
-            <div class="grid-item" draggable="true"><img src="../Images/WhatsApp Image 2024-02-07 at 7.18.30 PM(1).jpeg" alt="Image 2"></div>
-            <div class="grid-item" draggable="true"><img src="../Images/WhatsApp Image 2024-02-07 at 7.18.30 PM.jpeg" alt="Image 3"></div>
-            <div class="grid-item" draggable="true"><img src="../Images/WhatsApp Image 2024-02-07 at 7.18.31 PM(1).jpeg" alt="Image 4"></div>
-            <div class="grid-item" draggable="true"><img src="../Images/WhatsApp Image 2024-02-07 at 7.18.31 PM.jpeg" alt="Image 5"></div>
-            <div class="grid-item" draggable="true"><img src="../Images/WhatsApp Image 2024-02-07 at 7.18.32 PM(1).jpeg" alt="Image 6"></div>
+            <div class="grid-item" draggable="true"><img src="../static/Images/WhatsApp Image 2024-02-07 at 7.18.29 PM.jpeg" alt="Image 1" ></div>
+            <div class="grid-item" draggable="true"><img src="../static/Images/WhatsApp Image 2024-02-07 at 7.18.30 PM(1).jpeg" alt="Image 2"></div>
+            <div class="grid-item" draggable="true"><img src="../static/Images/WhatsApp Image 2024-02-07 at 7.18.30 PM.jpeg" alt="Image 3"></div>
+            <div class="grid-item" draggable="true"><img src="../static/Images/WhatsApp Image 2024-02-07 at 7.18.31 PM(1).jpeg" alt="Image 4"></div>
+            <div class="grid-item" draggable="true"><img src="../static/Images/WhatsApp Image 2024-02-07 at 7.18.31 PM.jpeg" alt="Image 5"></div>
+            <div class="grid-item" draggable="true"><img src="../static/Images/WhatsApp Image 2024-02-07 at 7.18.32 PM(1).jpeg" alt="Image 6"></div>
         </div>
 
         <div id="controlContainer">
-            <h1 style="width:100%">Controls:</h1><br>
-            <p>Video options to be inserted here.<br>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate pariatur nobis fuga impedit, nam omnis natus possimus nemo sapiente sint laborum optio molestias praesentium quaerat eaque quasi, sequi repellendus non?</p>
-            <div id="buttonContainer"><button onclick = "window.location.href='./endProduct.html';"> Generate Video </button></div>
+            <h1 style="width:100%">Controls:</h1>
+            <br>
+            <div id="musicSelection">
+                <label for="musicUpload">Add Background Music:</label>
+                <select id="backgroundMusic">
+                    <option value="">Select Background Music</option>
+                    <option value="music1.mp3">Music 1</option>
+                    <option value="music2.mp3">Music 2</option>
+                    <option value="music3.mp3">Music 3</option>
+                </select>
+                <input type="file" id="musicUpload" accept="audio/*">
+            </div>
+            <div id="durationSetting">
+                <label for="imageDuration">Image Duration (seconds):</label>
+                <input type="number" id="imageDuration" min="1" value="5">
+            </div>
+            <div id="transitionEffect">
+                <label for="transitionType">Transition Effect:</label>
+                <select id="transitionType">
+                    <option value="fade">Fade</option>
+                    <option value="slide">Slide</option>
+                    <option value="zoom">Zoom</option>
+                </select>
+            </div>
+            <div id="outputSettings">
+                <label for="resolution">Video Resolution:</label>
+                <select id="resolution">
+                    <option value="720p">720p</option>
+                    <option value="1080p">1080p</option>
+                    <option value="1980p">1980p</option>
+                    <option value="4k">4k</option>
+                </select>
+                <label for="quality">Video Quality:</label>
+                <select id="quality">
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+            <div id="buttonContainer">
+                <button onclick="generateVideo()">Generate Video</button>
+            </div>
         </div>
 
         <div id="videoContainer">
@@ -53,7 +92,7 @@
         </div>
     </div>
 
-    <script src="../Scripts/dragAndDrop.js"></script>
+    <script src="../static/Scripts/dragAndDrop.js"></script>
     <footer id="footer">
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.</p>    
     </footer>
