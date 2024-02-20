@@ -1,4 +1,7 @@
+import os
 import mysql.connector
+from mutagen.mp3 import MP3
+import wave
 import cv2
 import numpy as np
 
@@ -219,7 +222,66 @@ def retrieve_profile_image(userId):
         if 'connection' in locals() and connection.is_connected():
             cursor.close()
             connection.close()   
-    
+  
+def get_duration(file_path, file_format):
+    if file_format.lower() == "mp3":
+        audio = MP3(file_path)
+        duration_seconds = int(audio.info.length)
+    elif file_format.lower() == "wav":
+        with wave.open(file_path, 'rb') as audio:
+            frames = audio.getnframes()
+            rate = audio.getframerate()
+            duration_seconds = frames / float(rate)
+    else:
+        raise ValueError("Unsupported audio format")
+
+    return duration_seconds
+
+def save_audio_to_mysql(user_id, relative_file_path):
+    try:
+        absolute_file_path = os.path.abspath(relative_file_path)
+        filename = os.path.basename(absolute_file_path)
+
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="Saiyam20_",
+            database="Project"
+        )
+
+        cursor = connection.cursor()
+
+        with open(absolute_file_path, "rb") as file:
+            audio_data = file.read()
+
+        file_size_bytes = os.path.getsize(absolute_file_path)
+        
+        if file_format is None:
+            _, file_extension = os.path.splitext(filename)
+            file_format = file_extension[1:]
+
+        duration_seconds = get_duration(absolute_file_path, file_format)
+
+        insert_query = """INSERT INTO audio_files (userId, filename, file_data, duration_seconds, file_size_bytes, file_format) VALUES (%s, %s, %s, %s, %s, %s)"""
+        audio_values = (user_id, filename, audio_data, duration_seconds, file_size_bytes, file_format)
+        cursor.execute(insert_query, audio_values)
+
+        connection.commit()
+        print("Audio file saved to MySQL database successfully.")
+
+    except FileNotFoundError:
+        print("Error: Audio file '{}' not found.".format(absolute_file_path))
+    except mysql.connector.Error as error:
+        print("Failed to save audio file to MySQL database:", error)
+    except ValueError as error:
+        print("Failed to extract duration:", error)
+
+    finally:
+        if 'connection' in locals() and connection.is_connected():
+            cursor.close()
+            connection.close()
+
+                
 # users = [
 #     User("John Doe", "johndoe", "john@example.com", "password123", isAdmin="False"),
 #     User("Jane Smith", "janesmith", "jane@example.com", "password456", isAdmin="True")
