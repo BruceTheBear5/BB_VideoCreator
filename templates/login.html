@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Bond Brothers - Login Page</title>
-  <link rel="stylesheet" href="../Style/loginStyleSheet.css">
-  <script src="../Scripts/SignUp-In.js" defer></script>
+  <link rel="stylesheet" href="../static/Styles/loginStyleSheet.css">
+  <script src="../static/Scripts/SignUp-In.js" defer></script>
 </head>
 
 <body>
@@ -44,17 +44,17 @@
     <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span>
     <span></span> <span></span> <span></span> <span></span> <span></span>
 
-    <div class="sign " id="signin" style="display: none;">
+    <div class="sign " id="signin" style="display: none;" class="{% if condition %}signin_condition{% endif %}">
       <div class="content">
         <h2>Sign In</h2>
 
-        <div class="form">
+        <form class="form" method="POST" action="/SignIn">
           <div class="inputBox">
-            <input type="text" required id="username"> <i>Username</i>
+            <input type="text" name="email" required id="email"> <i>Email</i>
           </div>
 
           <div class="inputBox">
-            <input type="password" required id="password"> <i>Password</i>
+            <input type="password" name="password" required id="password"> <i>Password</i>
           </div>
 
           <div class="links">
@@ -65,9 +65,17 @@
           <div class="inputBox">
             <input type="submit" value="Sign In" id="signInButton" onclick="signIn()">
           </div>
-        </div>
+        </form>
 
-        <div class="prompt" id="Normal">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+                <div class="prompt">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <!-- <div class="prompt" id="Normal">
           SignIn Successfull<br>
           Redirecting to Home Page
         </div>
@@ -77,15 +85,15 @@
         </div>
         <div class="prompt" id="Error">
           No User Found
-        </div>
+        </div> -->
       </div>
     </div>
 
-    <div class="sign" id="signup">
+    <div class="sign" id="signup" class="{% if condition %}signup_condition{% endif %}">
       <div class="content">
         <h2>Sign Up</h2>
 
-        <div class="form">
+        <form class="form" method="POST">
           <div class="inputBox">
             <input type="text" required> <i>Name</i>
           </div>
@@ -109,15 +117,15 @@
           <div class="inputBox">
             <input type="submit" value="Sign Up">
           </div>
-        </div>
+        </form>
       </div>
     </div>
 
-    <div class="sign" id="forgetPassword" style="display: none;">
+    <div class="sign" id="forgetPassword" style="display: none;" class="{% if condition %}forgetPassword_condition{% endif %}">
       <div class="content">
         <h2>Reset Password</h2>
 
-        <div class="form">
+        <form class="form" method="POST">
           <div class="inputBox">
             <input type="email" required> <i>Email</i>
           </div>
@@ -130,7 +138,7 @@
           <div class="inputBox">
             <input type="submit" value="Send Reset Link">
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </section>
