@@ -79,7 +79,14 @@ body{
 }
 
 #profilePicInput {
-    display: none; /* Hide the default file input */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0; /* Make the input transparent */
+    cursor: pointer;
+    z-index: 1; /* Ensure it's clickable over the label */
 }
 
 #profilePhoto {
@@ -92,7 +99,8 @@ body{
 }
 
 .uploadButton {
-    position: absolute;
+    position: relative;
+    z-index: 2;
     bottom: 5px;
     right: 5px;
     background-color: var(--accent); /* Button background color */
@@ -101,6 +109,7 @@ body{
     border: none;
     border-radius: 5px;
     cursor: pointer;
+
 }
 
 .uploadButton:hover {
