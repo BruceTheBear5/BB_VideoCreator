@@ -377,19 +377,18 @@ def AdminRetrieveProfilePic():
 
         cursor = connection.cursor()
 
-        query = "SELECT * FROM profile_pictures"
+        query = "SELECT file_data, filename, filesize, file_type FROM profile_pictures"
         cursor.execute(query)
         rows = cursor.fetchall()
 
         profile_picture = []
         if rows:
-            for row in enumerate(rows):
-                file_data = row[1]
-                file_name = row[2]
-                image_len = row[3]
-                file_type = row[4]
+            for row in rows:
+                file_data = row[0]
+                file_name = row[1]
+                image_len = row[2]
+                file_type = row[3]
                 image = Image(file_name, image_len, file_type, file_data)
-                # image.display()
                 profile_picture.append(image)
                 
         return profile_picture
@@ -421,6 +420,7 @@ def AdminRetrieveProfilePic():
 # upload_profile_image(2, "./static/Images/alt_image.jpg")
 # retrieve_profile_image(1)
 
+# AdminRetrieve()
 # AdminRetrieveProfilePic()
 
 # save_audio_to_mysql(3, '/home/saiyamjain/Downloads/try.mp3')

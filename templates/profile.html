@@ -56,14 +56,16 @@
       <div id="uploadedMusic">
         <h3 class="Heading">Previously uploaded Music</h3>
         <div class="showCase">
-          {% for audio in audioData %}
+          {% for a in audio %}
           <div class="audioCell">
-            <audio controls><source src="data:audio/mpeg;base64,{{ audio }}"></audio>
-            <span class="audioName">Music Name</span>
+            <span class="audioName">{{ a['name'] }}</span>
+            <audio controls>
+              <source src="data:audio/mpeg;base64,{{ a['data'] }}">
+            </audio>  
           </div>
           {% endfor %}
         </div>
-      </div>            
+      </div>
     </div>
   </div>
   <footer id="footer">

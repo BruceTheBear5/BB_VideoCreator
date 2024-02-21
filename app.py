@@ -95,9 +95,10 @@ def profileData(username):
             audioData = []
             for a in audio:
                 encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
-                audioData.append(encoded_audio)
+                ad = {'data': encoded_audio, 'name': a.file_name}
+                audioData.append(ad)
             
-            print(audioData)
+            # print(audioData)
                 
             return render_template('profile.html', user = user, profileImage = profileImage, images = imageData, audio = audioData, username = user.username)
         else:
