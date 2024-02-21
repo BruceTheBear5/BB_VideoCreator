@@ -287,13 +287,84 @@ def save_audio_to_mysql(user_id, relative_file_path):
         if 'connection' in locals() and connection.is_connected():
             cursor.close()
             connection.close()
+            
+def AdminRetrieve():
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="Saiyam20_",
+            database="Project"
+        )
+
+        cursor = connection.cursor()
+
+        query = "SELECT * FROM Users"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+
+        Users = []
+        for row in rows:
+            id, name, email, password, isAdmin, username = row
+            user = User(name, username, email, password, id, isAdmin)
+            profile = retrieve_profile_image(user.id)
+            Users.append(user)
+
+        return Users
+    
+    except mysql.connector.Error as error:
+        print("Failed to retrieve users:", error)
+        return []
+        
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+
+def AdminRetrieveProfilePic():
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="Saiyam20_",
+            database="Project"
+        )
+
+        cursor = connection.cursor()
+
+        query = "SELECT * FROM profile_pictures"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+
+        profile_picture = []
+        if rows:
+            for i, row in enumerate(rows):
+                file_data = row[1]
+                file_name = row[2]
+                image_len = row[3]
+                file_type = row[4]
+                image = Image(file_name, image_len, file_type, file_data)
+                # image.display()
+                profile_picture.append(image)
+                
+        return profile_picture
+    
+    except mysql.connector.Error as error:
+        print("Failed to retrieve users:", error)
+        return []
+        
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
 
 # users = [
 #     User("John Doe", "johndoe", "john@example.com", "password123", isAdmin="False"),
-#     User("Jane Smith", "janesmith", "jane@example.com", "password456", isAdmin="True")
+#     User("Jane Smith", "janesmith", "jane@example.com", "password456", isAdmin="True"),
+#     User("SA", "saj", "sa@ja.in", "s", isAdmin="True")
 # ]
 
-# save_data_to_mysql(users[0])
+# save_data_to_mysql(users[2])
 # save_data_to_mysql(users[1])
 # user = retrieve_users_from_mysql("sa@ja.com")
 # if(user):
@@ -302,5 +373,7 @@ def save_audio_to_mysql(user_id, relative_file_path):
 
 # save_image_to_mysql(3, "./static/Images/Logo.png")
 # retrieve_image_from_mysql(3)
-# upload_profile_image(3, "./static/Images/alt_image.jpg")
+# upload_profile_image(2, "./static/Images/alt_image.jpg")
 # retrieve_profile_image(1)
+
+# AdminRetrieveProfilePic()

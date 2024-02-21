@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, Response, jsonify
 import time
 from werkzeug.security import generate_password_hash, check_password_hash
-from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image
+from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic
 import os
 import base64
+from jinja2 import Template
 
 app = Flask(__name__)
 SECRET_KEY =  os.urandom(24)
@@ -13,9 +14,9 @@ app.secret_key = SECRET_KEY
 def home():
     if "userId" in session:
         if session["userIsAdmin"] == "True":
-            return render_template('index.html', isAdmin = "True", user = "True")
+            return render_template('index.html', isAdmin = "True", user = "True", username = session["username"])
         else:
-            return render_template('index.html', isAdmin = "False", user = "True")
+            return render_template('index.html', isAdmin = "False", user = "True", username = session["username"])
     return render_template('index.html', isAdmin = "False", user = "False")
 
 @app.route('/signin')
@@ -37,20 +38,20 @@ def signinFunc():
     user = retrieve_users_from_mysql(email)
     if user == None:
         flash('No User Found')
-        return redirect(url_for('home'))
+        return redirect(url_for('signin'))
     elif check_password_hash(user.password, password):
         session["userId"] = user.id
+        session["username"] = str(user.username)
         session["userEmail"] = user.email
         session["userIsAdmin"] = user.isAdmin
         if user.isAdmin:
             flash('Admin SignIn Successfull')
         else:
             flash('SignIn Successfull')
-        time.sleep(3)
         return redirect(url_for('home'))
     else:
         flash('Incorect password')
-        return redirect(url_for('home'))
+        return redirect(url_for('signin'))
 
 @app.route('/SignUp', methods=['POST'])
 def signupFunc():
@@ -66,6 +67,7 @@ def signupFunc():
         user = retrieve_users_from_mysql(email)
         upload_profile_image(user.id, "./static/Images/alt_image.jpg")
         session["userId"] = user.id
+        session["username"] = user.username
         session["userEmail"] = user.email
         session["userIsAdmin"] = user.isAdmin
         flash('Registration Successful')
@@ -73,10 +75,10 @@ def signupFunc():
         
     else:
         flash('Email already exists')
-        return redirect(url_for('home'))
+        return redirect(url_for('signup'))
     
-@app.route('/profile.html')
-def profileData():
+@app.route('/profile/<username>')
+def profileData(username):
     try:
         if "userId" in session:
             UserEmail = session["userEmail"]
@@ -88,9 +90,33 @@ def profileData():
             for i in images:
                 encoded_image = base64.b64encode(i.file_data).decode('utf-8')
                 imageData.append(encoded_image)
-            return render_template('profile.html', user = user, profileImage = profileImage, images = imageData)
+            return render_template('profile.html', user = user, profileImage = profileImage, images = imageData, username = user.username)
         else:
-            return render_template('home.html')
+            return redirect(url_for('home'))
+    except Exception as e:
+        print("Error:", e)
+        return Response(status=500)
+    
+@app.route('/adminPage')
+def Admin():
+    try:
+        if "userIsAdmin" in session:
+            if session["userIsAdmin"] == 'True':
+                users = AdminRetrieve()
+                profilePictures = AdminRetrieveProfilePic()
+                
+                profilePic = []
+                for pic in profilePictures:
+                    encoded_image = base64.b64encode(pic.file_data).decode('utf-8')
+                    profilePic.append(encoded_image)
+                    
+                # print(len(users) , len(profilePic))
+                NumberOfAccounts = len(users)
+                # print(type(users))
+                # NumberOfAccounts = 0
+                return render_template('adminPage.html', NumberOfAccounts = NumberOfAccounts, user = users, profilePic = profilePic)
+            else:
+                return redirect(url_for('home'))
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
