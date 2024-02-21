@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, Response
 import time
 from werkzeug.security import generate_password_hash, check_password_hash
-from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image
+from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image
 import os
 import base64
 
@@ -11,7 +11,12 @@ app.secret_key = SECRET_KEY
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    if "userId" in session:
+        if session["userIsAdmin"] == "True":
+            return render_template('index.html', isAdmin = "True", user = "True")
+        else:
+            return render_template('index.html', isAdmin = "False", user = "True")
+    return render_template('index.html', isAdmin = "False", user = "False")
 
 @app.route('/login.html')
 def index():
@@ -26,7 +31,9 @@ def login():
         flash('No User Found')
         return redirect(url_for('index'))
     elif check_password_hash(user.password, password):
-        session["user"] = user.email
+        session["userId"] = user.id
+        session["userEmail"] = user.email
+        session["userIsAdmin"] = user.isAdmin
         if user.isAdmin:
             flash('Admin SignIn Successfull')
         else:
@@ -46,9 +53,13 @@ def signup():
     hashPassword = generate_password_hash(password, method='pbkdf2')
 
     if retrieve_users_from_mysql(email) == None:
-        user = User(name, username, email, hashPassword)
+        user = User(name, username, email, hashPassword, isAdmin="False")
         save_data_to_mysql(user)
-        session["user"] = user.email
+        user = retrieve_users_from_mysql(email)
+        upload_profile_image(user.id, "./static/Images/alt_image.jpg")
+        session["userId"] = user.id
+        session["userEmail"] = user.email
+        session["userIsAdmin"] = user.isAdmin
         flash('Registration Successful')
         return redirect(url_for('index'))
         
@@ -59,8 +70,8 @@ def signup():
 @app.route('/profile.html')
 def profileData():
     try:
-        if "user" in session:
-            UserEmail = session["user"]
+        if "userId" in session:
+            UserEmail = session["userEmail"]
             user = retrieve_users_from_mysql(UserEmail)
             profile_image = retrieve_profile_image(user.id)
             profileImage = base64.b64encode(profile_image.file_data).decode('utf-8')

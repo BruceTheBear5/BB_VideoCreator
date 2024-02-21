@@ -295,9 +295,10 @@ def save_audio_to_mysql(user_id, relative_file_path):
 
 # save_data_to_mysql(users[0])
 # save_data_to_mysql(users[1])
-# user = retrieve_users_from_mysql("jane@example.com")
+# user = retrieve_users_from_mysql("sa@ja.com")
 # if(user):
 #     user.printUser()
+#     print(type(user.isAdmin))
 
 # save_image_to_mysql(3, "./static/Images/Logo.png")
 # retrieve_image_from_mysql(3)
