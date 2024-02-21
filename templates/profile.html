@@ -1,61 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile</title>
-    <link rel="stylesheet" href="../static/Styles/profile.css">
-</head>
-<body>
+    <link rel="stylesheet" href="../static/Styles/profile.css" />
+  </head>
+  <body>
     <header>
-        <nav id="Navbar">
-            <a href="./index.html" class="NavLink Logo" id="HomePage"><img src="../static/Images/Logo.png" alt="Logo" class="Logo"></a>
-            <a href="./login.html" class="NavLink" id="SignInUp" >Sign in/up</a>
-            <a href="./profile.html" class="NavLink" id="Profile">Profile</a>
-            <a href="./uploadPage.html" class="NavLink">Upload</a>
-            <a href="./workspace.html" class="NavLink">Create</a>
-            <div id = "Admin"><a href="./adminPage.html" class="NavLink">Admin hub</a></div>
-        </nav>
+      <nav id="Navbar">
+        <a href="./index.html" class="NavLink Logo" id="HomePage"
+          ><img src="../static/Images/Logo.png" alt="Logo" class="Logo"
+        /></a>
+        <a href="./login.html" class="NavLink" id="SignInUp">Sign in/up</a>
+        <a href="./profile.html" class="NavLink" id="Profile">Profile</a>
+        <a href="./uploadPage.html" class="NavLink">Upload</a>
+        <a href="./workspace.html" class="NavLink">Create</a>
+        <div id="Admin">
+          <a href="./adminPage.html" class="NavLink">Admin hub</a>
+        </div>
+      </nav>
     </header>
 
-    <div class="MainBody"> 
-        <h1 class="Profile">Profile</h1>
-        <div class="Profile">
-            <div id="profileContent">
-                <ul>
-                    <li>Name : User</li>
-                    <li>UserName : User</li>
-                    <li>Email : user@gmail.com</li>
-                </ul>
-            </div> 
-            <div id="profilePhoto">
-                <img src="../Images/alt_image.jpg" alt="Profile Pic" id="profilePic">
-            </div> 
+    <div class="MainBody">
+      <h1 class="Profile">Profile</h1>
+      <div class="Profile">
+        <div id="profileContent">
+          <ul>
+            <li>Name : {{user.name}}</li>
+            <li>UserName : {{user.username}}</li>
+            <li>Email : {{user.email}}</li>
+          </ul>
         </div>
+        <div id="profilePhoto">
+          <img
+            src="data:image/jpeg;base64,{{ profileImage }}"
+            alt="Profile Pic"
+            id="profilePic"
+          />
+          <label for="profilePicInput" class="uploadButton"></label>
+          <input type="file" id="profilePicInput" accept="image/*" />
+        </div>
+      </div>
 
-        <div class="Previous">
-            <div id="uploadedImages">
-                <h3 class="Heading">Previously uploaded Images</h3>
-                <div class="showCase">
-                    will show previously uploaded images
-                </div>
-            </div>
-            <div id="madeVideos">
-                <h3 class="Heading">Previously made Videos</h3>
-                <div class="showCase">
-                    will show previously made videos
-                </div>
-            </div>
-            <div id="uploadedMusic">
-                <h3 class="Heading">Previously uploaded Music</h3>
-                <div class="showCase">
-                    will show previously uploaded music
-                </div>
-            </div>
+      <div class="Previous">
+        <div id="uploadedImages">
+          <h3 class="Heading">Previously uploaded Images</h3>
+          <div class="showCase">
+            {% for image in images %}
+            <img src="data:image/jpeg;base64,{{ image }}" alt="Image" />
+            {% endfor %}
+          </div>
         </div>
+        <div id="madeVideos">
+          <h3 class="Heading">Previously made Videos</h3>
+          <div class="showCase">will show previously made videos</div>
+        </div>
+        <div id="uploadedMusic">
+          <h3 class="Heading">Previously uploaded Music</h3>
+          <div class="showCase">will show previously uploaded music</div>
+        </div>
+      </div>
     </div>
     <footer id="footer">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.</p>    
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec
+        odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.
+      </p>
     </footer>
-</body>
+    <script>
+      // Add an event listener to the file input element
+      document
+        .getElementById("profilePicInput")
+        .addEventListener("change", function (event) {
+          const file = event.target.files[0];
+          if (file) {
+            // Create a FileReader object to read the uploaded file
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              const imageData = e.target.result;
+              // Display the preview of the uploaded image
+              document.getElementById("profilePic").src = imageData;
+              // Upload the image to the backend
+              uploadProfilePicture(imageData);
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+
+      // Function to upload the profile picture to the backend
+      function uploadProfilePicture(imageData) {
+        // Make a POST request to the backend endpoint with the image data
+        // Replace 'backendEndpoint' with the actual URL of your backend endpoint
+        fetch("backendEndpoint", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ imageData: imageData }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              console.log("Profile picture uploaded successfully");
+            } else {
+              console.error("Failed to upload profile picture");
+            }
+          })
+          .catch((error) => {
+            console.error("Error uploading profile picture:", error);
+          });
+      }
+
+      // Check if profile image data is stored in local storage
+      const storedImageData = localStorage.getItem("profileImageData");
+      if (storedImageData) {
+        // If stored, set the profile picture src attribute to the stored data
+        document.getElementById("profilePic").src = storedImageData;
+      }
+
+      // Add an event listener to the file input element
+      document
+        .getElementById("profilePicInput")
+        .addEventListener("change", function (event) {
+          const file = event.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              const imageData = e.target.result;
+              document.getElementById("profilePic").src = imageData;
+              // Store the image data in local storage
+              localStorage.setItem("profileImageData", imageData);
+              // Upload the image to the backend
+              uploadProfilePicture(imageData);
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+    </script>
+  </body>
 </html>

@@ -4,6 +4,7 @@ from mutagen.mp3 import MP3
 import wave
 import cv2
 import numpy as np
+from datetime import datetime
 
 class User:
     def __init__(self, name, username, email, password, id=-1, isAdmin="False"):
@@ -30,11 +31,19 @@ class User:
         
     
 class Image:
-    def __init__(self, file_name, image_len, file_type, file_data):
+    def __init__(self, file_name, image_len, file_type, file_data, upload_date = datetime.now()):
         self.file_name = file_name
-        self.image_len = image_len
+        self.file_size = image_len
         self.file_type = file_type
         self.file_data = file_data
+        self.upload_date = upload_date
+        
+    def display(self):
+        nparr = np.frombuffer(self.file_data, np.uint8)
+        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        cv2.imshow(self.file_name, image)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 def save_data_to_mysql(data):
     try:
@@ -135,18 +144,18 @@ def retrieve_image_from_mysql(userId):
         cursor.execute(query, (userId, ))
         rows = cursor.fetchall()
         
+        Images = []
         if rows:
             for i, row in enumerate(rows):
-                image_data = row[0]
-                nparr = np.frombuffer(image_data, np.uint8)
-                image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-                cv2.imshow('Image {}'.format(i+1), image)
-                cv2.waitKey(0)
-                cv2.destroyAllWindows()
-
-            print("Image retrieved from MySQL database successfully.")
-        else:
-            print("Image not found in the database.")
+                file_name = "Image {}".format(i+1)
+                image_len = len(row[0])
+                file_type = "image/jpg"
+                file_data = row[0]
+                upload_date = datetime.now()
+                image = Image(file_name, image_len, file_type, file_data, upload_date)
+                Images.append(image)
+                
+        return Images
 
     except mysql.connector.Error as error:
         print("Failed to retrieve image from MySQL database:", error)
@@ -203,14 +212,13 @@ def retrieve_profile_image(userId):
         row = cursor.fetchone()
         
         if row:
-            image_data = row[0]
-            nparr = np.frombuffer(image_data, np.uint8)
-            image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-            cv2.imshow('Image', image)
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()
-
-            print("Image retrieved from MySQL database successfully.")
+            file_name = "Image {}"
+            image_len = len(row[0])
+            file_type = "image/jpg"
+            file_data = row[0]
+            upload_date = datetime.now()
+            image = Image(file_name, image_len, file_type, file_data, upload_date)
+            return image
         else:
             print("Image not found in the database.")
      
@@ -279,19 +287,93 @@ def save_audio_to_mysql(user_id, relative_file_path):
         if 'connection' in locals() and connection.is_connected():
             cursor.close()
             connection.close()
+            
+def AdminRetrieve():
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="Saiyam20_",
+            database="Project"
+        )
+
+        cursor = connection.cursor()
+
+        query = "SELECT * FROM Users"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+
+        Users = []
+        for row in rows:
+            id, name, email, password, isAdmin, username = row
+            user = User(name, username, email, password, id, isAdmin)
+            profile = retrieve_profile_image(user.id)
+            Users.append(user)
+
+        return Users
+    
+    except mysql.connector.Error as error:
+        print("Failed to retrieve users:", error)
+        return []
+        
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+
+def AdminRetrieveProfilePic():
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="Saiyam20_",
+            database="Project"
+        )
+
+        cursor = connection.cursor()
+
+        query = "SELECT * FROM profile_pictures"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+
+        profile_picture = []
+        if rows:
+            for i, row in enumerate(rows):
+                file_data = row[1]
+                file_name = row[2]
+                image_len = row[3]
+                file_type = row[4]
+                image = Image(file_name, image_len, file_type, file_data)
+                # image.display()
+                profile_picture.append(image)
+                
+        return profile_picture
+    
+    except mysql.connector.Error as error:
+        print("Failed to retrieve users:", error)
+        return []
+        
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
 
 # users = [
 #     User("John Doe", "johndoe", "john@example.com", "password123", isAdmin="False"),
-#     User("Jane Smith", "janesmith", "jane@example.com", "password456", isAdmin="True")
+#     User("Jane Smith", "janesmith", "jane@example.com", "password456", isAdmin="True"),
+#     User("SA", "saj", "sa@ja.in", "s", isAdmin="True")
 # ]
 
-# save_data_to_mysql(users[0])
+# save_data_to_mysql(users[2])
 # save_data_to_mysql(users[1])
-# user = retrieve_users_from_mysql("jane@example.com")
+# user = retrieve_users_from_mysql("sa@ja.com")
 # if(user):
 #     user.printUser()
+#     print(type(user.isAdmin))
 
-# save_image_to_mysql(2, "./Images/Logo.png")
-# retrieve_image_from_mysql(1)
-# upload_profile_image(1, "./Images/alt_image.jpg")
+# save_image_to_mysql(3, "./static/Images/Logo.png")
+# retrieve_image_from_mysql(3)
+# upload_profile_image(2, "./static/Images/alt_image.jpg")
 # retrieve_profile_image(1)
+
+# AdminRetrieveProfilePic()

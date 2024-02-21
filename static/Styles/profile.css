@@ -27,12 +27,21 @@ body{
     color: var(--accent);
 }
 
+#profileContent li:hover {
+    color: var(--accent-hover);
+}
+
 #profilePic{
-    padding-top: 5rem;
     font-size: 2rem;
-    height: 30vh;
-    width: 30vh;
+    height: 300px;
+    width: 300px;
     border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+}
+
+#profilePic:hover {
+    transform: scale(1.05);
 }
 
 .Heading{
@@ -53,4 +62,62 @@ body{
     width: 100%;
     height: 40vh;
     background-color: #3A3B3C;
+    display: flex;
+}
+
+.showCase img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+    padding: 1rem;
+    transition: transform 0.3s ease; 
+}
+
+.showCase img:hover {
+    transform: scale(1.05);
+    filter: brightness(120%);
+}
+
+#profilePicInput {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 1;
+}
+
+#profilePhoto {
+    position: relative;
+    width: 300px;
+     height: 300px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    margin: 0 auto;
+}
+
+.uploadButton {
+    position: relative;
+    z-index: 2;
+    bottom: 5px;
+    right: 5px;
+    background-color: var(--accent);
+    color: var(--font);
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+
+#profileContent li:hover {
+    color: var(--font); /* Change text color on hover */
+}
+
+
+.uploadButton:hover {
+    background-color: var(--accent-hover); /* Button background color on hover */
 }

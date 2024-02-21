@@ -102,6 +102,6 @@ body{
     object-fit: cover;
 }
 
-.username, .email, .activeStatus {
+.username, .email, .Admin, .Id, .name {
     font-size: 1rem;
 }
