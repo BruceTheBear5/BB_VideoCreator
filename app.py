@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, Response, jsonify
 import time
 from werkzeug.security import generate_password_hash, check_password_hash
-from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic
+from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql
 import os
 import base64
 from jinja2 import Template
@@ -90,7 +90,16 @@ def profileData(username):
             for i in images:
                 encoded_image = base64.b64encode(i.file_data).decode('utf-8')
                 imageData.append(encoded_image)
-            return render_template('profile.html', user = user, profileImage = profileImage, images = imageData, username = user.username)
+                
+            audio = retrieve_audio_from_mysql(user.id)
+            audioData = []
+            for a in audio:
+                encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
+                audioData.append(encoded_audio)
+            
+            print(audioData)
+                
+            return render_template('profile.html', user = user, profileImage = profileImage, images = imageData, audio = audioData, username = user.username)
         else:
             return redirect(url_for('home'))
     except Exception as e:
@@ -109,14 +118,34 @@ def Admin():
                 for pic in profilePictures:
                     encoded_image = base64.b64encode(pic.file_data).decode('utf-8')
                     profilePic.append(encoded_image)
-                    
-                # print(len(users) , len(profilePic))
+
                 NumberOfAccounts = len(users)
-                # print(type(users))
-                # NumberOfAccounts = 0
                 return render_template('adminPage.html', NumberOfAccounts = NumberOfAccounts, user = users, profilePic = profilePic)
             else:
                 return redirect(url_for('home'))
+    except Exception as e:
+        print("Error:", e)
+        return Response(status=500)
+    
+@app.route('/upload-images')
+def upload():
+    try:
+        if "userId" in session:
+                return render_template('uploadPage.html')
+    except Exception as e:
+        print("Error:", e)
+        return Response(status=500)
+    
+@app.route('/create-video')
+def create():
+    try:
+        if "userId" in session:
+            images = retrieve_image_from_mysql(session["userId"])
+            imageData = []
+            for i in images:
+                encoded_image = base64.b64encode(i.file_data).decode('utf-8')
+                imageData.append(encoded_image)
+            return render_template('workspace.html', images = imageData)
     except Exception as e:
         print("Error:", e)
         return Response(status=500)

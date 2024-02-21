@@ -63,13 +63,15 @@ body{
     height: 40vh;
     background-color: #3A3B3C;
     display: flex;
+    overflow: auto;
+    scrollbar-width: none;
 }
 
 .showCase img {
     max-height: 100%;
     max-width: 100%;
     object-fit: cover;
-    padding: 1rem;
+    padding: 2rem;
     transition: transform 0.3s ease; 
 }
 

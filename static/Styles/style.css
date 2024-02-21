@@ -20,12 +20,65 @@ body{
     font-size: 16rem;
     font-weight: 800;
     padding-left: 5%;
+    padding-bottom: 2%;
+    background: linear-gradient(to right, var(--accent), var(--accent2));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: gradientTransition 5s infinite ease;
+}
+#by{
+    line-height: 100%;
+    font-size: 6rem;
+    font-weight: 600;
+    padding-left: 5%;
+    padding-bottom: 5%;
+    padding-right: 1%;
+    display: inline-block;
+    background: linear-gradient(to right, var(--accent), var(--accent2));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: gradientTransition 5s infinite ease;
+}
+#typed {
+    line-height: 100%;
+    font-size: 6rem;
+    font-weight: 600;
+    /* padding-left: 5%; */
     padding-bottom: 5%;
     background: linear-gradient(to right, var(--accent), var(--accent2));
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
     animation: gradientTransition 5s infinite ease;
+    display: inline-block;
+}
+
+.typed-cursor {
+    font-size: var(--typed-font-size); /* Use variable for font size */
+    line-height: var(--typed-line-height); /* Use variable for line height */
+    text-align: var(--typed-text-align); /* Use variable for text alignment */
+    color: var(--font); /* Use variable for text color */
+    display: inline-block; /* Display cursor as inline-block */
+    width: 1ch; /* Width of the cursor */
+    height: 1em; /* Height of the cursor */
+    background-color: var(--font); /* Cursor color */
+    animation: blink 0.7s infinite; /* Cursor blinking animation */
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 @keyframes gradientTransition {
