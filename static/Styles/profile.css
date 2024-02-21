@@ -119,11 +119,9 @@ body{
     color: var(--font); /* Change text color on hover */
 }
 
-
 .uploadButton:hover {
     background-color: var(--accent-hover); /* Button background color on hover */
 }
-
 
 /* Style for the uploaded music section */
 #uploadedMusic {
@@ -143,13 +141,14 @@ body{
   /* Style for the container of audio players */
   #uploadedMusic .showCase {
     display: flex;
+    flex-direction: column;
     overflow-x: auto;
   }
   
   /* Style for each audio player cell */
   #uploadedMusic .audioCell {
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     align-items: center;
     justify-content: center;
     background-color: #282828;
