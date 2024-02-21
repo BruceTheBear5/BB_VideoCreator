@@ -123,3 +123,62 @@ body{
 .uploadButton:hover {
     background-color: var(--accent-hover); /* Button background color on hover */
 }
+
+
+/* Style for the uploaded music section */
+#uploadedMusic {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Style for the heading */
+  #uploadedMusic .Heading {
+    color: #1db954;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Style for the container of audio players */
+  #uploadedMusic .showCase {
+    display: flex;
+    overflow-x: auto;
+  }
+  
+  /* Style for each audio player cell */
+  #uploadedMusic .audioCell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #282828;
+    border-radius: 10px;
+    padding: 10px;
+    margin-right: 10px;
+  }
+  
+  /* Style for audio player name */
+  #uploadedMusic .audioName {
+    color: white;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
+  /* Style for audio player controls */
+  #uploadedMusic audio {
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  /* Style for audio player progress bar */
+  #uploadedMusic audio::-webkit-media-controls-timeline {
+    background-color: #1db954;
+  }
+  
+  /* Hide default audio controls */
+  #uploadedMusic audio::-webkit-media-controls {
+    display: none !important;
+  }
+  
+  
