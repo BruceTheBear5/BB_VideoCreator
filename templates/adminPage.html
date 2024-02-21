@@ -44,7 +44,6 @@
                     {% set user_item = user[i] %}
                     {% set pic_item = profilePic[i] %}
                     <div class="accountCell">
-                        <div class="accountDetails">
                             <div class="leftDetails">
                                 <div class="Id">UserId : {{ user_item.id }}</div>
                                 <div class="name">Name : {{ user_item.name }}</div>
@@ -55,7 +54,6 @@
                             <div class="profilePicture">
                                 <img src="data:image/jpeg;base64,{{ pic_item }}" alt="Profile Pic" id="profilePic">
                             </div>
-                        </div>
                     </div>
                     {% endfor %}
 

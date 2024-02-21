@@ -68,22 +68,16 @@ body{
     gap: 2rem;
 }
 
+/* Updated CSS */
 .accountCell {
-    flex: 0 0 calc(50% - 1rem);
     padding: 1rem;
-    margin: 0.5rem;
+    margin: 1.5rem;
     border: 1px solid var(--accent);
     border-radius: 5px;
     box-sizing: border-box;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-}
-
-.accountDetails {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
+    justify-content: space-between; /* Align items horizontally */
 }
 
 .leftDetails {
@@ -91,9 +85,13 @@ body{
     text-align: left;
 }
 
-.profilePicture {
-    margin-left: 27rem;
+.profilePicture img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
 }
+
 
 .profilePicture img {
     width: 100px;
@@ -104,4 +102,5 @@ body{
 
 .username, .email, .Admin, .Id, .name {
     font-size: 1rem;
+    margin-bottom: 0.5rem;
 }
