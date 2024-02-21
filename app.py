@@ -109,11 +109,8 @@ def Admin():
                 for pic in profilePictures:
                     encoded_image = base64.b64encode(pic.file_data).decode('utf-8')
                     profilePic.append(encoded_image)
-                    
-                # print(len(users) , len(profilePic))
+
                 NumberOfAccounts = len(users)
-                # print(type(users))
-                # NumberOfAccounts = 0
                 return render_template('adminPage.html', NumberOfAccounts = NumberOfAccounts, user = users, profilePic = profilePic)
             else:
                 return redirect(url_for('home'))

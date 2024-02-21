@@ -77,7 +77,8 @@ body{
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Align items horizontally */
+    justify-content: space-between;
+    width:440px;
 }
 
 .leftDetails {
