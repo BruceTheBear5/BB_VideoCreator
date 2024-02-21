@@ -37,6 +37,7 @@ body{
     height: 30vh;
     width: 30vh;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 #profilePic:hover {
@@ -77,3 +78,31 @@ body{
     filter: brightness(120%);
 }
 
+#profilePicInput {
+    display: none; /* Hide the default file input */
+}
+
+#profilePhoto {
+    position: relative;
+    width: 200px; /* Adjust width as needed */
+    height: 200px; /* Adjust height as needed */
+    overflow: hidden;
+    border-radius: 50%; /* Make it circular */
+    border: 2px solid var(--accent); /* Add border */
+}
+
+.uploadButton {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: var(--accent); /* Button background color */
+    color: var(--font); /* Button text color */
+    padding: 5px 10px; /* Adjust padding */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.uploadButton:hover {
+    background-color: var(--accent-hover); /* Button background color on hover */
+}

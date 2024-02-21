@@ -30,7 +30,9 @@
             </div> 
             <div id="profilePhoto">
                 <img src="data:image/jpeg;base64,{{ profileImage }}" alt="Profile Pic" id="profilePic">
-            </div> 
+                <input type="file" id="profilePicInput" accept="image/*">
+            </div>
+            
         </div>
 
         <div class="Previous">
@@ -59,5 +61,48 @@
     <footer id="footer">
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.</p>    
     </footer>
+    <script>
+        // Add an event listener to the file input element
+document.getElementById('profilePicInput').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        // Create a FileReader object to read the uploaded file
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imageData = e.target.result;
+            // Display the preview of the uploaded image
+            document.getElementById('profilePic').src = imageData;
+            // Upload the image to the backend
+            uploadProfilePicture(imageData);
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Function to upload the profile picture to the backend
+function uploadProfilePicture(imageData) {
+    // Make a POST request to the backend endpoint with the image data
+    // Replace 'backendEndpoint' with the actual URL of your backend endpoint
+    fetch('backendEndpoint', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ imageData: imageData })
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Profile picture uploaded successfully');
+        } else {
+            console.error('Failed to upload profile picture');
+        }
+    })
+    .catch(error => {
+        console.error('Error uploading profile picture:', error);
+    });
+}
+
+    </script>
+    
 </body>
 </html>
