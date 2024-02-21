@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/Styles/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/Styles/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
     <script src="../static/Scripts/SignUp-In.js" defer></script>
     <script src="../static/Scripts/changeNav.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 
     <title>Main Page</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <header>
         <nav id="Navbar">
             <a href="./" class="NavLink Logo" id="HomePage"><img src="../static/Images/Logo.png" alt="Logo"
@@ -35,58 +38,92 @@
     </header>
 
     <div class="MainBody">
-        <div class="Introduction">
-            <div class="LogoName">Bond Brothers</div>
-            <div id="IntroToSite">
-                <p>Welcome to Bond Brothers! We are a team dedicated to creating innovative solutions for your needs.
-                </p>
-                <p>Our mission is to empower individuals and businesses by providing cutting-edge technology and
-                    exceptional services.</p>
-                <p>Explore our website to discover how we can help you achieve your goals and unlock new possibilities.
-                </p>
-            </div>
-            <img src="https://via.placeholder.com/300" alt="Bond Brothers Logo">
+      <div class="Introduction">
+        <div class="LogoName">Bond Brothers</div>
+        <div id="by">by</div>
+        <div id="typed"></div>
+        <div id="IntroToSite">
+          <p>
+            Welcome to Bond Brothers! We are a team dedicated to creating
+            innovative solutions for your needs.
+          </p>
+          <p>
+            Our mission is to empower individuals and businesses by providing
+            cutting-edge technology and exceptional services.
+          </p>
+          <p>
+            Explore our website to discover how we can help you achieve your
+            goals and unlock new possibilities.
+          </p>
         </div>
+        <img src="https://via.placeholder.com/300" alt="Bond Brothers Logo" />
+      </div>
 
-        <div class="Usage">
-            <div class="UsageOfSite">How to Use This Site</div>
-            <div id="UsageOfSite">
-                <h3>1. Explore Our Features</h3>
-                <p>Discover the various features and functionalities that Bond Brothers offers. From intuitive user
-                    interfaces to advanced tools, we have everything you need to enhance your experience.</p>
-                <img src="https://via.placeholder.com/300" alt="Feature 1 Image">
+      <div class="Usage">
+        <div class="UsageOfSite">How to Use This Site</div>
+        <div id="UsageOfSite">
+          <h3>1. Explore Our Features</h3>
+          <p>
+            Discover the various features and functionalities that Bond Brothers
+            offers. From intuitive user interfaces to advanced tools, we have
+            everything you need to enhance your experience.
+          </p>
+          <img src="https://via.placeholder.com/300" alt="Feature 1 Image" />
 
-                <h3>2. Sign Up/Login</h3>
-                <p>To access all the features and personalize your experience, sign up or log in to your account. Don't
-                    have an account yet? No worries, it's quick and easy to create one.</p>
-                <img src="https://via.placeholder.com/300" alt="Feature 2 Image">
+          <h3>2. Sign Up/Login</h3>
+          <p>
+            To access all the features and personalize your experience, sign up
+            or log in to your account. Don't have an account yet? No worries,
+            it's quick and easy to create one.
+          </p>
+          <img src="https://via.placeholder.com/300" alt="Feature 2 Image" />
 
-                <h3>3. Create and Collaborate</h3>
-                <p>Once logged in, you can start creating and collaborating with your team or friends. Whether it's
-                    brainstorming ideas, managing projects, or sharing content, Bond Brothers provides a seamless
-                    platform for collaboration.</p>
-                <img src="https://via.placeholder.com/300" alt="Feature 3 Image">
+          <h3>3. Create and Collaborate</h3>
+          <p>
+            Once logged in, you can start creating and collaborating with your
+            team or friends. Whether it's brainstorming ideas, managing
+            projects, or sharing content, Bond Brothers provides a seamless
+            platform for collaboration.
+          </p>
+          <img src="https://via.placeholder.com/300" alt="Feature 3 Image" />
 
-                <h3>4. Customize Your Settings</h3>
-                <p>Customize your settings to tailor your experience according to your preferences. From profile
-                    settings to notification preferences, you have full control over how you interact with Bond
-                    Brothers.</p>
-                <img src="https://via.placeholder.com/300" alt="Feature 4 Image">
+          <h3>4. Customize Your Settings</h3>
+          <p>
+            Customize your settings to tailor your experience according to your
+            preferences. From profile settings to notification preferences, you
+            have full control over how you interact with Bond Brothers.
+          </p>
+          <img src="https://via.placeholder.com/300" alt="Feature 4 Image" />
 
-                <h3>5. Get Support</h3>
-                <p>If you encounter any issues or have questions about Bond Brothers, our support team is here to help.
-                    Reach out to us through our contact page, and we'll assist you promptly.</p>
-                <img src="https://via.placeholder.com/300" alt="Feature 5 Image">
-            </div>
+          <h3>5. Get Support</h3>
+          <p>
+            If you encounter any issues or have questions about Bond Brothers,
+            our support team is here to help. Reach out to us through our
+            contact page, and we'll assist you promptly.
+          </p>
+          <img src="https://via.placeholder.com/300" alt="Feature 5 Image" />
         </div>
+      </div>
     </div>
 
-
     <footer id="footer">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante
-            dapibus diam. Sed nisi.</p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec
+        odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.
+      </p>
     </footer>
-
-</body>
-
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var typed = new Typed("#typed", {
+          strings: ["Varun Gupta", "Saiyam Jain", "Krishak Aneja"],
+          smartBackspace: true,
+          startDelay: 1000,
+          typeSpeed: 130,
+          backDelay: 1000,
+          backSpeed: 60,
+          loop: true,
+        });
+      });
+    </script>
+  </body>
 </html>
