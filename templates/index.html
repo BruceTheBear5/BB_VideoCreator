@@ -16,7 +16,8 @@
         <nav id="Navbar">
             <a href="./" class="NavLink Logo" id="HomePage"><img src="../static/Images/Logo.png" alt="Logo" class="Logo"></a>
             {% if user == "False"%}
-                <a href="./login.html" class="NavLink" id="SignInTab" >Sign in/up</a>
+                <a href="./signin" class="NavLink" id="SignInTab" >Sign in</a>
+                <a href="./signup" class="NavLink" id="SignInTab" >Sign up</a>
             {% endif %}
             {% if user == "True"%}
                 <a href="./profile.html" class="NavLink" id="ProfileTab">Profile</a>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, Response
+from flask import Flask, render_template, request, redirect, url_for, flash, session, Response, jsonify
 import time
 from werkzeug.security import generate_password_hash, check_password_hash
 from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image
@@ -18,18 +18,26 @@ def home():
             return render_template('index.html', isAdmin = "False", user = "True")
     return render_template('index.html', isAdmin = "False", user = "False")
 
-@app.route('/login.html')
-def index():
-    return render_template('login.html')
+@app.route('/signin')
+def signin():
+    return render_template('login.html', signin = "True", signup = "False", ForgetPassword = "False")
+
+@app.route('/signup')
+def signup():
+    return render_template('login.html', signin = "False", signup = "True", ForgetPassword = "False")
+
+@app.route('/forgetpassword')
+def forgetPassword():
+    return render_template('login.html', signin = "False", signup = "False", ForgetPassword = "True")
 
 @app.route('/SignIn', methods=['POST'])
-def login():
+def signinFunc():
     email = request.form['email']
     password = request.form['password']
     user = retrieve_users_from_mysql(email)
     if user == None:
         flash('No User Found')
-        return redirect(url_for('index'))
+        return redirect(url_for('home'))
     elif check_password_hash(user.password, password):
         session["userId"] = user.id
         session["userEmail"] = user.email
@@ -42,10 +50,10 @@ def login():
         return redirect(url_for('home'))
     else:
         flash('Incorect password')
-        return redirect(url_for('index'))
+        return redirect(url_for('home'))
 
 @app.route('/SignUp', methods=['POST'])
-def signup():
+def signupFunc():
     name = request.form['name']
     username = request.form['username']
     password = request.form['password']
@@ -61,11 +69,11 @@ def signup():
         session["userEmail"] = user.email
         session["userIsAdmin"] = user.isAdmin
         flash('Registration Successful')
-        return redirect(url_for('index'))
+        return redirect(url_for('home'))
         
     else:
         flash('Email already exists')
-        return redirect(url_for('index'))
+        return redirect(url_for('home'))
     
 @app.route('/profile.html')
 def profileData():
@@ -82,7 +90,7 @@ def profileData():
                 imageData.append(encoded_image)
             return render_template('profile.html', user = user, profileImage = profileImage, images = imageData)
         else:
-            return render_template('index.html')
+            return render_template('home.html')
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
