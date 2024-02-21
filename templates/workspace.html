@@ -12,7 +12,8 @@
 <body>
     <header>
         <nav id="Navbar">
-            <a href="./index.html" class="NavLink Logo" id="HomePage"><img src="../static/Images/Logo.png" alt="Logo" class="Logo"></a>
+            <a href="./index.html" class="NavLink Logo" id="HomePage"><img src="../static/Images/Logo.png" alt="Logo"
+                    class="Logo"></a>
             <a href="./login.html" class="NavLink" id="SignInUp">Sign in/up</a>
             <a href="#" class="NavLink" id="Profile">Profile</a>
             <a href="./uploadPage.html" class="NavLink">Upload</a>
@@ -23,14 +24,28 @@
 
     <div class="MainBody">
         <div class="Heading">The Workspace</div>
+
+        <h1 style="width:100%">Previously uploaded images:</h1>
+        <div class="showCase">
+            {% for image in images %}
+            <img src="data:image/jpeg;base64,{{ image }}" alt="Image" />
+            {% endfor %}
+        </div>
+
         <h1 style="width:100%">Your images: </h1><br>
         <div id="imageContainer">
-            <div class="grid-item" draggable="true"><img src="../static/Images/WhatsApp Image 2024-02-07 at 7.18.29 PM.jpeg" alt="Image 1" ></div>
-            <div class="grid-item" draggable="true"><img src="../static/Images/WhatsApp Image 2024-02-07 at 7.18.30 PM(1).jpeg" alt="Image 2"></div>
-            <div class="grid-item" draggable="true"><img src="../static/Images/WhatsApp Image 2024-02-07 at 7.18.30 PM.jpeg" alt="Image 3"></div>
-            <div class="grid-item" draggable="true"><img src="../static/Images/WhatsApp Image 2024-02-07 at 7.18.31 PM(1).jpeg" alt="Image 4"></div>
-            <div class="grid-item" draggable="true"><img src="../static/Images/WhatsApp Image 2024-02-07 at 7.18.31 PM.jpeg" alt="Image 5"></div>
-            <div class="grid-item" draggable="true"><img src="../static/Images/WhatsApp Image 2024-02-07 at 7.18.32 PM(1).jpeg" alt="Image 6"></div>
+            <div class="grid-item" draggable="true"><img
+                    src="../static/Images/WhatsApp Image 2024-02-07 at 7.18.29 PM.jpeg" alt="Image 1"></div>
+            <div class="grid-item" draggable="true"><img
+                    src="../static/Images/WhatsApp Image 2024-02-07 at 7.18.30 PM(1).jpeg" alt="Image 2"></div>
+            <div class="grid-item" draggable="true"><img
+                    src="../static/Images/WhatsApp Image 2024-02-07 at 7.18.30 PM.jpeg" alt="Image 3"></div>
+            <div class="grid-item" draggable="true"><img
+                    src="../static/Images/WhatsApp Image 2024-02-07 at 7.18.31 PM(1).jpeg" alt="Image 4"></div>
+            <div class="grid-item" draggable="true"><img
+                    src="../static/Images/WhatsApp Image 2024-02-07 at 7.18.31 PM.jpeg" alt="Image 5"></div>
+            <div class="grid-item" draggable="true"><img
+                    src="../static/Images/WhatsApp Image 2024-02-07 at 7.18.32 PM(1).jpeg" alt="Image 6"></div>
         </div>
 
         <div id="controlContainer">
@@ -100,7 +115,8 @@
 
     <script src="../static/Scripts/dragAndDrop.js"></script>
     <footer id="footer">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.</p>    
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante
+            dapibus diam. Sed nisi.</p>
     </footer>
 </body>
 

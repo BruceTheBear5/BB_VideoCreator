@@ -117,6 +117,29 @@ def Admin():
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
+    
+@app.route('/upload-images')
+def upload():
+    try:
+        if "userId" in session:
+                return render_template('uploadPage.html')
+    except Exception as e:
+        print("Error:", e)
+        return Response(status=500)
+    
+@app.route('/create-video')
+def create():
+    try:
+        if "userId" in session:
+            images = retrieve_image_from_mysql(session["userId"])
+            imageData = []
+            for i in images:
+                encoded_image = base64.b64encode(i.file_data).decode('utf-8')
+                imageData.append(encoded_image)
+            return render_template('workspace.html', images = imageData)
+    except Exception as e:
+        print("Error:", e)
+        return Response(status=500)
 
 if __name__ == '__main__':
     app.run(debug=True)
