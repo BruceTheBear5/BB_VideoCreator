@@ -27,12 +27,20 @@ body{
     color: var(--accent);
 }
 
+#profileContent li:hover {
+    color: var(--accent-hover); /* Change color on hover */
+}
+
 #profilePic{
     padding-top: 5rem;
     font-size: 2rem;
     height: 30vh;
     width: 30vh;
     border-radius: 50%;
+}
+
+#profilePic:hover {
+    transform: scale(1.05);
 }
 
 .Heading{
@@ -55,3 +63,17 @@ body{
     background-color: #3A3B3C;
     display: flex;
 }
+
+.showCase img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+    padding: 1rem;
+    transition: transform 0.3s ease; 
+}
+
+.showCase img:hover {
+    transform: scale(1.05);
+    filter: brightness(120%);
+}
+
