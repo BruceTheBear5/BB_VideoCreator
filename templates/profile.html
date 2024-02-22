@@ -33,10 +33,14 @@
           <li>Email : {{user.email}}</li>
         </ul>
       </div>
-      <div id="profilePhoto">
-        <img src="data:image/jpeg;base64,{{ profileImage }}" alt="Profile Pic" id="profilePic" />
-        <label for="profilePicInput" class="uploadButton"></label>
-        <input type="file" id="profilePicInput" accept="image/*" />
+      <div>
+        <div id="profilePhoto">
+          <img src="data:image/jpeg;base64,{{ profileImage }}" alt="Profile Pic" id="profilePic" />
+        </div>
+        <form action="/Profile/{{username}}" method="post" enctype="multipart/form-data">
+          <input type="file" name="image" accept="image/*">
+          <input type="submit" value="Upload">
+        </form>
       </div>
     </div>
 
@@ -61,7 +65,7 @@
             <span class="audioName">{{ a['name'] }}</span>
             <audio controls>
               <source src="data:audio/mpeg;base64,{{ a['data'] }}">
-            </audio>  
+            </audio>
           </div>
           {% endfor %}
         </div>
@@ -75,35 +79,31 @@
     </p>
   </footer>
   <script>
-    // Add an event listener to the file input element
-    document
-      .getElementById("profilePicInput")
-      .addEventListener("change", function (event) {
-        const file = event.target.files[0];
-        if (file) {
-          // Create a FileReader object to read the uploaded file
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            const imageData = e.target.result;
-            // Display the preview of the uploaded image
-            document.getElementById("profilePic").src = imageData;
-            // Upload the image to the backend
-            uploadProfilePicture(imageData);
-          };
-          reader.readAsDataURL(file);
-        }
-      });
+    document.getElementById("profilePicInput").addEventListener("change", function (event) {
+      const file = event.target.files[0];
+      const userId = "123";
+      if (file && userId) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const imageData = e.target.result;
+          document.getElementById("profilePic").src = imageData;
+          uploadProfilePicture(userId, file);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
 
-    // Function to upload the profile picture to the backend
-    function uploadProfilePicture(imageData) {
-      // Make a POST request to the backend endpoint with the image data
-      // Replace 'backendEndpoint' with the actual URL of your backend endpoint
-      fetch("backendEndpoint", {
+    document.getElementById("changeProfilePicButton").addEventListener("click", function () {
+      document.getElementById("profilePicInput").click();
+    });
+
+    function uploadProfilePicture(username, file) {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      fetch(`/Profile/${username}`, {  // Pass the username parameter in the URL
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ imageData: imageData }),
+        body: formData
       })
         .then((response) => {
           if (response.ok) {
@@ -117,31 +117,6 @@
         });
     }
 
-    // Check if profile image data is stored in local storage
-    const storedImageData = localStorage.getItem("profileImageData");
-    if (storedImageData) {
-      // If stored, set the profile picture src attribute to the stored data
-      document.getElementById("profilePic").src = storedImageData;
-    }
-
-    // Add an event listener to the file input element
-    document
-      .getElementById("profilePicInput")
-      .addEventListener("change", function (event) {
-        const file = event.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            const imageData = e.target.result;
-            document.getElementById("profilePic").src = imageData;
-            // Store the image data in local storage
-            localStorage.setItem("profileImageData", imageData);
-            // Upload the image to the backend
-            uploadProfilePicture(imageData);
-          };
-          reader.readAsDataURL(file);
-        }
-      });
   </script>
 </body>
 

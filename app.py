@@ -1,10 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, Response, jsonify
-import time
 from werkzeug.security import generate_password_hash, check_password_hash
 from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql
 import os
 import base64
-from jinja2 import Template
 
 app = Flask(__name__)
 SECRET_KEY =  os.urandom(24)
@@ -77,7 +75,7 @@ def signupFunc():
         flash('Email already exists')
         return redirect(url_for('signup'))
     
-@app.route('/profile/<username>')
+@app.route('/profile/<username>', methods=['GET'])
 def profileData(username):
     try:
         if "userId" in session:
@@ -97,12 +95,39 @@ def profileData(username):
                 encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
                 ad = {'data': encoded_audio, 'name': a.file_name}
                 audioData.append(ad)
-            
-            # print(audioData)
                 
             return render_template('profile.html', user = user, profileImage = profileImage, images = imageData, audio = audioData, username = user.username)
         else:
             return redirect(url_for('home'))
+    except Exception as e:
+        print("Error:", e)
+        return Response(status=500)
+    
+@app.route('/Profile/<username>', methods=['POST'])
+def uploadProfileImage(username):
+    try:
+        user_id = session["userId"]
+        username = session["username"]
+        image_file = request.files['image']
+        
+        TEMP_DIR = './temp/'
+
+        if not os.path.exists(TEMP_DIR):
+            os.makedirs(TEMP_DIR)
+        
+        image_path = f"./temp/{user_id}_profile_image.jpg"
+        image_file.save(image_path)
+        
+        upload_profile_image(user_id, image_path)
+                
+        if os.path.exists(TEMP_DIR):
+            for file_name in os.listdir(TEMP_DIR):
+                file_path = os.path.join(TEMP_DIR, file_name)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+            os.rmdir(TEMP_DIR)
+        
+        return redirect(url_for('profileData', username=username))
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
