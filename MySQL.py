@@ -186,6 +186,11 @@ def upload_profile_image(user_id, image_name):
 
         cursor = connection.cursor()
         
+        if(retrieve_profile_image(user_id) != None):
+            delete_query = "DELETE FROM profile_pictures WHERE user_id = %s"
+            cursor.execute(delete_query, (user_id,))
+            connection.commit()
+        
         with open(image_name, "rb") as file:
             image_data = file.read()
 
@@ -230,6 +235,7 @@ def retrieve_profile_image(userId):
             return image
         else:
             print("Image not found in the database.")
+            return None
      
     except mysql.connector.Error as error:
         print("Failed to upload profile image:", error)
@@ -405,7 +411,7 @@ def AdminRetrieveProfilePic():
 # users = [
 #     User("John Doe", "johndoe", "john@example.com", "password123", isAdmin="False"),
 #     User("Jane Smith", "janesmith", "jane@example.com", "password456", isAdmin="True"),
-#     User("SA", "saj", "sa@ja.in", "s", isAdmin="True")
+#     User("Saiyam", "saiyam", "saiyam3420@gmail.com", "Saiyam20", isAdmin="True")
 # ]
 
 # save_data_to_mysql(users[2])
@@ -423,5 +429,5 @@ def AdminRetrieveProfilePic():
 # AdminRetrieve()
 # AdminRetrieveProfilePic()
 
-# save_audio_to_mysql(3, '/home/saiyamjain/Downloads/try.mp3')
+save_audio_to_mysql(1, '/home/saiyamjain/Downloads/try.mp3')
 # retrieve_audio_from_mysql(3)
