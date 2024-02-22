@@ -148,7 +148,7 @@ def retrieve_image_from_mysql(userId):
         )
 
         cursor = connection.cursor()
-        query = "SELECT file_data FROM images WHERE user_id = %s"
+        query = "SELECT file_data, file_name FROM images WHERE user_id = %s"
         
         cursor.execute(query, (userId, ))
         rows = cursor.fetchall()
@@ -156,7 +156,7 @@ def retrieve_image_from_mysql(userId):
         Images = []
         if rows:
             for i, row in enumerate(rows):
-                file_name = "Image {}".format(i+1)
+                file_name = row[1]
                 image_len = len(row[0])
                 file_type = "image/jpg"
                 file_data = row[0]
@@ -421,7 +421,7 @@ def AdminRetrieveProfilePic():
 #     user.printUser()
 #     print(type(user.isAdmin))
 
-# save_image_to_mysql(3, "./static/Images/Logo.png")
+# save_image_to_mysql(2, "./static/Images/Logo.png")
 # retrieve_image_from_mysql(3)
 # upload_profile_image(2, "./static/Images/alt_image.jpg")
 # retrieve_profile_image(1)
@@ -429,5 +429,5 @@ def AdminRetrieveProfilePic():
 # AdminRetrieve()
 # AdminRetrieveProfilePic()
 
-save_audio_to_mysql(1, '/home/saiyamjain/Downloads/try.mp3')
+# save_audio_to_mysql(1, '/home/saiyamjain/Downloads/try.mp3')
 # retrieve_audio_from_mysql(3)

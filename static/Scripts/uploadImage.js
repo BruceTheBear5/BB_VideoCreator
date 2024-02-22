@@ -31,11 +31,13 @@
 
 // document.getElementById('fileInput').addEventListener('change', listUploadedImages);
 // document.getElementById('uploadButton').addEventListener('click', uploadImages);
+
 document.addEventListener('DOMContentLoaded', function () {
     let dropArea = document.getElementById('drop-area');
     let fileInput = document.getElementById('fileInput');
     let imageList = document.getElementById('imageList');
     let browseButton = document.getElementById('browseButton');
+    let uploadForm = document.getElementById('uploadForm');
 
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
         dropArea.addEventListener(eventName, preventDefaults, false);
@@ -78,22 +80,59 @@ document.addEventListener('DOMContentLoaded', function () {
         handleFiles(this.files);
     });
 
-    var ul = document.createElement('ul');
     function handleFiles(files) {
         files = [...files];
         files.forEach(previewFile);
-        imageList.appendChild(ul);
     }
 
     function previewFile(file) {
-        let li = document.createElement('li');
         let reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = function () {
             let img = document.createElement('img');
             img.src = reader.result;
-            li.appendChild(img);
+            img.alt = file.name;
+            imageList.appendChild(img);
         }
-        ul.appendChild(li);
     }
-});
+    document.addEventListener('DOMContentLoaded', function () {
+        let uploadForm = document.getElementById('uploadForm');
+    
+        uploadForm.addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent default form submission
+    
+            let formData = new FormData(uploadForm); // Create a new FormData object from the form
+            let images = document.querySelectorAll('#imageList img');
+    
+            images.forEach(function (image, index) {
+                let src = image.getAttribute('src');
+                let alt = image.getAttribute('alt');
+    
+                // Append the image src and alt attributes as additional form fields
+                formData.append(`imageListData[${index}][src]`, src);
+                formData.append(`imageListData[${index}][alt]`, alt);
+            });
+    
+            // Log FormData for debugging
+            for (let pair of formData.entries()) {
+                console.log(pair[0], pair[1]); 
+            }
+    
+            // Send FormData to the backend using fetch
+            fetch('/Upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Images uploaded successfully!');
+                } else {
+                    console.error('Error uploading images:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error('Error uploading images:', error);
+            });
+        });
+    });
+});    

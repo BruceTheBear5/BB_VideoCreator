@@ -49,7 +49,10 @@
         <h3 class="Heading">Previously uploaded Images</h3>
         <div class="showCase">
           {% for image in images %}
-          <img src="data:image/jpeg;base64,{{ image }}" alt="Image" />
+          <figure>
+            <img src="data:image/jpeg;base64,{{ image['data'] }}" alt="{{ image['name'] }}" />
+            <figcaption>{{ image['name'] }}</figcaption>
+          </figure>
           {% endfor %}
         </div>
       </div>

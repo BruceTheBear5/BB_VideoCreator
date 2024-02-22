@@ -36,14 +36,18 @@
             <div id="drop-area">
                 <i class="bi bi-cloud-arrow-up-fill text-primary" style="font-size: 4rem; color: var(--accent2)"></i>
                 <p>Drag and drop your image here</p>
-                <p style = "font-size: 0.75 rem; color: grey; margin: 0.75vh 0vw 1.25vh">or</p>
+                <p style="font-size: 0.75rem; color: grey; margin: 0.75vh 0vw 1.25vh">or</p>
                 <p id="browseButton">Browse</p>
-                <input class="form-control" type="file" id="fileInput" multiple accept="image/*" style="display: none" >
+                <input class="form-control" type="file" id="fileInput" multiple accept="image/*" style="display: none">
             </div>
-            <div id="imageList"></div>
-
-            <div id="buttonContainer"><button class="form-control">Upload</button></div>
-        </div>
+            <form id="uploadForm" method="POST" action="/Upload" enctype="multipart/form-data">
+                <div id="imageList"></div>
+        
+                <div id="buttonContainer">
+                    <button class="form-control" type="submit">Upload</button>
+                </div>
+            </form>
+        </div>        
     </div>
     <footer id="footer">
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.</p>    

@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, Response, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql
+from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql, save_image_to_mysql
 import os
 import base64
+from werkzeug.formparser import MultiPartParser
 
 app = Flask(__name__)
 SECRET_KEY =  os.urandom(24)
@@ -87,7 +88,8 @@ def profileData(username):
             imageData = []
             for i in images:
                 encoded_image = base64.b64encode(i.file_data).decode('utf-8')
-                imageData.append(encoded_image)
+                img = {'data' : encoded_image, 'name': i.file_name}
+                imageData.append(img)
                 
             audio = retrieve_audio_from_mysql(user.id)
             audioData = []
@@ -162,6 +164,27 @@ def upload():
         print("Error:", e)
         return Response(status=500)
     
+
+
+@app.route('/Upload', methods=['POST'])
+def upload_images():
+    if request.method == 'POST':
+        # Get the necessary information for parsing multipart form data
+        stream = request.stream
+        boundary = request.content_type.split(';')[1].split('=')[1].encode()
+        content_length = request.content_length
+
+        # Parse the multipart form data
+        parser = MultiPartParser()
+        form, files = parser.parse(stream, boundary, content_length)
+
+        # Process the uploaded files
+        for file in files.values():
+            save_image_to_mysql(session.get("userId"), file)
+
+        return redirect(url_for('create'))
+
+    
 @app.route('/create-video')
 def create():
     try:
@@ -170,7 +193,8 @@ def create():
             imageData = []
             for i in images:
                 encoded_image = base64.b64encode(i.file_data).decode('utf-8')
-                imageData.append(encoded_image)
+                img = {'data' : encoded_image, 'name': i.file_name}
+                imageData.append(img)
             
             audio = retrieve_audio_from_mysql(1)
             audioData = []

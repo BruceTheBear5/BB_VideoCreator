@@ -28,13 +28,11 @@
         <h1 style="width:100%">Previously uploaded images:</h1>
         <div class="showCase">
             {% for image in images %}
-            <img src="data:image/jpeg;base64,{{ image }}" alt="Image" draggable="true" />
+            <figure>
+                <img src="data:image/jpeg;base64,{{ image['data'] }}" alt="{{ image['name'] }}" />
+                <figcaption>{{ image['name'] }}</figcaption>
+            </figure>
             {% endfor %}
-        </div>
-
-        <h1 style="width:100%">Your images: </h1><br>
-        <div id="imageContainer" class="moved-images" ondrop="drop(event)" ondragover="allowDrop(event)">
-
         </div>
 
         <div id="controlContainer">
