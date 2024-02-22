@@ -1,40 +1,8 @@
-// function listUploadedImages() {
-//     const fileInput = document.getElementById('fileInput');
-//     const imageList = document.getElementById('imageList');
 
-//     const files = fileInput.files;
-//     for (let i = 0; i < files.length; i++) {
-//         const file = files[i];
-//         if (file.type.startsWith('image/')) {
-//             const listItem = document.createElement('li');
-//             const image = document.createElement('img');
-//             image.src = URL.createObjectURL(file);
-//             image.alt = file.name;
-//             listItem.appendChild(image);
-//             imageList.appendChild(listItem);
-//         }
-//     }
-// }
-
-// function uploadImages() {
-//     const files = document.getElementById('fileInput').files;
-
-//     if (files.length === 0) {
-//         alert('No files selected for upload.');
-//         return;
-//     }
-    
-//     console.log('Uploading files:', files);
-//     const imageList = document.getElementById('imageList');
-//     imageList.innerHTML = '';
-// }
-
-// document.getElementById('fileInput').addEventListener('change', listUploadedImages);
-// document.getElementById('uploadButton').addEventListener('click', uploadImages);
 document.addEventListener('DOMContentLoaded', function () {
     let dropArea = document.getElementById('drop-area');
     let fileInput = document.getElementById('fileInput');
-    let imageList = document.getElementById('imageList');
+    let imageList = document.getElementById('imageContainer');
     let browseButton = document.getElementById('browseButton');
 
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -78,22 +46,45 @@ document.addEventListener('DOMContentLoaded', function () {
         handleFiles(this.files);
     });
 
-    var ul = document.createElement('ul');
+    //var ul = document.createElement('ul');
     function handleFiles(files) {
         files = [...files];
         files.forEach(previewFile);
-        imageList.appendChild(ul);
+        //imageList.appendChild(ul);
     }
 
     function previewFile(file) {
-        let li = document.createElement('li');
+        //let li = document.createElement('li');
         let reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = function () {
             let img = document.createElement('img');
             img.src = reader.result;
-            li.appendChild(img);
+            imageList.appendChild(img);
+            //li.appendChild(img);
         }
-        ul.appendChild(li);
+        //ul.appendChild(li);
     }
+
+    let submitButton = document.getElementById('submit');
+    submitButton.addEventListener('click', function () {
+    var files = fileInput.files;
+
+    var formData = new FormData();
+    for (var i = 0; i < files.length; i++) {
+      formData.append('files[]', files[i]);
+    }
+
+    fetch('/trigger-upload', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Upload successful:', data);
+      })
+      .catch(error => {
+        console.error('Error uploading files:', error);
+      });
+  });
 });
