@@ -16,9 +16,9 @@ body{
 }
 
 #drop-area {
-  border: 2px dashed #ccc;
-  border-radius: 5px;
-  padding: 20px;
+  border: dashed 0.25rem rgba(255, 255, 255, 0.5);
+  border-radius: 10vh;
+  padding: 2rem;
   width: 70vw;
   height: 40vh;
   transition: border-color 0.3s ease-in-out;
@@ -30,10 +30,15 @@ body{
 }
 
 #browseButton{
-  background-color: var(--accent-hover);
+  background-color: var(--accent);
+  transition: 0.5s;
   padding: 1vh 1vw;
   border-radius: 5vh;
   cursor: pointer;
+}
+
+#browseButton:hover{
+  background-color: var(--accent-hover);
 }
 
 #drop-area.highlight {
@@ -48,7 +53,46 @@ body{
   gap: 3vh;
 }
 
-#imageList{
+#containerHeader{
+  align-self: flex-start; 
+  margin-top: 5vh; 
+  display:none;
+}
+
+#imageContainer {
+  background-color: rgba(65, 105, 225, 0.4);
+  justify-content: center;
+  align-items: center;
+  border-radius: 10vh;
+  border: dashed 0.25rem rgba(255, 255, 255, 0.5);
+  padding: 2rem;
+  display: none;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 0rem;
+  width: 70vw;
+  height: 70vh;
+  overflow: auto;
+  scrollbar-width: none;
+}
+
+#imageContainer:has(img){
+  display: grid;
+}
+
+#imageContainer::-webkit-scrollbar {
+  height: 0;
+  width: 0;
+}
+
+#imageContainer img {
+  opacity: 1;
+  justify-self: center;
+  align-self: center;
+  padding: 1rem;
+  width: 75%;
+  height: auto; 
+}
+/* #imageList{
   display: flex;
   align-items: center;
   flex-direction: row;
@@ -69,7 +113,7 @@ body{
   max-height: 100px;
   margin-right: 10px;
   vertical-align: middle;
-}
+} */
 
 .error {
   animation: shake 0.5s;
@@ -85,13 +129,6 @@ body{
   100% { transform: translateX(0); }
 }
 
-#buttonContainer{
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
-}
-
 button{
   font-size: 1.5rem;
   padding: 1rem 1rem;
@@ -100,5 +137,11 @@ button{
   width: 33%;
   background: var(--accent);
   cursor: pointer;
+  transition: 0.5s;
+  margin-top: 2.5rem;
+}
+
+button:hover{
+  background: var(--accent-hover);
 }
 

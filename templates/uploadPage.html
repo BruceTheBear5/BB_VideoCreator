@@ -22,32 +22,36 @@
 
     <div class="MainBody">
         <div class="Heading">
-            <h1>Upload Image Here</h1>
+            <h1>Upload Images here</h1>
         </div>
-        <!-- <div class="imageInput">
-            <div id="drop-area" class="drop-area">
-                <ul id="imageList" class="imageList"></ul>
-            </div>
-            <input type="file" id="fileInput" multiple>
-            
-            <div id="buttonContainer"><button>Upload</button></div>
-        </div> -->
         <div class="imageInput">
             <div id="drop-area">
                 <i class="bi bi-cloud-arrow-up-fill text-primary" style="font-size: 4rem; color: var(--accent2)"></i>
                 <p>Drag and drop your image here</p>
                 <p style="font-size: 0.75rem; color: grey; margin: 0.75vh 0vw 1.25vh">or</p>
                 <p id="browseButton">Browse</p>
-                <input class="form-control" type="file" id="fileInput" multiple accept="image/*" style="display: none">
+                <input type="file" id="fileInput" multiple accept="image/*" style="display: none" >
             </div>
-            <form id="uploadForm" method="POST" action="/Upload" enctype="multipart/form-data">
-                <div id="imageList"></div>
-        
-                <div id="buttonContainer">
-                    <button class="form-control" type="submit">Upload</button>
-                </div>
-            </form>
-        </div>        
+            <h1 id = "containerHeader">Your uploads: </h1>
+            <div id="imageContainer"></div>
+
+            <script>
+                const imageContainer = document.getElementById('imageContainer');
+                function checkForImages() {
+                  const images = imageContainer.querySelectorAll('img');
+                  if (images.length > 0) {
+                    document.getElementById('containerHeader').style.display = 'block';
+                  } else {
+                    document.getElementById('containerHeader').style.display = 'none';
+                  }
+                }
+                const observer = new MutationObserver(checkForImages);
+                observer.observe(imageContainer, { childList: true });
+            </script>
+
+            <button id="submit">Save</button>
+        </div>
+>>>>>>> 70ee26394fd1823c52c236b6a9c0b23703788baa
     </div>
     <footer id="footer">
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.</p>    
