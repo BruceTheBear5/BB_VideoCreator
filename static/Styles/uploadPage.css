@@ -15,18 +15,28 @@ body{
   padding-bottom: 5vh;
 }
 
-.drop-area {
+#drop-area {
   border: 2px dashed #ccc;
   border-radius: 5px;
   padding: 20px;
   width: 70vw;
   height: 40vh;
-  text-align: center;
-  cursor: pointer;
   transition: border-color 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
 }
 
-.highlight {
+#browseButton{
+  background-color: var(--accent-hover);
+  padding: 1vh 1vw;
+  border-radius: 5vh;
+  cursor: pointer;
+}
+
+#drop-area.highlight {
   background-color: #f0f0f0;
 }
 
@@ -35,26 +45,26 @@ body{
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 5vh;
+  gap: 3vh;
 }
 
-.imageList{
+#imageList{
   display: flex;
   align-items: center;
   flex-direction: row;
 }
 
-.imageList ul {
+#imageList ul {
   list-style-type: none;
   padding: 0;
 }
 
-.imageList li {
+#imageList li {
   list-style: none;
   margin-bottom: 5px;
 }
 
-.imageList img {
+#imageList img {
   max-width: 100px;
   max-height: 100px;
   margin-right: 10px;
@@ -88,7 +98,7 @@ button{
   border: none;
   border-radius: 5vh;
   width: 33%;
-  background: var(--accent-hover);
+  background: var(--accent);
   cursor: pointer;
 }
 
