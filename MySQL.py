@@ -411,7 +411,7 @@ def AdminRetrieveProfilePic():
 # users = [
 #     User("John Doe", "johndoe", "john@example.com", "password123", isAdmin="False"),
 #     User("Jane Smith", "janesmith", "jane@example.com", "password456", isAdmin="True"),
-#     User("SA", "saj", "sa@ja.in", "s", isAdmin="True")
+#     User("Saiyam", "saiyam", "saiyam3420@gmail.com", "Saiyam20", isAdmin="True")
 # ]
 
 # save_data_to_mysql(users[2])
@@ -429,5 +429,5 @@ def AdminRetrieveProfilePic():
 # AdminRetrieve()
 # AdminRetrieveProfilePic()
 
-# save_audio_to_mysql(3, '/home/saiyamjain/Downloads/try.mp3')
+save_audio_to_mysql(1, '/home/saiyamjain/Downloads/try.mp3')
 # retrieve_audio_from_mysql(3)

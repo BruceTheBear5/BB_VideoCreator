@@ -28,7 +28,7 @@
         <h1 style="width:100%">Previously uploaded images:</h1>
         <div class="showCase">
             {% for image in images %}
-                <img src="data:image/jpeg;base64,{{ image }}" alt="Image" draggable="true"/>
+            <img src="data:image/jpeg;base64,{{ image }}" alt="Image" draggable="true" />
             {% endfor %}
         </div>
 
@@ -44,9 +44,9 @@
                 <label for="musicUpload">Add Background Music:</label>
                 <select id="backgroundMusic">
                     <option value="">Select Background Music</option>
-                    <option value="music1.mp3">Music 1</option>
-                    <option value="music2.mp3">Music 2</option>
-                    <option value="music3.mp3">Music 3</option>
+                    {% for a in audio %}
+                    <option value="{{ a['name'] }}"><span class="audioName">{{ a['name'] }}</span></option>
+                    {% endfor %}
                 </select>
                 <input type="file" id="musicUpload" accept="audio/*">
             </div>
@@ -110,29 +110,30 @@
     <!-- <script src="../static/Scripts/dragAndDrop.js"></script> -->
     <script>
         function allowDrop(event) {
-        event.preventDefault();
-    }
-
-    function drop(event) {
-        event.preventDefault();
-        var data = event.dataTransfer.getData("text/plain");
-        var img = new Image();
-        img.src = data;
-        event.target.appendChild(img);
-        // Remove the dragged item from the original list
-        var draggedItem = document.querySelector('img[src="' + data + '"]');
-        if (draggedItem) {
-            draggedItem.parentNode.removeChild(draggedItem);
+            event.preventDefault();
         }
-    }
 
-    var gridItems = document.querySelectorAll('.grid-item');
-    gridItems.forEach(function(item) {
-        item.addEventListener('dragstart', function(event) {
-            var imgSrc = item.querySelector('img').src;
-            event.dataTransfer.setData('text/plain', imgSrc);
+        function drop(event) {
+            event.preventDefault();
+            var data = event.dataTransfer.getData("text/plain");
+            var img = new Image();
+            img.src = data;
+            event.target.appendChild(img);
+            // Remove the dragged item from the original list
+            var draggedItem = document.querySelector('img[src="' + data + '"]');
+            if (draggedItem) {
+                draggedItem.parentNode.removeChild(draggedItem);
+            }
+        }
+
+        var gridItems = document.querySelectorAll('.grid-item');
+        gridItems.forEach(function (item) {
+            item.addEventListener('dragstart', function (event) {
+                var imgSrc = item.querySelector('img').src;
+                event.dataTransfer.setData('text/plain', imgSrc);
+            });
         });
-    });
     </script>
 </body>
+
 </html>

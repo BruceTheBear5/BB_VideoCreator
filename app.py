@@ -171,7 +171,19 @@ def create():
             for i in images:
                 encoded_image = base64.b64encode(i.file_data).decode('utf-8')
                 imageData.append(encoded_image)
-            return render_template('workspace.html', images = imageData)
+            
+            audio = retrieve_audio_from_mysql(1)
+            audioData = []
+            for a in audio:
+                encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
+                ad = {'data': encoded_audio, 'name': a.file_name}
+                audioData.append(ad)    
+            audio = retrieve_audio_from_mysql(session['userId'])
+            for a in audio:
+                encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
+                ad = {'data': encoded_audio, 'name': a.file_name}
+                audioData.append(ad)              
+            return render_template('workspace.html', images = imageData, audio = audioData)
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
