@@ -93,15 +93,8 @@
       }
     });
 
-    document.getElementById("changeProfilePicButton").addEventListener("click", function () {
-      document.getElementById("profilePicInput").click();
-    });
-
-    function uploadProfilePicture(username, file) {
-      const formData = new FormData();
-      formData.append('image', file);
-
-      fetch(`/Profile/${username}`, {  // Pass the username parameter in the URL
+    function uploadProfilePicture(imageData) {
+      fetch("backendEndpoint", {
         method: "POST",
         body: formData
       })
