@@ -33,10 +33,11 @@ h2{
 }
 
 .Heading {
-    display: flex;
-    justify-content: center;
+    text-align: center;
     font-weight: 500;
     font-size: 4rem;
+    width: 100%;
+    color: var(--font);
 }
 
 nav {
