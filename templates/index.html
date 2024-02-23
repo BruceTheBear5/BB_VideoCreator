@@ -37,17 +37,13 @@
         <a href="./signup" class="NavLink" id="SignInTab" draggable="false"
           >Sign up</a
         >
-        {% endif %} {% if user == "True"%}
-        <a
-          href="/profile/{{ username }}"
-          class="NavLink"
-          id="ProfileTab"
-          draggable="false"
-          >Profile</a
-        >
+        {% endif %} 
+        {% if user == "True"%}
+        <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab" draggable="false" >Profile</a>
         <a href="./upload-images" class="NavLink" draggable="false">Upload</a>
         <a href="./create-video" class="NavLink" draggable="false">Create</a>
-        {% endif %} {% if isAdmin == "True"%}
+        {% endif %} 
+        {% if isAdmin == "True"%}
         <div id="AdminTab" draggable="false">
           <a href="./adminPage" class="NavLink">Admin hub</a>
         </div>
@@ -193,29 +189,28 @@
           loop: true,
         });
 
-        // Function to add scroll animation to elements
-        function addScrollAnimation(entries, observer) {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("scroll-in");
-              observer.unobserve(entry.target);
-            }
-          });
-        }
+  function addScrollAnimation(entries, observer) {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("scroll-in");
+        observer.unobserve(entry.target);
+      }
+    });
+  }
 
-        // Create an intersection observer
-        const observer = new IntersectionObserver(addScrollAnimation, {
-          root: null,
-          rootMargin: "0px",
-          threshold: 0.5, // Adjust as needed
-        });
+  // Create an intersection observer
+  const observer = new IntersectionObserver(addScrollAnimation, {
+    root: null,
+    rootMargin: "0px",
+    threshold: 1.0, // Adjusted threshold
+  });
 
-        // Observe all elements with class "scroll-animation"
-        const elements = document.querySelectorAll(".scroll-animation");
-        elements.forEach((element) => {
-          observer.observe(element);
-        });
-      });
+  // Observe all elements with class "scroll-animation"
+  const elements = document.querySelectorAll(".scroll-animation");
+  elements.forEach((element) => {
+    observer.observe(element);
+  });
+});
     </script>
   </body>
 </html>
