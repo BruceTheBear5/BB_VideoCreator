@@ -164,26 +164,35 @@ def upload():
         print("Error:", e)
         return Response(status=500)
     
-
-
 @app.route('/Upload', methods=['POST'])
 def upload_images():
-    if request.method == 'POST':
-        # Get the necessary information for parsing multipart form data
-        stream = request.stream
-        boundary = request.content_type.split(';')[1].split('=')[1].encode()
-        content_length = request.content_length
+    if 'files[]' not in request.files:
+        return "No files uploaded", 400
+    
+    files = request.files.getlist('files[]')
 
-        # Parse the multipart form data
-        parser = MultiPartParser()
-        form, files = parser.parse(stream, boundary, content_length)
+    TEMP_DIR = './temp/'
 
-        # Process the uploaded files
-        for file in files.values():
-            save_image_to_mysql(session.get("userId"), file)
+    if not os.path.exists(TEMP_DIR):
+        os.makedirs(TEMP_DIR)
 
-        return redirect(url_for('create'))
+    # Process the uploaded files
+    for file in files:
+        if file.filename != '':
+            # Save the file to a temporary location
+            filename = os.path.join(TEMP_DIR, file.filename)
+            file.save(filename)
+            # Pass the file path to save_image_to_mysql
+            save_image_to_mysql(session.get("userId"), filename)
+            
+    if os.path.exists(TEMP_DIR):
+        for file_name in os.listdir(TEMP_DIR):
+            file_path = os.path.join(TEMP_DIR, file_name)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+        os.rmdir(TEMP_DIR)
 
+    return redirect(url_for('create'))
     
 @app.route('/create-video')
 def create():
@@ -206,8 +215,12 @@ def create():
             for a in audio:
                 encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
                 ad = {'data': encoded_audio, 'name': a.file_name}
-                audioData.append(ad)              
+                audioData.append(ad)  
+                
+            print(1) 
+               
             return render_template('workspace.html', images = imageData, audio = audioData)
+        
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
