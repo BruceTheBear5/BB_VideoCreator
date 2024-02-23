@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 from datetime import datetime
 
-passwordreq = "Saiyam20_"
+passwordreq = "varun123"
 
 class User:
     def __init__(self, name, username, email, password, id=-1, isAdmin="False"):
