@@ -35,7 +35,7 @@
       </div>
       <div id="pp">
         <div id="profilePhoto">
-          <img src="data:image/jpeg;base64,{{ profileImage }}" alt="Profile Pic" id="profilePic" />
+          <img src="data:image/jpeg;base64,{{ profileImage }}" alt="Profile Pic" id="profilePic">
         </div>
         <form action="/Profile/{{username}}" method="post" enctype="multipart/form-data">
           <input type="file" name="image" accept="image/*" required class="browseButton">
@@ -78,7 +78,7 @@
       odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.
     </p>
   </footer>
-  <script>
+  <!-- <script>
     document.getElementById("profilePicInput").addEventListener("change", function (event) {
       const file = event.target.files[0];
       const userId = "123";
@@ -110,7 +110,7 @@
         });
     }
 
-  </script>
+  </script> -->
 </body>
 
 </html>

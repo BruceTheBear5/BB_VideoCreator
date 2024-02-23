@@ -61,14 +61,14 @@ body {
 
 #pulse .sign {
   position: absolute;
-  width: 400px;
+  width: 25%;
   background: var(--alter-bg);
   z-index: 1000;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px;
-  border-radius: 4px;
+  padding: 2rem;
+  border-radius: 0.4rem;
   box-shadow: 0 15px 35px var(--shadow);
 }
 

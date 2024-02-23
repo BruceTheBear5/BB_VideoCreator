@@ -189,29 +189,28 @@
           loop: true,
         });
 
-        // Function to add scroll animation to elements
-        function addScrollAnimation(entries, observer) {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("scroll-in");
-              observer.unobserve(entry.target);
-            }
-          });
-        }
+  function addScrollAnimation(entries, observer) {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("scroll-in");
+        observer.unobserve(entry.target);
+      }
+    });
+  }
 
-        // Create an intersection observer
-        const observer = new IntersectionObserver(addScrollAnimation, {
-          root: null,
-          rootMargin: "0px",
-          threshold: 0.5, // Adjust as needed
-        });
+  // Create an intersection observer
+  const observer = new IntersectionObserver(addScrollAnimation, {
+    root: null,
+    rootMargin: "0px",
+    threshold: 1.0, // Adjusted threshold
+  });
 
-        // Observe all elements with class "scroll-animation"
-        const elements = document.querySelectorAll(".scroll-animation");
-        elements.forEach((element) => {
-          observer.observe(element);
-        });
-      });
+  // Observe all elements with class "scroll-animation"
+  const elements = document.querySelectorAll(".scroll-animation");
+  elements.forEach((element) => {
+    observer.observe(element);
+  });
+});
     </script>
   </body>
 </html>

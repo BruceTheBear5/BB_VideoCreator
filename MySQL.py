@@ -80,7 +80,7 @@ def save_data_to_mysql(data):
             cursor.close()
             connection.close()
             
-def save_image_to_mysql(user_id, image_place, image_name):
+def save_image_to_mysql(user_id, image_name):
     try:
         connection = mysql.connector.connect(
             host="localhost",
@@ -91,7 +91,7 @@ def save_image_to_mysql(user_id, image_place, image_name):
 
         cursor = connection.cursor()
 
-        with open(image_place, "rb") as file:
+        with open(image_name, "rb") as file:
             image_data = file.read()
 
         insert_query = """INSERT INTO images (user_id, file_name, file_size, file_type, file_data) VALUES (%s, %s, %s, %s, %s)"""
@@ -196,7 +196,7 @@ def upload_profile_image(user_id, image_name):
         with open(image_name, "rb") as file:
             image_data = file.read()
 
-        query = "INSERT INTO profile_picturesSaiyam20_ (user_id, filename, filesize, file_type, file_data) VALUES (%s, %s, %s, %s, %s)"
+        query = "INSERT INTO profile_pictures (user_id, filename, filesize, file_type, file_data) VALUES (%s, %s, %s, %s, %s)"
         profileData = (user_id, image_name, len(image_data), "image/jpeg", image_data)
         
         cursor.execute(query, profileData)
@@ -507,7 +507,7 @@ def search_mysql(userId, searchStr):
 
 # save_image_to_mysql(1, "./static/Images/Logo.png")
 # retrieve_image_from_mysql(3)
-# upload_profile_image(2, "./static/Images/alt_image.jpg")
+# upload_profile_image(1, "./static/Images/alt_image.jpg")
 # retrieve_profile_image(1)
 
 # AdminRetrieve()
