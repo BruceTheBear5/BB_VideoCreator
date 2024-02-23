@@ -38,8 +38,8 @@
           <img src="data:image/jpeg;base64,{{ profileImage }}" alt="Profile Pic" id="profilePic" />
         </div>
         <form action="/Profile/{{username}}" method="post" enctype="multipart/form-data">
-          <input type="file" name="image" accept="image/*" required>
-          <input type="submit" value="Upload">
+          <input type="file" name="image" accept="image/*" required class="browseButton">
+          <input type="submit" value="Upload" class="uploadButton">
         </form>
       </div>
     </div>
