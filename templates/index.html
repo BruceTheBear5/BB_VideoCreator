@@ -18,18 +18,18 @@
 <body>
   <header>
     <nav id="Navbar">
-      <a href="./" class="NavLink Logo" id="HomePage"><img src="../static/Images/Logo.png" alt="Logo" class="Logo"></a>
+      <a href="./" class="NavLink Logo" id="HomePage" draggable="false"><img src="../static/Images/Logo.png" alt="Logo" class="Logo" draggable="false"></a>
       {% if user == "False"%}
-      <a href="./signin" class="NavLink" id="SignInTab">Sign in</a>
-      <a href="./signup" class="NavLink" id="SignInTab">Sign up</a>
+      <a href="./signin" class="NavLink" id="SignInTab" draggable="false">Sign in</a>
+      <a href="./signup" class="NavLink" id="SignInTab" draggable="false">Sign up</a>
       {% endif %}
       {% if user == "True"%}
-      <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab">Profile</a>
-      <a href="./upload-images" class="NavLink">Upload</a>
-      <a href="./create-video" class="NavLink">Create</a>
+      <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab" draggable="false">Profile</a>
+      <a href="./upload-images" class="NavLink" draggable="false">Upload</a>
+      <a href="./create-video" class="NavLink" draggable="false">Create</a>
       {% endif %}
       {% if isAdmin == "True"%}
-      <div id="AdminTab">
+      <div id="AdminTab" draggable="false">
         <a href="./adminPage" class="NavLink">Admin hub</a>
       </div>
       {% endif %}

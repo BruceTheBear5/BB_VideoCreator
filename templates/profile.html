@@ -33,13 +33,13 @@
           <li>Email : <span style = "color: var(--font)">{{user.email}}</span></li>
         </ul>
       </div>
-      <div>
+      <div id="pp">
         <div id="profilePhoto">
           <img src="data:image/jpeg;base64,{{ profileImage }}" alt="Profile Pic" id="profilePic" />
         </div>
         <form action="/Profile/{{username}}" method="post" enctype="multipart/form-data">
-          <input type="file" name="image" accept="image/*" required>
-          <input type="submit" value="Upload">
+          <input type="file" name="image" accept="image/*" required class="browseButton">
+          <input type="submit" value="Upload" class="uploadButton">
         </form>
       </div>
     </div>
@@ -51,7 +51,7 @@
           {% for image in images %}
           <figure>
             <img src="data:image/jpeg;base64,{{ image['data'] }}" alt="{{ image['name'] }}" />
-            <figcaption>{{ image['name'] }}</figcaption>
+            <!-- <figcaption>{{ image['name'] }}</figcaption> -->
           </figure>
           {% endfor %}
         </div>

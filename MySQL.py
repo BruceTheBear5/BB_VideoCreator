@@ -80,7 +80,7 @@ def save_data_to_mysql(data):
             cursor.close()
             connection.close()
             
-def save_image_to_mysql(user_id, image_name):
+def save_image_to_mysql(user_id, image_place, image_name):
     try:
         connection = mysql.connector.connect(
             host="localhost",
@@ -91,7 +91,7 @@ def save_image_to_mysql(user_id, image_name):
 
         cursor = connection.cursor()
 
-        with open(image_name, "rb") as file:
+        with open(image_place, "rb") as file:
             image_data = file.read()
 
         insert_query = """INSERT INTO images (user_id, file_name, file_size, file_type, file_data) VALUES (%s, %s, %s, %s, %s)"""
@@ -196,7 +196,7 @@ def upload_profile_image(user_id, image_name):
         with open(image_name, "rb") as file:
             image_data = file.read()
 
-        query = "INSERT INTO profile_pictures (user_id, filename, filesize, file_type, file_data) VALUES (%s, %s, %s, %s, %s)"
+        query = "INSERT INTO profile_picturesSaiyam20_ (user_id, filename, filesize, file_type, file_data) VALUES (%s, %s, %s, %s, %s)"
         profileData = (user_id, image_name, len(image_data), "image/jpeg", image_data)
         
         cursor.execute(query, profileData)
@@ -410,6 +410,88 @@ def AdminRetrieveProfilePic():
             cursor.close()
             connection.close()
 
+def sort_mysql(userId, sortBy):
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password=passwordreq,
+            database="Project"
+        )
+
+        cursor = connection.cursor()
+        query = f"SELECT file_data, file_name FROM images WHERE user_id = %s ORDER BY {sortBy}"
+        cursor.execute(query, (userId,))
+        rows = cursor.fetchall()
+        cursor.close()
+        connection.close()
+
+        Images = []
+        if rows:
+            for i, row in enumerate(rows):
+                file_name = row[1]
+                image_len = len(row[0])
+                file_type = "image/jpg"
+                file_data = row[0]
+                upload_date = datetime.now()
+                image = Image(file_name, image_len, file_type, file_data, upload_date)
+                image.display()
+                Images.append(image)
+
+        print(len(Images))
+                
+        return Images
+    
+    except mysql.connector.Error as error:
+        print("Failed to retrieve users:", error)
+        return []
+        
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+
+def search_mysql(userId, searchStr):
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password=passwordreq,
+            database="Project"
+        )
+
+        cursor = connection.cursor()
+        query = "SELECT file_data, file_name FROM images WHERE user_id = %s AND file_name LIKE %s"
+        cursor.execute(query, (userId, f"{searchStr}%"))
+        rows = cursor.fetchall()
+        cursor.close()
+        connection.close()
+
+        Images = []
+        if rows:
+            for i, row in enumerate(rows):
+                file_name = row[1]
+                image_len = len(row[0])
+                file_type = "image/jpg"
+                file_data = row[0]
+                upload_date = datetime.now()
+                image = Image(file_name, image_len, file_type, file_data, upload_date)
+                image.display()
+                Images.append(image)
+
+        print(len(Images))
+                
+        return Images
+    
+    except mysql.connector.Error as error:
+        print("Failed to retrieve users:", error)
+        return []
+        
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+
 # users = [
 #     User("John Doe", "johndoe", "john@example.com", "password123", isAdmin="False"),
 #     User("Jane Smith", "janesmith", "jane@example.com", "password456", isAdmin="True"),
@@ -423,7 +505,7 @@ def AdminRetrieveProfilePic():
 #     user.printUser()
 #     print(type(user.isAdmin))
 
-# save_image_to_mysql(2, "./static/Images/Logo.png")
+# save_image_to_mysql(1, "./static/Images/Logo.png")
 # retrieve_image_from_mysql(3)
 # upload_profile_image(2, "./static/Images/alt_image.jpg")
 # retrieve_profile_image(1)
@@ -433,3 +515,8 @@ def AdminRetrieveProfilePic():
 
 # save_audio_to_mysql(1, '/home/saiyamjain/Downloads/try.mp3')
 # retrieve_audio_from_mysql(3)
+            
+# sort_mysql(1, "file_name")
+# sort_mysql(1, "uploaded_at")
+# sort_mysql(1, "file_size")
+# search_mysql(1, "mac")

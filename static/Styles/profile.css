@@ -1,176 +1,186 @@
 @import "./root.css";
 
-*{
-    color: var(--font);
+* {
+  color: var(--font);
 }
 
-body{
-    background-color: var(--bg);
+body {
+  background-color: var(--bg);
 }
 
-.Profile{
-    padding-left: 12.5%;
-    display: flex;
-    align-items: center;
-    gap:25rem;
-    font-size: 5rem;
+.Profile {
+  padding-left: 12.5%;
+  display: flex;
+  align-items: center;
+  gap: 25rem;
+  font-size: 5rem;
 }
 
-#profileContent ul{
-    padding-top: 5rem;
-    list-style: none;
-    line-height: 5rem;
+#profileContent ul {
+  /* padding-top: 5rem; */
+  list-style: none;
+  line-height: 5rem;
 }
 
-#profileContent li{
-    font-size: 1.5rem;
-    color: var(--accent);
+#profileContent li {
+  font-size: 1.5rem;
+  color: var(--accent);
 }
 
-#profileContent li:hover {
-    color: var(--accent-hover);
+#pp {
+  padding-top: 8%;
 }
 
-#profilePic{
-    font-size: 2rem;
-    height: 300px;
-    width: 300px;
-    border-radius: 50%;
-    object-fit: cover;
-    object-position: center;
+#profilePic {
+  font-size: 2rem;
+  height: 300px;
+  width: 300px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
 }
 
 #profilePic:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
-.Previous{
-    display: flex;
-    flex-direction: column;
-    gap: 10vh;
-    padding-top: 10vh;
+.Previous {
+  display: flex;
+  flex-direction: column;
+  gap: 10vh;
+  padding-top: 10vh;
 }
 
-.showCase{
-    width: 100%;
-    height: 40vh;
-    background-color: #3A3B3C;
-    display: flex;
-    overflow: auto;
-    scrollbar-width: none;
+.showCase {
+  width: 100%;
+  height: 40vh;
+  background-color: #3a3b3c;
+  display: flex;
+  overflow: auto;
+  scrollbar-width: none;
 }
 
 .showCase img {
-    max-height: 100%;
-    max-width: 100%;
-    object-fit: cover;
-    padding: 2rem;
-    transition: transform 0.3s ease; 
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: cover;
+  padding: 2rem;
+  transition: transform 0.3s ease;
 }
 
 .showCase img:hover {
-    transform: scale(1.05);
-    filter: brightness(120%);
+  transform: scale(1.05);
+  filter: brightness(120%);
 }
 
 #profilePicInput {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
-    z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
 }
 
 #profilePhoto {
-    position: relative;
-    width: 300px;
-     height: 300px;
-    overflow: hidden;
-    border-radius: 50%;
-    border: 2px solid var(--accent);
-    margin: 0 auto;
+  position: relative;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  margin: 0 auto;
 }
 
 .uploadButton {
-    position: relative;
-    z-index: 2;
-    bottom: 5px;
-    right: 5px;
-    background-color: var(--accent);
-    color: var(--font);
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-
+  position: relative;
+  z-index: 2;
+  bottom: 5px;
+  right: 5px;
+  background-color: var(--accent);
+  color: var(--font);
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
-
-#profileContent li:hover {
-    color: var(--font); /* Change text color on hover */
-}
-
 .uploadButton:hover {
-    background-color: var(--accent-hover); /* Button background color on hover */
+  background-color: var(--accent-hover);
 }
 
-/* Style for the uploaded music section */
 #uploadedMusic {
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Style for the heading */
-  #uploadedMusic .Heading {
-    color: #1db954;
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  /* Style for the container of audio players */
-  #uploadedMusic .showCase {
-    display: flex;
-    flex-direction: column;
-    overflow-x: auto;
-  }
-  
-  /* Style for each audio player cell */
-  #uploadedMusic .audioCell {
-    display: flex;
-    /* flex-direction: column; */
-    align-items: center;
-    justify-content: center;
-    background-color: #282828;
-    border-radius: 10px;
-    padding: 10px;
-    margin-right: 10px;
-  }
-  
-  /* Style for audio player name */
-  #uploadedMusic .audioName {
-    color: white;
-    font-size: 14px;
-    margin-top: 10px;
-  }
-  
-  /* Style for audio player controls */
-  #uploadedMusic audio {
-    width: 100%;
-    margin-top: 10px;
-  }
-  
-  /* Style for audio player progress bar */
-  #uploadedMusic audio::-webkit-media-controls-timeline {
-    background-color: #1db954;
-  }
-  
-  /* Hide default audio controls */
-  #uploadedMusic audio::-webkit-media-controls {
-    display: none !important;
-  }
-  
-  
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#uploadedMusic .Heading {
+  color: #1db954;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+#uploadedMusic .showCase {
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto;
+}
+
+#uploadedMusic .audioCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #282828;
+  border-radius: 10px;
+  padding: 10px;
+  margin-right: 10px;
+}
+
+#uploadedMusic .audioName {
+  color: white;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+#uploadedMusic audio {
+  width: 100%;
+  margin-top: 10px;
+}
+
+#uploadedMusic audio::-webkit-media-controls-timeline {
+  background-color: #1db954;
+}
+
+#uploadedMusic audio::-webkit-media-controls {
+  display: none !important;
+}
+
+#pp {
+  position: relative;
+}
+
+#profilePicInput {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.browseButton {
+  position: relative;
+  z-index: 2;
+  bottom: 5px;
+  right: 5px;
+  background-color: var(--accent);
+  color: var(--font);
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.browseButton:hover {
+  background-color: var(--accent-hover);
+}
