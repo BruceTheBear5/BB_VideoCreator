@@ -42,7 +42,7 @@ body{
 }
 
 #drop-area.highlight {
-  background-color: #f0f0f0;
+  background-color:  #d88bfc47;
 }
 
 .imageInput{
@@ -75,7 +75,7 @@ body{
   scrollbar-width: none;
 }
 
-#imageContainer:has(img){
+#imageContainer:has(.image-item){
   display: grid;
 }
 
@@ -85,6 +85,8 @@ body{
 }
 
 #imageContainer .image-item{
+  position: relative;
+  display: inline-block;
   opacity: 1;
   padding: 1rem;
   justify-self: center;
@@ -93,35 +95,22 @@ body{
   height: auto; 
   text-align: center;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.69rem;
+}
+
+.image-item .close-button{
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 1);
 }
 
 .image-item img{
   width: 100%;
 }
-
-/* #imageList{
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-}
-
-#imageList ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-#imageList li {
-  list-style: none;
-  margin-bottom: 5px;
-}
-
-#imageList img {
-  max-width: 100px;
-  max-height: 100px;
-  margin-right: 10px;
-  vertical-align: middle;
-} */
 
 .error {
   animation: shake 0.5s;
