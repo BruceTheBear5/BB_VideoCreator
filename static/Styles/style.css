@@ -98,6 +98,19 @@ body{
     padding-top: 5vh;
 }
 
+#introimg{
+    margin-top: 2rem;
+    width: 100%;
+    margin-bottom: -6rem;
+    /* margin-left:3.5% ; */
+}
+
+#im{
+    margin-top: 2rem;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
 .UsageOfSite{
     font-size: 3rem;
     padding-top: 20vh;
@@ -128,7 +141,6 @@ body{
     }
 }
 
-/* Apply animations */
 .Introduction .LogoName,
 .Introduction #by,
 .Introduction #IntroToSite,
@@ -136,8 +148,27 @@ body{
     animation: fadeInUp 1s ease forwards;
 }
 
+/* Add animation for scrolling */
+@keyframes scrollIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
 .Usage h3,
 .Usage p,
 .Usage img {
-    animation: scaleIn 0.5s ease-out forwards;
+    opacity: 0; /* Hide elements initially */
 }
+
+/* Add animation class to elements */
+.scroll-animation {
+    animation: scrollIn 0.8s ease forwards; /* Apply animation */
+}
+
+
