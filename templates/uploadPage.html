@@ -35,10 +35,10 @@
             <h1 id = "containerHeader">Your uploads: </h1>
             <div id="imageContainer"></div>
 
-            <script>
+            <!-- <script>
                 const imageContainer = document.getElementById('imageContainer');
                 function checkForImages() {
-                  const images = imageContainer.querySelectorAll('img');
+                  const images = imageContainer.querySelectorAll('div');
                   if (images.length > 0) {
                     document.getElementById('containerHeader').style.display = 'block';
                   } else {
@@ -47,7 +47,7 @@
                 }
                 const observer = new MutationObserver(checkForImages);
                 observer.observe(imageContainer, { childList: true });
-            </script>
+            </script> -->
 
             <button id="submit">Save</button>
         </div>

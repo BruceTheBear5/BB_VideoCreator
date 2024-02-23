@@ -21,7 +21,7 @@ body{
   padding: 2rem;
   width: 70vw;
   height: 40vh;
-  transition: border-color 0.3s ease-in-out;
+  transition: border-color 0.3s ease-in-out forwards;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -84,14 +84,22 @@ body{
   width: 0;
 }
 
-#imageContainer img {
+#imageContainer .image-item{
   opacity: 1;
+  padding: 1rem;
   justify-self: center;
   align-self: center;
-  padding: 1rem;
-  width: 75%;
+  width: 80%;
   height: auto; 
+  text-align: center;
+  text-decoration: none;
+  font-size: 0.9rem;
 }
+
+.image-item img{
+  width: 100%;
+}
+
 /* #imageList{
   display: flex;
   align-items: center;
@@ -117,7 +125,8 @@ body{
 
 .error {
   animation: shake 0.5s;
-  border-color: red;
+  border-color: red !important;
+  background-color: rgba(255, 0, 0, 0.082);
 }
 
 @keyframes shake {
@@ -129,7 +138,7 @@ body{
   100% { transform: translateX(0); }
 }
 
-button{
+.imageInput > button{
   font-size: 1.5rem;
   padding: 1rem 1rem;
   border: none;
@@ -141,7 +150,7 @@ button{
   margin-top: 2.5rem;
 }
 
-button:hover{
+.imageInput > button:hover{
   background: var(--accent-hover);
 }
 
