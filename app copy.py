@@ -82,6 +82,9 @@ def profileData(username):
             UserEmail = session["userEmail"]
             user = retrieve_users_from_mysql(UserEmail)
             profile_image = retrieve_profile_image(user.id)
+            if profile_image == None:
+                upload_profile_image(user.id, "./static/Images/alt_image.jpg")
+            profile_image = retrieve_profile_image(user.id)
             profileImage = base64.b64encode(profile_image.file_data).decode('utf-8')
             images = retrieve_image_from_mysql(user.id)
             imageData = []

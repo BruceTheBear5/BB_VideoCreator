@@ -188,7 +188,7 @@ def upload_images():
                 if file.filename != '':
                     filename = os.path.join(TEMP_DIR, file.filename)
                     file.save(filename)
-                    save_image_to_mysql(user_info["userId"], filename)
+                    save_image_to_mysql(user_info["userId"], filename, file.filename)
 
             if os.path.exists(TEMP_DIR):
                 for file_name in os.listdir(TEMP_DIR):
