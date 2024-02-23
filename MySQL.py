@@ -6,6 +6,8 @@ import cv2
 import numpy as np
 from datetime import datetime
 
+passwordreq = "Saiyam20_"
+
 class User:
     def __init__(self, name, username, email, password, id=-1, isAdmin="False"):
         self.id = id
@@ -59,7 +61,7 @@ def save_data_to_mysql(data):
         connection = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="Saiyam20_",
+            password=passwordreq,
             database="Project"
         )
 
@@ -83,7 +85,7 @@ def save_image_to_mysql(user_id, image_name):
         connection = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="Saiyam20_",
+            password=passwordreq,
             database="Project"
         )
 
@@ -112,7 +114,7 @@ def retrieve_users_from_mysql(email):
         connection = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="Saiyam20_",
+            password=passwordreq,
             database="Project"
         )
 
@@ -143,7 +145,7 @@ def retrieve_image_from_mysql(userId):
         connection = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="Saiyam20_",
+            password=passwordreq,
             database="Project"
         )
 
@@ -180,7 +182,7 @@ def upload_profile_image(user_id, image_name):
         connection = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="Saiyam20_",
+            password=passwordreq,
             database="Project"
         )
 
@@ -215,7 +217,7 @@ def retrieve_profile_image(userId):
         connection = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="Saiyam20_",
+            password=passwordreq,
             database="Project"
         )
         
@@ -267,7 +269,7 @@ def save_audio_to_mysql(user_id, relative_file_path):
         connection = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="Saiyam20_",
+            password=passwordreq,
             database="Project"
         )
 
@@ -308,7 +310,7 @@ def retrieve_audio_from_mysql(user_id):
         connection = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="Saiyam20_",
+            password=passwordreq,
             database="Project"
         )
 
@@ -345,7 +347,7 @@ def AdminRetrieve():
         connection = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="Saiyam20_",
+            password=passwordreq,
             database="Project"
         )
 
@@ -377,7 +379,7 @@ def AdminRetrieveProfilePic():
         connection = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="Saiyam20_",
+            password=passwordreq,
             database="Project"
         )
 
