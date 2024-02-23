@@ -1,126 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/Styles/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <script src="../static/Scripts/SignUp-In.js" defer></script>
+    <script src="../static/Scripts/changeNav.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="../static/Styles/style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-  <script src="../static/Scripts/SignUp-In.js" defer></script>
-  <script src="../static/Scripts/changeNav.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <title>Main Page</title>
+  </head>
 
-  <title>Main Page</title>
-</head>
+  <body>
+    <header>
+      <nav id="Navbar">
+        <a href="./" class="NavLink Logo" id="HomePage" draggable="false"
+          ><img
+            src="../static/Images/Logo.png"
+            alt="Logo"
+            class="Logo"
+            draggable="false"
+        /></a>
+        {% if user == "False"%}
+        <a href="./signin" class="NavLink" id="SignInTab" draggable="false"
+          >Sign in</a
+        >
+        <a href="./signup" class="NavLink" id="SignInTab" draggable="false"
+          >Sign up</a
+        >
+        {% endif %} {% if user == "True"%}
+        <a
+          href="/profile/{{ username }}"
+          class="NavLink"
+          id="ProfileTab"
+          draggable="false"
+          >Profile</a
+        >
+        <a href="./upload-images" class="NavLink" draggable="false">Upload</a>
+        <a href="./create-video" class="NavLink" draggable="false">Create</a>
+        {% endif %} {% if isAdmin == "True"%}
+        <div id="AdminTab" draggable="false">
+          <a href="./adminPage" class="NavLink">Admin hub</a>
+        </div>
+        {% endif %}
+      </nav>
+    </header>
 
-<body>
-  <header>
-    <nav id="Navbar">
-      <a href="./" class="NavLink Logo" id="HomePage" draggable="false"><img src="../static/Images/Logo.png" alt="Logo" class="Logo" draggable="false"></a>
-      {% if user == "False"%}
-      <a href="./signin" class="NavLink" id="SignInTab" draggable="false">Sign in</a>
-      <a href="./signup" class="NavLink" id="SignInTab" draggable="false">Sign up</a>
-      {% endif %}
-      {% if user == "True"%}
-      <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab" draggable="false">Profile</a>
-      <a href="./upload-images" class="NavLink" draggable="false">Upload</a>
-      <a href="./create-video" class="NavLink" draggable="false">Create</a>
-      {% endif %}
-      {% if isAdmin == "True"%}
-      <div id="AdminTab" draggable="false">
-        <a href="./adminPage" class="NavLink">Admin hub</a>
+    <div class="MainBody">
+      <div class="Introduction">
+        <div class="LogoName">Bond Brothers</div>
+        <div id="by">by</div>
+        <div id="typed"></div>
+        <div id="IntroToSite">
+          <p>
+            Welcome to Bond Brothers! We are a team dedicated to creating
+            innovative solutions for your needs. Our mission is to empower
+            individuals and businesses by providing cutting-edge technology and
+            exceptional services. Explore our website to discover how we can
+            help you achieve your goals and unlock new possibilities.
+          </p>
+        </div>
+        <img
+          src="../static/Images/into.jpeg"
+          alt="Bond Brothers Logo"
+          id="introimg"
+        />
       </div>
-      {% endif %}
-    </nav>
-  </header>
 
-  <div class="MainBody">
-    <div class="Introduction">
-      <div class="LogoName">Bond Brothers</div>
-      <div id="by">by</div>
-      <div id="typed"></div>
-      <div id="IntroToSite">
-        <p>
-          Welcome to Bond Brothers! We are a team dedicated to creating
-          innovative solutions for your needs.
-        </p>
-        <p>
-          Our mission is to empower individuals and businesses by providing
-          cutting-edge technology and exceptional services.
-        </p>
-        <p>
-          Explore our website to discover how we can help you achieve your
-          goals and unlock new possibilities.
-        </p>
+      <div class="Usage">
+        <div class="UsageOfSite">How to Use This Site</div>
+        <div id="UsageOfSite">
+          <h3 class="scroll-animation">1. Explore Our Features</h3>
+          <p class="scroll-animation">
+            Explore the extensive array of features and functionalities
+            meticulously crafted by Bond Brothers to elevate your user
+            experience. With a seamless blend of intuitive user interfaces and
+            cutting-edge tools, our platform is designed to cater to your
+            diverse needs and preferences. Whether you're a seasoned
+            professional or just starting your journey, Bond Brothers offers a
+            comprehensive suite of solutions to meet your requirements.
+          </p>
+          <img
+            src="../static/Images/im1.webp"
+            alt="Feature 1 Image"
+            id="im"
+            class="scroll-animation"
+          />
+
+          <h3 class="scroll-animation">2. Sign Up/Login</h3>
+          <p class="scroll-animation">
+            To access all the advanced features and personalize your experience
+            according to your preferences, it's essential to sign up for an
+            account or log in if you already have one. Don't have an account
+            yet? No worries – our registration process is quick, hassle-free,
+            and designed to get you up and running in no time. Whether you're
+            looking to explore intuitive user interfaces or utilize our suite of
+            advanced tools, we've got everything you need to enhance and
+            optimize your experience with Bond Brothers.
+          </p>
+          <img
+            src="../static/Images/im4.jpg"
+            alt="Feature 2 Image"
+            id="im"
+            class="scroll-animation"
+          />
+
+          <h3 class="scroll-animation">3. Create and Collaborate</h3>
+          <p class="scroll-animation">
+            Once you're logged in, you can dive right into the action by
+            initiating collaborations with your team or friends. Whether you're
+            brainstorming new ideas, organizing projects, or sharing valuable
+            content, Bond Brothers offers a seamless platform for collaboration.
+            With intuitive tools and user-friendly interfaces, you can
+            streamline communication, boost productivity, and achieve your goals
+            more efficiently than ever before. So, gather your team, unleash
+            your creativity, and let Bond Brothers empower your collaborative
+            efforts like never before.
+          </p>
+          <img
+            class="scroll-animation"
+            src="../static/Images/im5.jpg"
+            alt="Feature 3 Image"
+            id="im"
+          />
+
+          <h3 class="scroll-animation">4. Customize Your Settings</h3>
+          <p class="scroll-animation">
+            Personalize your experience by customizing your settings to match
+            your preferences perfectly. With Bond Brothers, you have complete
+            control over every aspect, from fine-tuning your profile details to
+            managing notification preferences. Whether you prefer a minimalist
+            interface or enjoy staying updated with real-time alerts, Bond
+            Brothers adapts to your needs. Take charge of your experience and
+            make Bond Brothers truly yours by adjusting settings that resonate
+            with your style and workflow.
+          </p>
+          <img
+            class="scroll-animation"
+            src="../static/Images/im3.jpeg"
+            alt="Feature 4 Image"
+            id="im"
+          />
+
+          <h3 class="scroll-animation">5. Get Support</h3>
+          <p class="scroll-animation">
+            Should you encounter any challenges or have inquiries about Bond
+            Brothers, rest assured that our dedicated support team is here to
+            assist you. Simply navigate to our contact page and reach out to us
+            with your concerns or questions, and we'll respond promptly to
+            provide you with the assistance you need. At Bond Brothers, ensuring
+            your satisfaction and addressing your queries is our top priority,
+            so feel free to reach out anytime – we're here to help.
+          </p>
+          <img
+            class="scroll-animation"
+            src="../static/Images/im6.jpeg"
+            alt="Feature 5 Image"
+            id="im"
+          />
+        </div>
       </div>
-      <img src="https://via.placeholder.com/300" alt="Bond Brothers Logo" />
     </div>
+    <footer id="footer">
+      <p>
+        Bond Brothers is your go-to platform for seamless collaboration and
+        project management. Our intuitive design and advanced tools empower
+        teams to brainstorm ideas, manage projects, and share content
+        effortlessly. Contact us at support@bondbrothers.com or +1-800-555-1234.
+        Stay updated by subscribing to our newsletter and following us on social
+        media.Join us and unlock the full potential of collaboration with Bond
+        Brothers.
+      </p>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var typed = new Typed("#typed", {
+          strings: ["Varun Gupta", "Saiyam Jain", "Krishak Aneja"],
+          smartBackspace: true,
+          startDelay: 1000,
+          typeSpeed: 130,
+          backDelay: 1000,
+          backSpeed: 60,
+          loop: true,
+        });
 
-    <div class="Usage">
-      <div class="UsageOfSite">How to Use This Site</div>
-      <div id="UsageOfSite">
-        <h3>1. Explore Our Features</h3>
-        <p>
-          Discover the various features and functionalities that Bond Brothers
-          offers. From intuitive user interfaces to advanced tools, we have
-          everything you need to enhance your experience.
-        </p>
-        <img src="https://via.placeholder.com/300" alt="Feature 1 Image" />
+        // Function to add scroll animation to elements
+        function addScrollAnimation(entries, observer) {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("scroll-in");
+              observer.unobserve(entry.target);
+            }
+          });
+        }
 
-        <h3>2. Sign Up/Login</h3>
-        <p>
-          To access all the features and personalize your experience, sign up
-          or log in to your account. Don't have an account yet? No worries,
-          it's quick and easy to create one.
-        </p>
-        <img src="https://via.placeholder.com/300" alt="Feature 2 Image" />
+        // Create an intersection observer
+        const observer = new IntersectionObserver(addScrollAnimation, {
+          root: null,
+          rootMargin: "0px",
+          threshold: 0.5, // Adjust as needed
+        });
 
-        <h3>3. Create and Collaborate</h3>
-        <p>
-          Once logged in, you can start creating and collaborating with your
-          team or friends. Whether it's brainstorming ideas, managing
-          projects, or sharing content, Bond Brothers provides a seamless
-          platform for collaboration.
-        </p>
-        <img src="https://via.placeholder.com/300" alt="Feature 3 Image" />
-
-        <h3>4. Customize Your Settings</h3>
-        <p>
-          Customize your settings to tailor your experience according to your
-          preferences. From profile settings to notification preferences, you
-          have full control over how you interact with Bond Brothers.
-        </p>
-        <img src="https://via.placeholder.com/300" alt="Feature 4 Image" />
-
-        <h3>5. Get Support</h3>
-        <p>
-          If you encounter any issues or have questions about Bond Brothers,
-          our support team is here to help. Reach out to us through our
-          contact page, and we'll assist you promptly.
-        </p>
-        <img src="https://via.placeholder.com/300" alt="Feature 5 Image" />
-      </div>
-    </div>
-  </div>
-  <footer id="footer">
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante
-      dapibus diam. Sed nisi.</p>
-  </footer>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      var typed = new Typed("#typed", {
-        strings: ["Varun Gupta", "Saiyam Jain", "Krishak Aneja"],
-        smartBackspace: true,
-        startDelay: 1000,
-        typeSpeed: 130,
-        backDelay: 1000,
-        backSpeed: 60,
-        loop: true,
+        // Observe all elements with class "scroll-animation"
+        const elements = document.querySelectorAll(".scroll-animation");
+        elements.forEach((element) => {
+          observer.observe(element);
+        });
       });
-    });
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
