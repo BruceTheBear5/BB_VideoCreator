@@ -33,7 +33,7 @@
           <li>Email : {{user.email}}</li>
         </ul>
       </div>
-      <div>
+      <div id="pp">
         <div id="profilePhoto">
           <img src="data:image/jpeg;base64,{{ profileImage }}" alt="Profile Pic" id="profilePic" />
         </div>
@@ -51,7 +51,7 @@
           {% for image in images %}
           <figure>
             <img src="data:image/jpeg;base64,{{ image['data'] }}" alt="{{ image['name'] }}" />
-            <figcaption>{{ image['name'] }}</figcaption>
+            <!-- <figcaption>{{ image['name'] }}</figcaption> -->
           </figure>
           {% endfor %}
         </div>

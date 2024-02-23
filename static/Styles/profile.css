@@ -17,7 +17,7 @@ body{
 }
 
 #profileContent ul{
-    padding-top: 5rem;
+    /* padding-top: 5rem; */
     list-style: none;
     line-height: 5rem;
 }
@@ -29,6 +29,10 @@ body{
 
 #profileContent li:hover {
     color: var(--accent-hover);
+}
+
+#pp{
+    padding-top: 8%;
 }
 
 #profilePic{
@@ -180,4 +184,28 @@ body{
     display: none !important;
   }
   
+  #pp {
+    position: relative;
+  }
+  
+  #profilePicInput {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+  }
+  
+  .browse-button {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .browse-button:hover {
+    background-color: #0056b3;
+  }
   
