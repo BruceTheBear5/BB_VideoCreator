@@ -18,7 +18,7 @@ body{
     justify-content: center;
     align-items: center;
     border-radius: 10vh;
-    border: dashed 0.25rem rgba(255, 255, 255, 0.5);
+    border: solid 0.25rem rgba(255, 255, 255, 0.5);
     padding: 2rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);

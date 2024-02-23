@@ -64,13 +64,13 @@ body{
   justify-content: center;
   align-items: center;
   border-radius: 10vh;
-  border: dashed 0.25rem rgba(255, 255, 255, 0.5);
+  border: solid 0.25rem rgba(255, 255, 255, 0.5);
   padding: 2rem;
   display: none;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 0rem;
   width: 70vw;
-  height: 70vh;
+  max-height: 70vh;
   overflow: auto;
   scrollbar-width: none;
 }
