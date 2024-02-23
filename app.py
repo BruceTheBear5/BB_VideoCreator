@@ -1,9 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, Response, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash, session, Response
 from werkzeug.security import generate_password_hash, check_password_hash
-from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql, save_image_to_mysql
+from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql, save_image_to_mysql, save_audio_to_mysql
 import os
 import base64
-from werkzeug.formparser import MultiPartParser
 
 app = Flask(__name__)
 SECRET_KEY =  os.urandom(24)
@@ -176,13 +175,10 @@ def upload_images():
     if not os.path.exists(TEMP_DIR):
         os.makedirs(TEMP_DIR)
 
-    # Process the uploaded files
     for file in files:
         if file.filename != '':
-            # Save the file to a temporary location
             filename = os.path.join(TEMP_DIR, file.filename)
             file.save(filename)
-            # Pass the file path to save_image_to_mysql
             save_image_to_mysql(session.get("userId"), filename)
             
     if os.path.exists(TEMP_DIR):
@@ -216,14 +212,37 @@ def create():
                 encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
                 ad = {'data': encoded_audio, 'name': a.file_name}
                 audioData.append(ad)  
-                
-            print(1) 
                
             return render_template('workspace.html', images = imageData, audio = audioData)
         
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
+
+@app.route('/upload-audio', methods=['POST'])
+def upload_audio():
+    if 'audioFile' not in request.files:
+        return "No audio file uploaded", 400
+    
+    audio_file = request.files['audioFile']
+    TEMP_DIR = './temp/'
+
+    if not os.path.exists(TEMP_DIR):
+        os.makedirs(TEMP_DIR)
+
+    if audio_file.filename != '':
+        filename = os.path.join(TEMP_DIR, audio_file.filename)
+        audio_file.save(filename)
+        save_audio_to_mysql(session.get("userId"), filename)
+            
+    if os.path.exists(TEMP_DIR):
+        for file_name in os.listdir(TEMP_DIR):
+            file_path = os.path.join(TEMP_DIR, file_name)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+        os.rmdir(TEMP_DIR)
+    
+    return "Audio file uploaded successfully"
 
 if __name__ == '__main__':
     app.run(debug=True)
