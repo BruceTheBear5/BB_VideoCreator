@@ -8,8 +8,13 @@ body {
   background-color: var(--bg);
 }
 
+.MainBody{
+  padding-left: 18.5%;
+  padding-right: 10%;
+}
+
 .Profile {
-  padding-left: 12.5%;
+  margin-left: 12.5%;
   display: flex;
   align-items: center;
   gap: 25rem;
@@ -60,15 +65,66 @@ body {
   scrollbar-width: none;
 }
 
-.showCase img {
-  max-height: 100%;
-  max-width: 100%;
-  object-fit: cover;
+#imageContainer {
+  background-color: rgba(65, 105, 225, 0.4);
+  justify-content: center;
+  align-items: center;
+  border-radius: 10vh;
+  border: dashed 0.25rem rgba(255, 255, 255, 0.5);
   padding: 2rem;
-  transition: transform 0.3s ease;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 0rem;
+  width: 70vw;
+  height: 70vh;
+  overflow: auto;
+  scrollbar-width: none;
 }
 
-.showCase img:hover {
+#imageContainer:has(.image-item){
+  display: grid;
+}
+
+#imageContainer::-webkit-scrollbar {
+  height: 0;
+  width: 0;
+}
+
+#imageContainer .image-item{
+  position: relative;
+  display: inline-block;
+  opacity: 1;
+  padding: 1rem;
+  justify-self: center;
+  align-self: center;
+  width: 80%;
+  height: auto; 
+  text-align: center;
+  text-decoration: none;
+  font-size: 0.69rem;
+}
+
+.image-item .close-button{
+  position: absolute;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 1);
+  z-index: 9;
+
+}
+
+.image-item img{
+  width: 100%;
+  z-index: 1;
+  transition: transform 0.3s ease;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
+}
+
+.image-item img:hover{
   transform: scale(1.05);
   filter: brightness(120%);
 }

@@ -45,21 +45,20 @@
     </div>
 
     <div class="Previous">
-      <div id="uploadedImages">
-        <h1>Previously uploaded Images</h1>
-        <div class="showCase">
-          {% for image in images %}
-          <figure>
+      <div id="uploadedMusic">
+      <h1>Previously uploaded Images</h1><br>
+      <div id = "imageContainer">
+        {% for image in images %}
+        <div class = "image-item">
             <img src="data:image/jpeg;base64,{{ image['data'] }}" alt="{{ image['name'] }}" />
-            <!-- <figcaption>{{ image['name'] }}</figcaption> -->
-          </figure>
-          {% endfor %}
         </div>
-      </div>
+        {% endfor %}
+        </div>
+    </div>
       
       <div id="uploadedMusic">
-        <h1>Previously uploaded Music</h1>
-        <div class="showCase">
+        <h1>Previously uploaded Music</h1><br>
+        <div class="imageContainer">
           {% for a in audio %}
           <div class="audioCell">
             <span class="audioName">{{ a['name'] }}</span>
