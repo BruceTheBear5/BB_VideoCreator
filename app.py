@@ -97,7 +97,7 @@ def profileData(username):
                 ad = {'data': encoded_audio, 'name': a.file_name}
                 audioData.append(ad)
                 
-            return render_template('profile.html', user = user, profileImage = profileImage, images = imageData, audio = audioData, username = user.username)
+            return render_template('profile.html', user = user, profileImage = profileImage, images = imageData, audio = audioData, username = user.username, isAdmin = user.isAdmin)
         else:
             return redirect(url_for('home'))
     except Exception as e:
@@ -147,7 +147,7 @@ def Admin():
                     profilePic.append(encoded_image)
 
                 NumberOfAccounts = len(users)
-                return render_template('adminPage.html', NumberOfAccounts = NumberOfAccounts, user = users, profilePic = profilePic)
+                return render_template('adminPage.html', NumberOfAccounts = NumberOfAccounts, user = users, profilePic = profilePic, username = session["username"])
             else:
                 return redirect(url_for('home'))
     except Exception as e:
@@ -158,7 +158,7 @@ def Admin():
 def upload():
     try:
         if "userId" in session:
-                return render_template('uploadPage.html')
+                return render_template('uploadPage.html', username = session["username"], isAdmin = session["userIsAdmin"])
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
@@ -213,7 +213,7 @@ def create():
                 ad = {'data': encoded_audio, 'name': a.file_name}
                 audioData.append(ad)  
                
-            return render_template('workspace.html', images = imageData, audio = audioData)
+            return render_template('workspace.html', images = imageData, audio = audioData, username = session["username"], isAdmin = session["userIsAdmin"])
         
     except Exception as e:
         print("Error:", e)
