@@ -76,9 +76,8 @@ document.addEventListener('DOMContentLoaded', function () {
             container.classList.add('image-item');
             container.target = '_blank';
 
-            let closeButton = document.createElement('button');
-            closeButton.textContent = '×';
-            closeButton.classList.add('close-button');
+            let closeButton = document.createElement('i');
+            closeButton.classList.add('bi','bi-x-circle','close-button');
 
             closeButton.addEventListener('click', function () {
                 container.remove();
@@ -88,6 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             let anchor = document.createElement('a');
             anchor.href = reader.result;
+            anchor.target = "_blank";
 
             let img = document.createElement('img');
             img.src = reader.result;

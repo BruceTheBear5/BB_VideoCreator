@@ -28,12 +28,12 @@
         <div class="Heading">The Workspace</div>
 
         <h1 style="width:100%">Previously uploaded images:</h1>
-        <div class="showCase">
+        <div id = "imageContainer">
             {% for image in images %}
-            <figure>
+            <div class = "image-item">
                 <img src="data:image/jpeg;base64,{{ image['data'] }}" alt="{{ image['name'] }}" />
-                <!-- <figcaption>{{ image['name'] }}</figcaption> -->
-            </figure>
+                <i class="bi bi-check-circle close-button"></i>
+            </div>
             {% endfor %}
         </div>
 

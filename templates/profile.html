@@ -24,13 +24,13 @@
   </header>
 
   <div class="MainBody">
-    <h1 class="Profile">Profile</h1>
+    <div class="Heading">Profile</div>
     <div class="Profile">
       <div id="profileContent">
         <ul>
-          <li>Name : {{user.name}}</li>
-          <li>UserName : {{user.username}}</li>
-          <li>Email : {{user.email}}</li>
+          <li>Name : <span style = "color: var(--font)">{{user.name}}</span></li>
+          <li>Username : <span style = "color: var(--font)">{{user.username}}</span></li>
+          <li>Email : <span style = "color: var(--font)">{{user.email}}</span></li>
         </ul>
       </div>
       <div id="pp">
@@ -38,7 +38,7 @@
           <img src="data:image/jpeg;base64,{{ profileImage }}" alt="Profile Pic" id="profilePic" />
         </div>
         <form action="/Profile/{{username}}" method="post" enctype="multipart/form-data">
-          <input type="file" name="image" accept="image/*">
+          <input type="file" name="image" accept="image/*" required>
           <input type="submit" value="Upload">
         </form>
       </div>
@@ -46,7 +46,7 @@
 
     <div class="Previous">
       <div id="uploadedImages">
-        <h3 class="Heading">Previously uploaded Images</h3>
+        <h1>Previously uploaded Images</h1>
         <div class="showCase">
           {% for image in images %}
           <figure>
@@ -56,12 +56,9 @@
           {% endfor %}
         </div>
       </div>
-      <div id="madeVideos">
-        <h3 class="Heading">Previously made Videos</h3>
-        <div class="showCase">will show previously made videos</div>
-      </div>
+      
       <div id="uploadedMusic">
-        <h3 class="Heading">Previously uploaded Music</h3>
+        <h1>Previously uploaded Music</h1>
         <div class="showCase">
           {% for a in audio %}
           <div class="audioCell">

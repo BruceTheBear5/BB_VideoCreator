@@ -48,13 +48,6 @@ body{
     transform: scale(1.05);
 }
 
-.Heading{
-    text-align: center;
-    font-size: 2rem;
-    color: var(--accent);
-    padding-bottom: 2vh;
-}
-
 .Previous{
     display: flex;
     flex-direction: column;
