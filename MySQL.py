@@ -4,9 +4,8 @@ from mutagen.mp3 import MP3
 import wave
 import cv2
 import numpy as np
+import psycopg2
 from datetime import datetime
-
-passwordreq = "Saiyam20_"
 
 class User:
     def __init__(self, name, username, email, password, id=-1, isAdmin="False"):
@@ -54,41 +53,41 @@ class Audio:
         self.file_type = file_type
         self.file_data = file_data
         self.duration = duration
-        self.upload_date = upload_date
-
-def save_data_to_mysql(data):
+        self.upload_date = upload_date       
+        
+def connect_to_database():
     try:
-        connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password=passwordreq,
-            database="Project"
-        )
-
+        print("Connecting to the database...")
+        connection = psycopg2.connect("postgresql://bond:hkJBMZZaRBmmcaGiKDM8rg@project-8970.8nk.gcp-asia-southeast1.cockroachlabs.cloud:26257/project?sslmode=verify-full")
+        
+        print("Connected successfully")
+        return connection
+    except psycopg2.OperationalError as e:
+        print("Could not connect to database:", e)
+        return None
+    
+def save_data_to_mysql(data):
+    connection = None
+    cursor = None
+    try:
+        connection = connect_to_database()
         cursor = connection.cursor()
-
         data.UploadData(cursor)
-
         connection.commit()
         print("Data saved to MySQL database successfully.")
-
     except mysql.connector.Error as error:
         print("Failed to save data to MySQL database:", error)
-
     finally:
-        if connection.is_connected():
+        if cursor:
             cursor.close()
+        if connection:
             connection.close()
-            
-def save_image_to_mysql(user_id, image_name):
-    try:
-        connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password=passwordreq,
-            database="Project"
-        )
 
+def save_image_to_mysql(user_id, image_name):
+    connection = None
+    cursor = None
+    try:
+        connection = connect_to_database() 
         cursor = connection.cursor()
 
         with open(image_name, "rb") as file:
@@ -105,18 +104,16 @@ def save_image_to_mysql(user_id, image_name):
         print("Failed to save image to MySQL database:", error)
 
     finally:
-        if 'connection' in locals() and connection.is_connected():
+        if cursor:
             cursor.close()
+        if connection:
             connection.close()
             
 def retrieve_users_from_mysql(email):
+    connection = None
+    cursor = None
     try:
-        connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password=passwordreq,
-            database="Project"
-        )
+        connection = connect_to_database()
 
         cursor = connection.cursor()
 
@@ -136,18 +133,16 @@ def retrieve_users_from_mysql(email):
         print("Failed to retrieve data from MySQL database:", error)
 
     finally:
-        if 'connection' in locals() and connection.is_connected():
+        if cursor:
             cursor.close()
+        if connection:
             connection.close()
 
 def retrieve_image_from_mysql(userId):
+    connection = None
+    cursor = None
     try:
-        connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password=passwordreq,
-            database="Project"
-        )
+        connection = connect_to_database()
 
         cursor = connection.cursor()
         query = "SELECT file_data, file_name FROM images WHERE user_id = %s"
@@ -172,19 +167,17 @@ def retrieve_image_from_mysql(userId):
         print("Failed to retrieve image from MySQL database:", error)
 
     finally:
-        if 'connection' in locals() and connection.is_connected():
+        if cursor:
             cursor.close()
+        if connection:
             connection.close()
 
 def upload_profile_image(user_id, image_name):
     """When user is created, use upload_profile_image(user_id, "./Images/alt_image.jpg")"""
+    connection = None
+    cursor = None
     try:
-        connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password=passwordreq,
-            database="Project"
-        )
+        connection = connect_to_database()
 
         cursor = connection.cursor()
         
@@ -208,18 +201,16 @@ def upload_profile_image(user_id, image_name):
         print("Failed to upload profile image:", error)
 
     finally:
-        if 'connection' in locals() and connection.is_connected():
+        if cursor:
             cursor.close()
+        if connection:
             connection.close()
 
 def retrieve_profile_image(userId):
+    connection = None
+    cursor = None
     try:
-        connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password=passwordreq,
-            database="Project"
-        )
+        connection = connect_to_database()
         
         cursor = connection.cursor()
         query = "SELECT file_data FROM profile_pictures WHERE user_id = %s"
@@ -243,9 +234,10 @@ def retrieve_profile_image(userId):
         print("Failed to upload profile image:", error)
 
     finally:
-        if 'connection' in locals() and connection.is_connected():
+        if cursor:
             cursor.close()
-            connection.close()   
+        if connection:
+            connection.close()  
   
 def get_duration(file_path, file_format):
     if file_format.lower() == "mp3":
@@ -262,17 +254,12 @@ def get_duration(file_path, file_format):
     return duration_seconds
 
 def save_audio_to_mysql(user_id, relative_file_path):
+    connection = None
+    cursor = None
     try:
         absolute_file_path = os.path.abspath(relative_file_path)
         filename = os.path.basename(absolute_file_path)
-
-        connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password=passwordreq,
-            database="Project"
-        )
-
+        connection = connect_to_database()
         cursor = connection.cursor()
 
         with open(absolute_file_path, "rb") as file:
@@ -301,18 +288,16 @@ def save_audio_to_mysql(user_id, relative_file_path):
         print("Failed to extract duration:", error)
 
     finally:
-        if 'connection' in locals() and connection.is_connected():
+        if cursor:
             cursor.close()
+        if connection:
             connection.close()
             
 def retrieve_audio_from_mysql(user_id):
+    connection = None
+    cursor = None
     try:
-        connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password=passwordreq,
-            database="Project"
-        )
+        connection = connect_to_database()
 
         cursor = connection.cursor()
 
@@ -338,18 +323,16 @@ def retrieve_audio_from_mysql(user_id):
         print("Failed to retrieve audio files from MySQL database:", error)
 
     finally:
-        if 'connection' in locals() and connection.is_connected():
+        if cursor:
             cursor.close()
+        if connection:
             connection.close()
             
 def AdminRetrieve():
+    connection = None
+    cursor = None
     try:
-        connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password=passwordreq,
-            database="Project"
-        )
+        connection = connect_to_database()
 
         cursor = connection.cursor()
 
@@ -370,18 +353,16 @@ def AdminRetrieve():
         return []
         
     finally:
-        if connection.is_connected():
+        if cursor:
             cursor.close()
+        if connection:
             connection.close()
 
 def AdminRetrieveProfilePic():
+    connection = None
+    cursor = None
     try:
-        connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password=passwordreq,
-            database="Project"
-        )
+        connection = connect_to_database()
 
         cursor = connection.cursor()
 
@@ -406,18 +387,16 @@ def AdminRetrieveProfilePic():
         return []
         
     finally:
-        if connection.is_connected():
+        if cursor:
             cursor.close()
+        if connection:
             connection.close()
 
 def sort_mysql(userId, sortBy):
+    connection = None
+    cursor = None
     try:
-        connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password=passwordreq,
-            database="Project"
-        )
+        connection = connect_to_database()
 
         cursor = connection.cursor()
         query = f"SELECT file_data, file_name FROM images WHERE user_id = %s ORDER BY {sortBy}"
@@ -447,18 +426,16 @@ def sort_mysql(userId, sortBy):
         return []
         
     finally:
-        if connection.is_connected():
+        if cursor:
             cursor.close()
+        if connection:
             connection.close()
 
 def search_mysql(userId, searchStr):
+    connection = None
+    cursor = None
     try:
-        connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password=passwordreq,
-            database="Project"
-        )
+        connection = connect_to_database()
 
         cursor = connection.cursor()
         query = "SELECT file_data, file_name FROM images WHERE user_id = %s AND file_name LIKE %s"
@@ -488,8 +465,9 @@ def search_mysql(userId, searchStr):
         return []
         
     finally:
-        if connection.is_connected():
+        if cursor:
             cursor.close()
+        if connection:
             connection.close()
 
 # users = [
@@ -500,7 +478,7 @@ def search_mysql(userId, searchStr):
 
 # save_data_to_mysql(users[2])
 # save_data_to_mysql(users[1])
-# user = retrieve_users_from_mysql("sa@ja.com")
+# user = retrieve_users_from_mysql("saiyam3420@gmail.com")
 # if(user):
 #     user.printUser()
 #     print(type(user.isAdmin))
@@ -520,3 +498,6 @@ def search_mysql(userId, searchStr):
 # sort_mysql(1, "uploaded_at")
 # sort_mysql(1, "file_size")
 # search_mysql(1, "mac")
+
+# con = connect_to_database()
+# con.close
