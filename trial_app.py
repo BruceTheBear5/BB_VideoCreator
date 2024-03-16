@@ -9,6 +9,21 @@ app = Flask(__name__)
 SECRET_KEY = os.urandom(24)
 app.secret_key = SECRET_KEY
 
+@app.before_request
+def auto_authenticate():
+    if 'jwt_token' in session:
+        token = session.get('jwt_token')
+        if token:
+            try:
+                data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+                if "userId" in data:
+                    session["userId"] = data["userId"]
+                    session["username"] = data["username"]
+                    session["userEmail"] = data["userEmail"]
+                    session["userIsAdmin"] = data["userIsAdmin"]
+            except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+                pass
+
 @app.route('/')
 def home():
     connectDB()
