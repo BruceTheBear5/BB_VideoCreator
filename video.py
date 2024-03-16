@@ -91,4 +91,4 @@ def createVideo(imgFolderName, musicFileName, timePerImage, fadeIn = False, fade
 
     print("Video created successfully!")
 
-# createVideo("./static/Images", "./try.mp3", 3, fadeInOut= True)
+# createVideo("./static/Selected", "./try.mp3", 3, fadeInOut= True)
