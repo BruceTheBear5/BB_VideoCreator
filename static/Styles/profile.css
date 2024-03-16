@@ -168,19 +168,19 @@ body {
   background-color: var(--accent-hover);
 }
 
-#uploadedMusic .Heading {
+/* #uploaded .Heading {
   color: #1db954;
   font-size: 24px;
   margin-bottom: 20px;
-}
+} */
 
-#uploadedMusic .showCase {
+#uploaded .showCase {
   display: flex;
   flex-direction: column;
   overflow-x: auto;
 }
 
-#uploadedMusic .audioCell {
+#uploaded .audioCell {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -190,22 +190,22 @@ body {
   margin-right: 10px;
 }
 
-#uploadedMusic .audioName {
+#uploaded .audioName {
   color: white;
   font-size: 14px;
   margin-top: 10px;
 }
 
-#uploadedMusic audio {
+#uploaded audio {
   width: 100%;
   margin-top: 10px;
 }
 
-#uploadedMusic audio::-webkit-media-controls-timeline {
+#uploaded audio::-webkit-media-controls-timeline {
   background-color: #1db954;
 }
 
-#uploadedMusic audio::-webkit-media-controls {
+#uploaded audio::-webkit-media-controls {
   display: none !important;
 }
 
