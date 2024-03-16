@@ -11,6 +11,7 @@
     <script src="../static/Scripts/SignUp-In.js" defer></script>
     <script src="../static/Scripts/changeNav.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script src="../static/Scripts/app.js" defer></script>
 
     <link
       rel="stylesheet"
@@ -32,11 +33,9 @@
         /></a>
         {% if user == "False"%}
         <a href="./signin" class="NavLink" id="SignInTab" draggable="false"
-          >Sign in</a
-        >
+          >Sign in</a>
         <a href="./signup" class="NavLink" id="SignInTab" draggable="false"
-          >Sign up</a
-        >
+          >Sign up</a>
         {% endif %} 
         {% if user == "True"%}
         <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab" draggable="false" >Profile</a>

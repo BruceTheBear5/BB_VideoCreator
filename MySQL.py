@@ -83,7 +83,7 @@ def connectDB():
     except:
         return None
     
-def disconnectBD():
+def disconnectDB():
     try:
         if(cursor):
             cursor.close()
