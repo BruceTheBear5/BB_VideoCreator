@@ -41,7 +41,7 @@ h2{
 
 nav {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: left;
     align-items: left;
     flex-direction: column;
     font-size: 2rem;
@@ -51,8 +51,15 @@ nav {
     color: var(--font);
     position: fixed;
     overflow: auto;
-    padding: 0rem 0.5rem 4rem 1rem;
+    padding: 1rem 0.5rem 1rem 1rem;
     margin-bottom: 5%;
+}
+
+#LinkContainer{
+    min-height: 80%;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
 }
 
 .NavLink{

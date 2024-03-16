@@ -1,27 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+{% extends "base.html" %}
+    
+    {% block stylesheets %}
     <link rel="stylesheet" href="../static/Styles/style.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     />
-    <script src="../static/Scripts/SignUp-In.js" defer></script>
-    <script src="../static/Scripts/changeNav.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-    <script src="../static/Scripts/app.js" defer></script>
-
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
+    {% endblock %}
 
-    <title>Main Page</title>
-  </head>
+    {% block scripts %}
+    <script src="../static/Scripts/SignUp-In.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script src="../static/Scripts/app.js" defer></script>
+    {% endblock %}
 
-  <body>
+    {% block title %}Main Page{% endblock %}
+  
+
+  
+    {% block content %}
     <header>
       <nav id="Navbar">
         <a href="./" class="NavLink Logo" id="HomePage" draggable="false"
@@ -31,22 +32,24 @@
             class="Logo"
             draggable="false"
         /></a>
-        {% if user == "False"%}
-        <a href="./signin" class="NavLink" id="SignInTab" draggable="false"
-          >Sign in</a>
-        <a href="./signup" class="NavLink" id="SignInTab" draggable="false"
-          >Sign up</a>
-        {% endif %} 
-        {% if user == "True"%}
-        <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab" draggable="false" >Profile</a>
-        <a href="./upload-images" class="NavLink" draggable="false">Upload</a>
-        <a href="./create-video" class="NavLink" draggable="false">Create</a>
-        {% endif %} 
-        {% if isAdmin == "True"%}
-        <div id="AdminTab" draggable="false">
-          <a href="./adminPage" class="NavLink">Admin hub</a>
+        <div id="LinkContainer">
+          {% if user == "False"%}
+          <a href="./signin" class="NavLink" id="SignInTab" draggable="false"
+            >Sign in</a>
+          <a href="./signup" class="NavLink" id="SignInTab" draggable="false"
+            >Sign up</a>
+          {% endif %} 
+          {% if user == "True"%}
+          <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab" draggable="false" >Profile</a>
+          <a href="./upload-images" class="NavLink" draggable="false">Upload</a>
+          <a href="./create-video" class="NavLink" draggable="false">Create</a>
+          {% endif %} 
+          {% if isAdmin == "True"%}
+          <div id="AdminTab" draggable="false">
+            <a href="./adminPage" class="NavLink">Admin hub</a>
+          </div>
+          {% endif %}
         </div>
-        {% endif %}
       </nav>
     </header>
 
@@ -165,17 +168,7 @@
         </div>
       </div>
     </div>
-    <footer id="footer">
-      <p>
-        Bond Brothers is your go-to platform for seamless collaboration and
-        project management. Our intuitive design and advanced tools empower
-        teams to brainstorm ideas, manage projects, and share content
-        effortlessly. Contact us at support@bondbrothers.com or +1-800-555-1234.
-        Stay updated by subscribing to our newsletter and following us on social
-        media.Join us and unlock the full potential of collaboration with Bond
-        Brothers.
-      </p>
-    </footer>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         var typed = new Typed("#typed", {
@@ -187,29 +180,28 @@
           backSpeed: 60,
           loop: true,
         });
-
-  function addScrollAnimation(entries, observer) {
-    entries.forEach((entry) => {
+        
+        function addScrollAnimation(entries, observer) {
+          entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("scroll-in");
         observer.unobserve(entry.target);
       }
     });
   }
-
+  
   // Create an intersection observer
   const observer = new IntersectionObserver(addScrollAnimation, {
     root: null,
     rootMargin: "0px",
     threshold: 1.0, // Adjusted threshold
   });
-
+  
   // Observe all elements with class "scroll-animation"
   const elements = document.querySelectorAll(".scroll-animation");
   elements.forEach((element) => {
     observer.observe(element);
   });
 });
-    </script>
-  </body>
-</html>
+</script>
+{% endblock %}

@@ -1,21 +1,28 @@
 function connectToDB() {
-    const isConnected = localStorage.getItem('dbConnected');
+    const isNOTConnected = localStorage.getItem('dbConnected');
 
-    if (!isConnected) {
+    if (isNOTConnected) {
         fetch('/connect-db')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to connect to the database');
                 }
-                console.log('Database connected successfully.');
-                localStorage.setItem('dbConnected', true);
+                localStorage.setItem('dbConnected', false); 
+                return response.text();
+            })
+            .then(message => {
+                console.log(message);
             })
             .catch(error => {
                 console.error('Error connecting to the database:', error);
             });
+    } else{
+        console.log('Already connected to database');
     }
+    
 }
 
+window.addEventListener('beforeunload', disconnectFromDB);
 document.addEventListener('DOMContentLoaded', connectToDB);
 
 function disconnectFromDB() {
@@ -24,13 +31,12 @@ function disconnectFromDB() {
             if (!response.ok) {
                 throw new Error('Failed to disconnect from the database');
             }
-            console.log('Database disconnected successfully.');
-            localStorage.removeItem('dbConnected');
+            return response.text(); 
+        })
+        .then(message => {
+            console.log(message); 
         })
         .catch(error => {
             console.error('Error disconnecting from the database:', error);
         });
 }
-
-
-window.addEventListener('beforeunload', disconnectFromDB);

@@ -1,24 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+  {% block title %}Profile{% endblock %}
+  {% block stylesheets %}
+    <link rel="stylesheet" href="../static/Styles/profile.css" />
+  {% endblock %}
+  {% block scripts %}{% endblock %}
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Profile</title>
-  <link rel="stylesheet" href="../static/Styles/profile.css" />
-</head>
 
-<body>
+  {% block content %}
   <header>
     <nav id="Navbar">
       <a href="../" class="NavLink Logo" id="HomePage"><img src="../static/Images/Logo.png" alt="Logo" class="Logo"></a>
-      <a href="../upload-images" class="NavLink">Upload</a>
-      <a href="../create-video" class="NavLink">Create</a>
-      {% if isAdmin == "True"%}
-      <div id="AdminTab">
-        <a href="../adminPage" class="NavLink">Admin hub</a>
-      </div>
-      {% endif %}
+      
+      <div id="LinkContainer">
+        <a href="../upload-images" class="NavLink">Upload</a>
+        <a href="../create-video" class="NavLink">Create</a>
+        {% if isAdmin == "True"%}
+        <div id="AdminTab">
+          <a href="../adminPage" class="NavLink">Admin hub</a>
+        </div>
+        {% endif %}
       </div>
     </nav>
   </header>
@@ -72,12 +72,6 @@
       </div>
     </div>
   </div>
-  <footer id="footer">
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec
-      odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.
-    </p>
-  </footer>
   <!-- <script>
     document.getElementById("profilePicInput").addEventListener("change", function (event) {
       const file = event.target.files[0];
@@ -111,6 +105,4 @@
     }
 
   </script> -->
-</body>
-
-</html>
+  {% endblock %}

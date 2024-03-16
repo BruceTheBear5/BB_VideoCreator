@@ -85,6 +85,7 @@ def connectDB():
     
 def disconnectDB():
     try:
+        print("Disconnected from database.")
         if(cursor):
             cursor.close()
         if(connection):

@@ -1,21 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base.html" %}
+    {% block stylesheets %}
     <link rel="stylesheet" href="../static/Styles/adminStyle.css">
-    <title>Admin Controls</title>
-</head>
+    {% endblock %}
+    {% block title %}Admin Controls{% endblock %}
 
-<body>
+
+    {% block content %}
     <header>
         <nav id="Navbar">
             <a href="./" class="NavLink Logo" id="HomePage"><img src="../static/Images/Logo.png" alt="Logo"
-                    class="Logo"></a>
-            <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab">Profile</a>
-            <a href="./upload-images" class="NavLink">Upload</a>
-            <a href="./create-video" class="NavLink">Create</a>
+                class="Logo"></a>
+            <div id="LinkContainer">
+                <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab">Profile</a>
+                <a href="./upload-images" class="NavLink">Upload</a>
+                <a href="./create-video" class="NavLink">Create</a>
+            </div>
         </nav>
     </header>
 
@@ -59,6 +58,4 @@
             </div>
         </div>
     </div>
-</body>
-
-</html>
+{% endblock %}
