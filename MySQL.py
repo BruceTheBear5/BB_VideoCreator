@@ -58,7 +58,7 @@ class Audio:
 def connect_to_database():
     try:
         print("Connecting to the database...")
-        connection = psycopg2.connect("postgresql://bond:hkJBMZZaRBmmcaGiKDM8rg@project-8970.8nk.gcp-asia-southeast1.cockroachlabs.cloud:26257/project?sslmode=verify-full")
+        connection = psycopg2.connect("postgresql://bond:hkJBMZZaRBmmcaGiKDM8rg@project-8970.8nk.gcp-asia-southeast1.cockroachlabs.cloud:26257/project?sslmode=require")
         
         print("Connected successfully")
         return connection
