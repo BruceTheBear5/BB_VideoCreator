@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, Response
 from werkzeug.security import generate_password_hash, check_password_hash
-from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql, save_image_to_mysql, save_audio_to_mysql, connectDB
+from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql, save_image_to_mysql, save_audio_to_mysql, connectDB, disconnectDB
 import os
 import base64
 import jwt
@@ -26,7 +26,6 @@ def auto_authenticate():
 
 @app.route('/')
 def home():
-    connectDB()
     token = session.get('jwt_token')
     if not token:
         return render_template('index.html', isAdmin = "False", user = "False")
@@ -46,6 +45,22 @@ def home():
         return redirect(url_for('signin'))
 
     return render_template('index.html', isAdmin = "False", user = "False")
+
+@app.route('/connect-db')
+def connect_db():
+    try:
+        connectDB()
+        return "Database connection established.", 200
+    except Exception as e:
+        return str(e), 500
+
+@app.route('/disconnect-db')
+def disconnect_db():
+    try:
+        disconnectDB()
+        return "Database connection closed.", 200
+    except Exception as e:
+        return str(e), 500
 
 @app.route('/signin')
 def signin():
