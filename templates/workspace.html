@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="../static/Styles/workspace.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 {% endblock %}
-{% block scripts %}{% endblock %}
+{% block scripts %}
+{% endblock %}
 
 {% block content %}
     <header>
@@ -29,14 +30,98 @@
         <div class="Heading">The Workspace</div>
 
         <h1 style="width:100%">Previously uploaded images:</h1>
+        
         <div id = "imageContainer">
-            {% for image in images %}
-            <div class = "image-item">
-                <img src="data:image/jpeg;base64,{{ image['data'] }}" alt="{{ image['name'] }}" />
-                <i class="bi bi-check-circle close-button"></i>
-            </div>
-            {% endfor %}
+            
         </div>
+        <button id="imageClear">Clear</button>
+        <script>
+            var images = JSON.parse('{{ images | safe }}');
+            var imageContainer = document.getElementById("imageContainer");
+            function emptyImages(){
+                fetch('/empty-selected', {
+                    method: 'POST'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json(); // Parse JSON response
+                    } else {
+                        throw new Error('Failed to remove all images from selection.');
+                    }
+                })
+                .then(data => {
+                    console.log(data.message);
+                })
+                .catch(error => {
+                    console.error('Error:', error.message);
+                });
+            }
+
+            function toggleImage(image, selectButton) {
+                
+                fetch('/toggle-image', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ image: image })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(data => {
+                            if (data.selected) {
+                                selectButton.classList.remove('bi-check-circle');
+                                selectButton.classList.add('bi-check-circle-fill');
+                            } else {
+                                selectButton.classList.remove('bi-check-circle-fill');
+                                selectButton.classList.add('bi-check-circle');
+                            }
+                        });
+                    } else {
+                        console.error('Failed to toggle selected status for image.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+            
+            
+            images.forEach(function (image) {
+                var img = document.createElement("img");
+                img.src = "data:image/jpeg;base64," + image.data;
+                img.alt = image.name;
+                
+                var div = document.createElement("div");
+                div.classList.add("image-item");
+                
+                var selectButton = document.createElement("i");
+                selectButton.classList.add("bi", "bi-check-circle", "close-button");
+                
+                selectButton.addEventListener('click', function () {
+                    toggleImage(image, selectButton);
+                });
+                
+                var label = document.createElement('label');
+                label.textContent = image.name;
+                
+                div.appendChild(img);
+                div.appendChild(selectButton);
+                div.appendChild(label);
+                imageContainer.appendChild(div);
+            });
+
+            var clear = document.getElementById("imageClear");
+            clear.addEventListener('click', function (){
+                emptyImages();
+                var checks = imageContainer.querySelectorAll('.bi.close-button.bi-check-circle-fill');
+                checks.forEach(function (element) {
+                    element.classList.add('bi-check-circle');
+                    element.classList.remove('bi-check-circle-fill');
+                });
+            });
+
+            </script>
 
         <div id="controlContainer">
             <h1 style="width:100%">Controls :</h1>

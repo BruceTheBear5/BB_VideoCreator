@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, Response
+from flask import Flask, render_template, request, redirect, url_for, flash, session, Response, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql, save_image_to_mysql, save_audio_to_mysql, connectDB, disconnectDB
 import os
 import base64
 import jwt
+import json
 
 app = Flask(__name__)
 SECRET_KEY = os.urandom(24)
@@ -268,13 +269,48 @@ def create():
             for a in audio:
                 encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
                 ad = {'data': encoded_audio, 'name': a.file_name}
-                audioData.append(ad)  
+                audioData.append(ad)
 
-            return render_template('workspace.html', images = imageData, audio = audioData, username = session["username"], isAdmin = session["userIsAdmin"])
+            images_json = json.dumps(imageData)  
+
+            return render_template('workspace.html', images = images_json, audio = audioData, username = session["username"], isAdmin = session["userIsAdmin"])
 
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
+
+@app.route('/toggle-image', methods=['POST'])
+def toggle_selected():
+    image_data = request.json.get('image')
+    image_name = image_data['name']
+
+    TEMP_DIR = './Selected/'
+    if not os.path.exists(TEMP_DIR):
+        os.makedirs(TEMP_DIR)
+
+    image_path = os.path.join(TEMP_DIR, image_name)
+    image_selected = os.path.exists(image_path)
+
+    if image_selected:
+        os.remove(image_path)
+        selected = False
+    else:
+        with open(image_path, 'wb') as f:
+            image_bytes = base64.b64decode(image_data['data'])
+            f.write(image_bytes)
+        selected = True
+    return jsonify({'selected': selected})
+
+@app.route('/empty-selected', methods=['POST'])
+def remove_all_selected_images():
+    TEMP_DIR = './Selected/'
+    if os.path.exists(TEMP_DIR):
+        for filename in os.listdir(TEMP_DIR):
+            file_path = os.path.join(TEMP_DIR, filename)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+    
+    return jsonify({'message': 'All images removed from selection'})
 
 @app.route('/upload-audio', methods=['POST'])
 def upload_audio():

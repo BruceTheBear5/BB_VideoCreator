@@ -100,12 +100,12 @@ body{
 
 .image-item .close-button{
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 1.5rem;
+  right: 1.5rem;
   color: white;
-  font-size: 1rem;
+  font-size: 1.25rem;
   cursor: pointer;
-  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 1);
+  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 1), 0 0 0.5rem rgba(0, 0, 0, 1), 0 0 0.5rem rgba(0, 0, 0, 1);
 }
 
 .image-item img{
