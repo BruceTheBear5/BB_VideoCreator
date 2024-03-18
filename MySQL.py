@@ -86,8 +86,9 @@ def connectDB():
     except:
         return None
     
-def disconnectBD():
+def disconnectDB():
     try:
+        print("Disconnected from database.")
         if(cursor):
             cursor.close()
         if(connection):
@@ -109,7 +110,7 @@ def save_image_to_mysql(user_id, image_name):
             image_data = file.read()
 
         insert_query = """INSERT INTO images (user_id, file_name, file_size, file_type, file_data) VALUES (%s, %s, %s, %s, %s)"""
-        image_values = (user_id, image_name, len(image_data), "image/jpeg", image_data)
+        image_values = (user_id, image_name.split("./temp/",1)[1], len(image_data), "image/jpeg", image_data)
         cursor.execute(insert_query, image_values)
 
         connection.commit()
