@@ -130,6 +130,8 @@ def uploadProfileImage(username):
                 if os.path.isfile(file_path):
                     os.remove(file_path)
             os.rmdir(TEMP_DIR)
+        else:
+            print("Path doesnot exist")
         
         return redirect(url_for('profileData', username=username))
     except Exception as e:

@@ -26,7 +26,6 @@ def auto_authenticate():
 
 @app.route('/')
 def home():
-    connectDB()
     token = session.get('jwt_token')
     if not token:
         return render_template('index.html', isAdmin = "False", user = "False")
@@ -229,6 +228,8 @@ def upload_images():
             if os.path.isfile(file_path):
                 os.remove(file_path)
         os.rmdir(TEMP_DIR)
+    else:
+        print("Path doesnot exist")
 
     return redirect(url_for('create'))
 

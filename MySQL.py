@@ -78,7 +78,10 @@ def cursorMake():
 def connectDB():
     try:
         connect_to_database()
-        cursorMake()
+        if(connection):
+            cursorMake()
+        else:
+            return None
         return
     except:
         return None
@@ -110,7 +113,6 @@ def save_image_to_mysql(user_id, image_name):
         cursor.execute(insert_query, image_values)
 
         connection.commit()
-        print("Image saved to MySQL database successfully.")
 
     except mysql.connector.Error as error:
         print("Failed to save image to MySQL database:", error)
