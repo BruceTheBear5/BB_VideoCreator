@@ -15,6 +15,11 @@ scroll_params = {
 }
 
 def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "360p", tranistion = None):
+    if not os.path.exists(imgFolderName):
+        os.makedirs(imgFolderName)
+    if not os.path.exists(audioFolderName):
+        os.makedirs(audioFolderName)
+    
     images = [img for img in os.listdir(imgFolderName) if any(img.endswith(format) for format in supported_formats_images)]
     audios = [audio for audio in os.listdir(audioFolderName) if (audio.endswith(('.mp3', '.wav', '.aac', '.mpga')))]
     # print(audios)
