@@ -270,7 +270,7 @@ def videoCreate():
         Transition = request.json.get('Transition', None)
         vidResolution = request.json.get('vidResolution', '360p')
         
-        createVideo('./Selected','./SelectedAudio',timePerImage=imgDuration,resolution=vidResolution,tranistion = None)
+        createVideo('./Selected','./SelectedAudio',timePerImage=imgDuration,resolution=vidResolution,tranistion = Transition)
         return jsonify({'message': 'Video generation successful'})
     except Exception as e:
         print("Error:", e)
