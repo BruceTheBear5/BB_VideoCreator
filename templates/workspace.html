@@ -85,8 +85,7 @@
                     console.error('Error:', error);
                 });
             }
-            
-            
+              
             images.forEach(function (image) {
                 var img = document.createElement("img");
                 img.src = "data:image/jpeg;base64," + image.data;
@@ -146,17 +145,20 @@
             <div id="transitionEffect">
                 <label for="transitionType">Transition Effect:</label>
                 <select id="transitionType">
-                    <option value="fade">Fade</option>
-                    <option value="slide">Slide</option>
-                    <option value="zoom">Zoom</option>
+                    <option value="fadeIn">Fade In</option>
+                    <option value="fadeOut">Fade Out</option>
+                    <option value="fadeInOut">Fade In Out</option>
+                    <option value="crossFadeIn">Cross Fade In</option>
+                    <option value="crossFadeOut">Cross Fade Out</option>
+                    <option value="crossFadeInOut">Cross Fade In Out</option>
                 </select>
             </div>
             <div id="outputSettings">
                 <label for="resolution">Video Resolution:</label>
                 <select id="resolution">
+                    <option value="360p">360p</option>
                     <option value="720p">720p</option>
                     <option value="1080p">1080p</option>
-                    <option value="1980p">1980p</option>
                     <option value="4k">4k</option>
                 </select>
                 <label for="quality">Video Quality:</label>
@@ -183,11 +185,6 @@
                     <i class="fas fa-download"></i> Download Video
                 </button>
             </div>
-            <!-- <div class="control-bar">
-                <button id="playButton" class="control-button">Play</button>
-                <button id="pauseButton" class="control-button">Pause</button>
-                <button id="rewindButton" class="control-button">Rewind</button>
-            </div> -->
         </div>
     </div>
 

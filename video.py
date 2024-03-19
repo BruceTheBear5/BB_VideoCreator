@@ -5,7 +5,6 @@ import os
 import math
 
 video_name = 'output_video.mp4'
-width, height = 640, 480 
 supported_formats = [".jpeg", ".jpg", ".png", ".webp"]
 scroll_params = {
     'x_speed': 0, 
@@ -13,11 +12,24 @@ scroll_params = {
     'apply_to': 'mask'
 }
 
-def createVideo(imgFolderName, musicFileName, timePerImage, fadeIn = False, crossFadeIn=False, fadeOut = False, crossFadeOut=False, fadeInOut = False, crossFadeInOut = False, scrollEff=False):
+def createVideo(imgFolderName, musicFileName = None, timePerImage = 3, resolution = "360p", fadeIn = False, crossFadeIn=False, fadeOut = False, crossFadeOut=False, fadeInOut = False, crossFadeInOut = False, scrollEff=False):
     images = [img for img in os.listdir(imgFolderName) if any(img.endswith(format) for format in supported_formats)]
     resized_image_paths = []
     clips = []
+    
+    if resolution == "360p":
+        width, height = 640, 360
+    elif resolution == "720p":
+        width, height = 1280, 720
+    elif resolution == "1080p":
+        width, height = 1920, 1080
+    elif resolution == "4k":
+        width, height = 3840, 2160
+    else:
+        width, height = 640, 360   
+    
     black_screen = ColorClip(size=(width, height), color=(0, 0, 0), duration=0.25)
+        
 
     if(fadeIn):
         for image in images:
@@ -136,23 +148,24 @@ def createVideo(imgFolderName, musicFileName, timePerImage, fadeIn = False, cros
         
     for clip in clips:
         final_clip = concatenate_videoclips([final_clip, clip])
+        
+    if musicFileName is not None:
+        audio_clip = AudioFileClip(musicFileName)
+        audio_duration = audio_clip.duration
+        # print("Original audio duration:", audio_duration)
 
-    audio_clip = AudioFileClip(musicFileName)
-    audio_duration = audio_clip.duration
-    # print("Original audio duration:", audio_duration)
+        video_duration = final_clip.duration
+        # print("Video duration:", video_duration)
 
-    video_duration = final_clip.duration
-    # print("Video duration:", video_duration)
+        repetitions = max(math.ceil(float(video_duration) / float(audio_duration)) + 1, 1)
+        # print("Repetitions needed:", repetitions)
 
-    repetitions = max(math.ceil(float(video_duration) / float(audio_duration)) + 1, 1)
-    # print("Repetitions needed:", repetitions)
+        audio_clips = [audio_clip] * repetitions
+        concatenated_audio_clip = concatenate_audioclips(audio_clips)
+        concatenated_audio_clip = concatenated_audio_clip.set_duration(video_duration)
+        # print("Concatenated audio duration:", concatenated_audio_clip.duration)
 
-    audio_clips = [audio_clip] * repetitions
-    concatenated_audio_clip = concatenate_audioclips(audio_clips)
-    concatenated_audio_clip = concatenated_audio_clip.set_duration(video_duration)
-    # print("Concatenated audio duration:", concatenated_audio_clip.duration)
-
-    final_clip = final_clip.set_audio(concatenated_audio_clip)
+        final_clip = final_clip.set_audio(concatenated_audio_clip)
 
     
     final_clip.write_videofile(video_name, fps = 1)
@@ -162,4 +175,4 @@ def createVideo(imgFolderName, musicFileName, timePerImage, fadeIn = False, cros
 
     print("Video created successfully!")
 
-createVideo("./static/Images", "./try.mp3", 10, scrollEff = True)
+createVideo("./static/Images")
