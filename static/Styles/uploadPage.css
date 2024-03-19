@@ -200,6 +200,7 @@ p {
   height: 100vh;
   background: rgba(0, 0, 0, 0.692);
   display: none;
+  transition: 0.5s;
 }
 
 svg {
