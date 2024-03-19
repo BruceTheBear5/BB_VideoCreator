@@ -160,16 +160,10 @@ def retrieve_image_from_mysql(userId):
 
         cursor = connection.cursor()
         query = "SELECT file_data, file_name FROM images WHERE user_id = %s"
-        
-        while True:
-            query = "SELECT file_data, file_name FROM images WHERE user_id = %s LIMIT %s OFFSET %s"
-            cursor.execute(query, (userId, limit, offset))
-            rows = cursor.fetchall()
-            
-            if not rows:
-                break
-            
-            for row in rows:
+        Images = []  
+        cursor.execute(query, (userId, ))
+        rows = cursor.fetchall()
+        for row in rows:
                 file_name = row[1]
                 image_len = len(row[0])
                 file_type = "image/jpg"
@@ -415,10 +409,10 @@ def sort_mysql(userId, sortBy):
     cursor = None
     try:
         connection = get_connection()
-
         cursor = connection.cursor()
-        query = f"SELECT file_data, file_name FROM images WHERE user_id = %s ORDER BY {sortBy}"
-        cursor.execute(query, (userId,))
+        query = f"SELECT file_data, file_name FROM images WHERE user_id = {userId} ORDER BY {sortBy}"
+        
+        cursor.execute(query)
         rows = cursor.fetchall()
         cursor.close()
         connection.close()
@@ -489,7 +483,6 @@ def search_mysql(userId, searchStr):
             release_connection(connection)
 
 
-connectDB()
 # users = [
 #     User("John Doe", "johndoe", "john@example.com", "password123", isAdmin="False"),
 #     User("Jane Smith", "janesmith", "jane@example.com", "password456", isAdmin="True"),
@@ -508,13 +501,8 @@ connectDB()
 #     print(type(user.isAdmin))
 
 # save_image_to_mysql(1, "./static/Images/Logo.png")
-<<<<<<< HEAD
-retrieve_images_from_mysql(3)
+# retrieve_images_from_mysql(3)
 # upload_profile_image(1, "./static/Images/alt_image.jpg")
-=======
-# retrieve_image_from_mysql(3)
-# upload_profile_image(2, "./static/Images/alt_image.jpg")
->>>>>>> 7f6fdcb9419b6752cf8816d8302473610f88393d
 # retrieve_profile_image(1)
 
 # AdminRetrieve()
@@ -523,16 +511,12 @@ retrieve_images_from_mysql(3)
 # save_audio_to_mysql(1, '/home/saiyamjain/Downloads/try.mp3')
 # retrieve_audio_from_mysql(3)
             
-# sort_mysql(1, "file_name")
+# start_connection_pool()
+# sort_mysql(3, "file_name")
 # sort_mysql(1, "uploaded_at")
-# sort_mysql(1, "file_size")
-# search_mysql(1, "mac")
+# sort_mysql(3, "file_size")
+# search_mysql(3, "C")
 
-<<<<<<< HEAD
 # con = connect_to_database()
 # con.close
 
-=======
-# con = get_connection()
-# con.close
->>>>>>> 7f6fdcb9419b6752cf8816d8302473610f88393d
