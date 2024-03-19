@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 {% endblock %}
 {% block scripts %}
-<script src = '../static/Scripts/workspace.js' defer></script>
+<script src='../static/Scripts/workspace.js' defer></script>
 {% endblock %}
 
 {% block content %}
@@ -14,15 +14,15 @@
     <nav id="Navbar">
         <a href="./" class="NavLink Logo" id="HomePage"><img src="../static/Images/Logo.png" alt="Logo"
                 class="Logo"></a>
-            <div id="LinkContainer">
-                <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab">Profile</a>
-                <a href="./upload" class="NavLink">Upload</a>
-                {% if isAdmin == "True"%}
-                <div id="AdminTab">
-                    <a href="./adminPage" class="NavLink">Admin hub</a>
-                </div>
-                {% endif %}
+        <div id="LinkContainer">
+            <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab">Profile</a>
+            <a href="./upload" class="NavLink">Upload</a>
+            {% if isAdmin == "True"%}
+            <div id="AdminTab">
+                <a href="./adminPage" class="NavLink">Admin hub</a>
             </div>
+            {% endif %}
+        </div>
         </div>
     </nav>
 </header>
@@ -30,18 +30,20 @@
 <div class="MainBody">
     <div class="Heading">The Workspace</div>
 
-    <div id="sort">
-        <label for="sortBy">SortBy</label>
-        <select id="sortBy">
+    <div id="controls">
+        <div id="sort">
+          <label for="sortBy">SortBy</label>
+          <select id="sortBy">
             <option value="uploaded_at">Date</option>
             <option value="file_name">Name</option>
             <option value="file_size">FileSize</option>
-        </select>
-    </div>
-
-    <div id="search">
-        <label for="searchBy">Search By</label>
-        <input type="text" id="searchInput">
+          </select>
+        </div>
+      
+        <div id="search">
+          <label for="searchInput">Search By</label>
+          <input type="text" id="searchInput">
+        </div>
     </div>
 
     <h1 style="width:100%">Previously uploaded images:</h1>
@@ -49,7 +51,9 @@
     <div id="imageContainer">
 
     </div>
+    <div class="imageClear">
     <button id="imageClear">Clear</button>
+    </div>
 
     <div id="controlContainer">
         <h1 style="width:100%">Controls :</h1>
@@ -92,6 +96,19 @@
         </div>
         <div id="buttonContainer">
             <button onclick="generateVideo()">Generate Video</button>
+        </div>
+
+        <div id="videoContainer">
+            <h1 style="width:100%">Video Preview:</h1>
+            <video id="videoPlayer" controls autoplay muted loop>
+                <source src="" type="video/mp4">
+                Your Browser does not support HTML5
+            </video>
+            <div id="downloadVideoButtonContainer">
+                <button onclick="downloadVideo()">
+                    <i class="fas fa-download"></i> Download Video
+                </button>
+            </div>
         </div>
     </div>
 </div>
