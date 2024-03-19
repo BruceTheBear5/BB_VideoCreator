@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, Response, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql, save_image_to_mysql, save_audio_to_mysql, start_connection_pool, close_connection_pool, sort_mysql, search_mysql
+from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql, save_image_to_mysql, save_audio_to_mysql, start_connection_pool, close_connection_pool, sort_mysql
 import os
 import base64
 import jwt
@@ -128,22 +128,8 @@ def profileData(username):
                 upload_profile_image(user.id, "./static/Images/alt_image.jpg")
                 profile_image = retrieve_profile_image(user.id)
             profileImage = base64.b64encode(profile_image.file_data).decode('utf-8')
-            images = retrieve_image_from_mysql(user.id)
-            imageData = []
-            for i in images:
-                print()
-                encoded_image = base64.b64encode(i.file_data).decode('utf-8')
-                img = {'data' : encoded_image, 'name': i.file_name}
-                imageData.append(img)
 
-            audio = retrieve_audio_from_mysql(user.id)
-            audioData = []
-            for a in audio:
-                encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
-                ad = {'data': encoded_audio, 'name': a.file_name}
-                audioData.append(ad)
-
-            return render_template('profile.html', user = user, profileImage = profileImage, images = imageData, audio = audioData, username = user.username, isAdmin = user.isAdmin)
+            return render_template('profile.html', user = user, profileImage = profileImage, username = user.username, isAdmin = user.isAdmin)
         else:
             return redirect(url_for('home'))
     except Exception as e:
@@ -243,25 +229,6 @@ def getUploadedAudio():
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
-    
-@app.route('/searchBy', methods=['POST'])
-def search_by():
-    try:
-        search_value = request.json.get('search', '')
-       
-        userId = session.get("userId")
-        images = search_mysql(userId, search_value)
-        imageData = []
-        for image in images:
-            encoded_image = base64.b64encode(image.file_data).decode('utf-8')
-            img = {'data': encoded_image, 'name': image.file_name}
-            imageData.append(img)
-
-        return jsonify(imageData)
-    
-    except Exception as e:
-        print("Error:", e)
-        return jsonify({'error': str(e)}), 500
 
 @app.route('/Profile/<username>', methods=['POST'])
 def uploadProfileImage(username):

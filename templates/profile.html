@@ -47,29 +47,17 @@
     </div>
 
     <div class="Previous">
-      <div id="uploaded">
+      <div class="uploaded">
       <h1>Previously uploaded Images</h1><br>
       <div id = "imageContainer">
-        {% for image in images %}
-        <div class = "image-item">
-            <a href="data:image/jpeg;base64,{{ image['data'] }}" target="_blank"><img src="data:image/jpeg;base64,{{ image['data'] }}" alt="{{ image['name'] }}" /></a>
-            <label>hello</label>
-        </div>
-        {% endfor %}
+        
       </div>
     </div>
       
-      <div id="uploaded">
+      <div class="uploaded">
         <h1>Previously uploaded Music</h1><br>
-        <div class="showCase">
-          {% for a in audio %}
-          <div class="audioCell">
-            <span class="audioName">{{ a['name'] }}</span>
-            <audio controls>
-              <source src="data:audio/mpeg;base64,{{ a['data'] }}">
-            </audio>
-          </div>
-          {% endfor %}
+        <div id="musicContainer">
+          
         </div>
       </div>
     </div>

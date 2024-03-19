@@ -1,13 +1,5 @@
 @import url(./root.css);
 
-*{
-    color: var(--font);
-}
-
-body{
-    background-color: var(--bg);
-}
-
 .Controls {
     padding-top: 5vh;
 }
