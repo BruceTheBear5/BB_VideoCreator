@@ -166,12 +166,43 @@ def getUploadedImages():
         print("Error:", e)
         return Response(status=500)
     
-@app.route('/getSortedImage')
-def getSortedImage():
+@app.route('/getSortedImageName')
+def getSortedImageName():
     try:
-        sortBy = request.args.get('sortBy')  # Get the sortBy parameter from the query string
         userId = session.get("userId")
-        images = sort_mysql(userId, sortBy)
+        images = sort_mysql(userId, "file_name")
+        imageData = []
+        for image in images:
+            encoded_image = base64.b64encode(image.file_data).decode('utf-8')
+            img = {'data': encoded_image, 'name': image.file_name}
+            imageData.append(img)
+            
+        return jsonify(imageData)
+    except Exception as e:
+        print("Error:", e)
+        return jsonify({'error': str(e)}), 500
+    
+@app.route('/getSortedImageFileSize')
+def getSortedImageFileSize():
+    try:
+        userId = session.get("userId")
+        images = sort_mysql(userId, "file_size")
+        imageData = []
+        for image in images:
+            encoded_image = base64.b64encode(image.file_data).decode('utf-8')
+            img = {'data': encoded_image, 'name': image.file_name}
+            imageData.append(img)
+            
+        return jsonify(imageData)
+    except Exception as e:
+        print("Error:", e)
+        return jsonify({'error': str(e)}), 500
+    
+@app.route('/getSortedImageDate')
+def getSortedImageDate():
+    try:
+        userId = session.get("userId")
+        images = sort_mysql(userId, "uploaded_at")
         imageData = []
         for image in images:
             encoded_image = base64.b64encode(image.file_data).decode('utf-8')
