@@ -22,7 +22,6 @@
                 </div>
                 {% endif %}
             </div>
-            {% endif %}
         </div>
     </nav>
 </header>
@@ -147,10 +146,6 @@
                 <option value="{{ a['name'] }}"><span class="audioName">{{ a['name'] }}</span></option>
                 {% endfor %}
             </select>
-            <form id="audioForm" enctype="multipart/form-data">
-                <input type="file" id="musicUpload" accept="audio/*" name="audioFile">
-                <button type="submit">Upload</button>
-            </form>
         </div>
         <div id="durationSetting">
             <label for="imageDuration">Image Duration (seconds):</label>
@@ -186,4 +181,5 @@
             <button onclick="generateVideo()">Generate Video</button>
         </div>
     </div>
+</div>
 {% endblock %}

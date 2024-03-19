@@ -118,14 +118,14 @@ document.addEventListener('DOMContentLoaded', function () {
             if (response.ok) {
                 return response.text();
             }
-            throw new Error('Network response was not ok.');
+            alert("ERROR: Please upload an image.");
         })
         .then(data => {
             console.log('Redirecting...');
-            window.location.href = '/workspace';
+            // window.location.href = '/workspace';
         })
         .catch(error => {
-            console.error('Error uploading files:', error);
+            console.error('Error uploading images:', error);
         });
     });
     

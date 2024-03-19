@@ -42,7 +42,6 @@ h2{
 nav {
     display: flex;
     justify-content: left;
-    align-items: left;
     flex-direction: column;
     font-size: 2rem;
     width: 10%;  

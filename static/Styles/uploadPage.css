@@ -132,34 +132,45 @@ button{
   padding: 1rem 1rem;
   border: none;
   border-radius: 5vh;
-  width: 33%;
+  width: 35%;
   background: var(--accent);
   cursor: pointer;
   transition: 0.5s;
-  margin-top: 2.5rem;
+  margin: 2rem 0 15vh;
 }
 
 button:hover{
   background: var(--accent-hover);
 }
 
+#audioForm{
+  width: 70vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#audioForm button{
+  width: 40%;
+}
+
 input[type="file"] {
-  width: calc(100% - 20px); /* Adjust width with padding */
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid var(--accent);
+  width: 100%; 
+  padding: 1rem;
+  border-radius: 2vh;
+  border: 1px solid var(--accent2);
   background-color: var(--alter-bg);
   color: var(--font);
   margin-bottom: 15px;
-  cursor: pointer; /* Change cursor on hover */
+  cursor: pointer; 
 }
 
 input[type="file"]::-webkit-file-upload-button {
   background-color: var(--accent);
   color: var(--font);
   border: none;
-  padding: 8px 20px;
-  border-radius: 4px;
+  padding: 1rem;
+  border-radius: 2vh;
   cursor: pointer;
   transition: background-color 0.3s;
 }
