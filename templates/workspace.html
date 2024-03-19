@@ -44,7 +44,7 @@
                 })
                 .then(response => {
                     if (response.ok) {
-                        return response.json(); // Parse JSON response
+                        return response.json();
                     } else {
                         throw new Error('Failed to remove all images from selection.');
                     }
