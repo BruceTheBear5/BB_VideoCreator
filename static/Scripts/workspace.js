@@ -48,18 +48,32 @@ window.onload = function () {
 
 sortBySelect.addEventListener("change", function () {
     console.log(sortBySelect.value);
-    while (imageContainer.firstChild) {
-        imageContainer.removeChild(imageContainer.firstChild);
-    }
+    imageContainer.innerHTML = ""
     var selectedValue = sortBySelect.value;
-    var url = '/getSortedImage?sortBy=' + selectedValue;
-
-    fetch(url)
-        .then(response => response.json())
-        .then(images => {
-            loadImages(images);
-        })
-        .catch(error => console.error('Error fetching sorted images:', error));
+    if (selectedValue == "file_name") {
+        fetch('/getSortedImageName')
+            .then(response => response.json())
+            .then(images => {
+                loadImages(images);
+            })
+            .catch(error => console.error('Error fetching sorted images:', error));
+    }
+    if (selectedValue == "uploaded_at") {
+        fetch('/getSortedImageFileSize')
+            .then(response => response.json())
+            .then(images => {
+                loadImages(images);
+            })
+            .catch(error => console.error('Error fetching sorted images:', error));
+    }
+    if (selectedValue == "file_size") {
+        fetch('/getSortedImageDate')
+            .then(response => response.json())
+            .then(images => {
+                loadImages(images);
+            })
+            .catch(error => console.error('Error fetching sorted images:', error));
+    }
 });
 
 function toggleImage(image, selectButton) {
