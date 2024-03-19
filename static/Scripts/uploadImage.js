@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
             formData.append('files[]', file);
         });
     
-        fetch('/Upload', {
+        fetch('/Upload-images', {
             method: 'POST',
             body: formData
         })
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(data => {
             console.log('Redirecting...');
-            window.location.href = '/create-video';
+            window.location.href = '/workspace';
         })
         .catch(error => {
             console.error('Error uploading files:', error);

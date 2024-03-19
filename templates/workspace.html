@@ -16,7 +16,7 @@
                 class="Logo"></a>
             <div id="LinkContainer">
                 <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab">Profile</a>
-                <a href="./upload-images" class="NavLink">Upload</a>
+                <a href="./upload" class="NavLink">Upload</a>
                 {% if isAdmin == "True"%}
                 <div id="AdminTab">
                     <a href="./adminPage" class="NavLink">Admin hub</a>
@@ -133,10 +133,6 @@
                     <option value="{{ a['name'] }}"><span class="audioName">{{ a['name'] }}</span></option>
                     {% endfor %}
                 </select>
-                <form id="audioForm" enctype="multipart/form-data">
-                    <input type="file" id="musicUpload" accept="audio/*" name="audioFile">
-                    <button type="submit">Upload</button>
-                </form>
             </div>
             <div id="durationSetting">
                 <label for="imageDuration">Image Duration (seconds):</label>
@@ -187,59 +183,4 @@
             </div>
         </div>
     </div>
-
-
-    <script>
-        function allowDrop(event) {
-            event.preventDefault();
-        }
-
-        function drop(event) {
-            event.preventDefault();
-            var data = event.dataTransfer.getData("text/plain");
-            var img = new Image();
-            img.src = data;
-            event.target.appendChild(img);
-            var draggedItem = document.querySelector('img[src="' + data + '"]');
-            if (draggedItem) {
-                draggedItem.parentNode.removeChild(draggedItem);
-            }
-        }
-        
-        var gridItems = document.querySelectorAll('.grid-item');
-        gridItems.forEach(function (item) {
-            item.addEventListener('dragstart', function (event) {
-                var imgSrc = item.querySelector('img').src;
-                event.dataTransfer.setData('text/plain', imgSrc);
-            });
-        });
-        
-        // For Audio
-        document.addEventListener('DOMContentLoaded', function () {
-            const audioForm = document.getElementById('audioForm');
-            
-            audioForm.addEventListener('submit', function (e) {
-                e.preventDefault();
-                
-                const formData = new FormData(audioForm);
-                
-                fetch('/upload-audio', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => {
-                    if (response.ok) {
-                        return response.text();
-                        }
-                        throw new Error('Network response was not ok.');
-                    })
-                    .then(data => {
-                        console.log('Audio upload successful:', data);
-                    })
-                    .catch(error => {
-                        console.error('Error uploading audio:', error);
-                    });
-                });
-            });
-            </script>
 {% endblock %}
