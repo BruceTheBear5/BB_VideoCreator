@@ -109,6 +109,7 @@ nav {
     min-height: 15vh;
     width: 90%;
     float: right;
+    padding: 2rem 0;
 }
 
 #footer p {
