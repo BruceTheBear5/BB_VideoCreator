@@ -3,8 +3,9 @@
   {% block stylesheets %}
     <link rel="stylesheet" href="../static/Styles/profile.css" />
   {% endblock %}
-  {% block scripts %}{% endblock %}
-
+  {% block scripts %}
+  <script src = '../static/Scripts/profilePage.js' defer></script>
+  {% endblock %}
 
   {% block content %}
   <header>
@@ -54,7 +55,7 @@
             <a href="data:image/jpeg;base64,{{ image['data'] }}" target="_blank"><img src="data:image/jpeg;base64,{{ image['data'] }}" alt="{{ image['name'] }}" /></a>
         </div>
         {% endfor %}
-        </div>
+      </div>
     </div>
       
       <div id="uploaded">

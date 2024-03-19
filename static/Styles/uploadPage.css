@@ -183,6 +183,7 @@ input[type="file"]::-webkit-file-upload-button:hover {
   height: 101vh;
   background: rgba(0, 0, 0, 0.692);
   display: none;
+  transition: 0.5s;
 }
 
 svg {
