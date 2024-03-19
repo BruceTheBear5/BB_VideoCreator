@@ -2,7 +2,6 @@ var imageContainer = document.getElementById("imageContainer");
 var sortBySelect = document.getElementById("sortBy");
 
 function loadImages(imageSet) {
-    // Ensure imageContainer exists before trying to modify it
     if (imageContainer) {
         while (imageContainer.firstChild) {
             imageContainer.removeChild(imageContainer.firstChild);

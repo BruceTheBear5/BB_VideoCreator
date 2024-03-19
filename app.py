@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, Response, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql, save_image_to_mysql, save_audio_to_mysql, start_connection_pool, close_connection_pool, sort_mysql
+from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql, save_image_to_mysql, save_audio_to_mysql, start_connection_pool, close_connection_pool, sort_mysql, search_mysql
 import os
 import base64
 import jwt
@@ -243,6 +243,25 @@ def getUploadedAudio():
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
+    
+@app.route('/searchBy', methods=['POST'])
+def search_by():
+    try:
+        search_value = request.json.get('search', '')
+       
+        userId = session.get("userId")
+        images = search_mysql(userId, search_value)
+        imageData = []
+        for image in images:
+            encoded_image = base64.b64encode(image.file_data).decode('utf-8')
+            img = {'data': encoded_image, 'name': image.file_name}
+            imageData.append(img)
+
+        return jsonify(imageData)
+    
+    except Exception as e:
+        print("Error:", e)
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/Profile/<username>', methods=['POST'])
 def uploadProfileImage(username):

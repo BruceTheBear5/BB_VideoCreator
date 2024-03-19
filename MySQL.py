@@ -463,7 +463,7 @@ def search_mysql(userId, searchStr):
                 file_data = row[0]
                 upload_date = datetime.now()
                 image = Image(file_name, image_len, file_type, file_data, upload_date)
-                image.display()
+                # image.display()
                 Images.append(image)
 
         print(len(Images))
