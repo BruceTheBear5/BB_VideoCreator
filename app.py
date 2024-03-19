@@ -367,7 +367,7 @@ def upload_audio():
     if 'audioFile' not in request.files:
         return "No audio file uploaded", 400
 
-    audio_files = request.files.getlist['audioFile']
+    audio_files = request.files.getlist('audioFile')
     TEMP_DIR = './temp/'
 
     if not os.path.exists(TEMP_DIR):
