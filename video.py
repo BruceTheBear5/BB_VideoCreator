@@ -3,8 +3,10 @@ from moviepy.video.fx.all import scroll
 from PIL import Image
 import os
 import math
+import shutil
 
-video_name = 'output_video.mp4'
+video_name = './output_video.mp4'
+final_video_path = './static/output_video.mp4'
 supported_formats_images = [".jpeg", ".jpg", ".png", ".webp"]
 scroll_params = {
     'x_speed': 0, 
@@ -12,7 +14,7 @@ scroll_params = {
     'apply_to': 'mask'
 }
 
-def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "360p", fadeIn = False, crossFadeIn=False, fadeOut = False, crossFadeOut=False, fadeInOut = False, crossFadeInOut = False, scrollEff=False):
+def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "360p", tranistion = None):
     images = [img for img in os.listdir(imgFolderName) if any(img.endswith(format) for format in supported_formats_images)]
     audios = [audio for audio in os.listdir(audioFolderName) if (audio.endswith(('.mp3', '.wav', '.aac', '.mpga')))]
     # print(audios)
@@ -32,7 +34,7 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
     
     black_screen = ColorClip(size=(width, height), color=(0, 0, 0), duration=0.25)
         
-    if(fadeIn):
+    if(tranistion == "fadeIn"):
         for image in images:
             img_path = os.path.join(imgFolderName, image)
             img = Image.open(img_path)
@@ -46,7 +48,7 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
             clip = clip.fadein(1).fadeout(0)
             clips.append(clip)
         
-    elif(crossFadeIn):
+    elif(tranistion == "crossFadeIn"):
         for image in images:
             img_path = os.path.join(imgFolderName, image)
             img = Image.open(img_path)
@@ -60,7 +62,7 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
             clip = clip.crossfadein(1).crossfadeout(0)
             clips.append(clip)
         
-    elif(fadeOut):
+    elif(tranistion == "fadeOut"):
         for image in images:
             img_path = os.path.join(imgFolderName, image)
             img = Image.open(img_path)
@@ -74,7 +76,7 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
             clip = clip.fadein(0).fadeout(1)
             clips.append(clip)
             
-    elif(crossFadeOut):
+    elif(tranistion == "crossFadeOut"):
         for image in images:
             img_path = os.path.join(imgFolderName, image)
             img = Image.open(img_path)
@@ -88,7 +90,7 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
             clip = clip.crossfadein(0).crossfadeout(1)
             clips.append(clip)
         
-    elif(fadeInOut):
+    elif(tranistion == "fadeInOut"):
         for image in images:
             img_path = os.path.join(imgFolderName, image)
             img = Image.open(img_path)
@@ -103,7 +105,7 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
             clips.append(clip)
             
         
-    elif(crossFadeInOut):
+    elif(tranistion == "crossFadeInOut"):
         for image in images:
             img_path = os.path.join(imgFolderName, image)
             img = Image.open(img_path)
@@ -117,7 +119,7 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
             clip = clip.crossfadein(1).crossfadeout(1)
             clips.append(clip)
             
-    elif(scrollEff):
+    elif(tranistion == "scrollEff"):
         for image in images:
             img_path = os.path.join(imgFolderName, image)
             img = Image.open(img_path)
@@ -144,7 +146,6 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
             clip = clip.set_duration(timePerImage)
             clips.append(clip)
         
-
     final_clip = black_screen
         
     for clip in clips:
@@ -161,22 +162,23 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
                 mainAudioList = [mainAudio] + [audio_clip]
                 mainAudio = concatenate_audioclips(mainAudioList)
         
-        audio_clip = mainAudio
-        audio_duration = audio_clip.duration
-        # print("Original audio duration:", audio_duration)
+        if mainAudio != '':
+            audio_clip = mainAudio
+            audio_duration = audio_clip.duration
+            # print("Original audio duration:", audio_duration)
 
-        video_duration = final_clip.duration
-        # print("Video duration:", video_duration)
+            video_duration = final_clip.duration
+            # print("Video duration:", video_duration)
 
-        repetitions = max(math.ceil(float(video_duration) / float(audio_duration)) + 1, 1)
-        # print("Repetitions needed:", repetitions)
+            repetitions = max(math.ceil(float(video_duration) / float(audio_duration)) + 1, 1)
+            # print("Repetitions needed:", repetitions)
 
-        audio_clips = [audio_clip] * repetitions
-        concatenated_audio_clip = concatenate_audioclips(audio_clips)
-        concatenated_audio_clip = concatenated_audio_clip.set_duration(video_duration)
-        # print("Concatenated audio duration:", concatenated_audio_clip.duration)
+            audio_clips = [audio_clip] * repetitions
+            concatenated_audio_clip = concatenate_audioclips(audio_clips)
+            concatenated_audio_clip = concatenated_audio_clip.set_duration(video_duration)
+            # print("Concatenated audio duration:", concatenated_audio_clip.duration)
 
-        final_clip = final_clip.set_audio(concatenated_audio_clip)
+            final_clip = final_clip.set_audio(concatenated_audio_clip)
 
     
     final_clip.write_videofile(video_name, fps = 1)
@@ -184,6 +186,9 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
     for resized_img_path in resized_image_paths:
         os.remove(resized_img_path)
 
+    shutil.move(video_name, final_video_path)
+    
     print("Video created successfully!")
 
-createVideo("./static/Images", "./SelectedAudio", timePerImage= 10, fadeInOut= True)
+if __name__ == "__main__":
+    createVideo("./static/Images", "./SelectedAudio", timePerImage= 10)

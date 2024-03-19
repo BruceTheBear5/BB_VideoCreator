@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 {% endblock %}
 {% block scripts %}
-<script src = '../static/Scripts/workspace.js' defer></script>
+<script src='../static/Scripts/workspace.js' defer></script>
 {% endblock %}
 
 {% block content %}
@@ -14,15 +14,15 @@
     <nav id="Navbar">
         <a href="./" class="NavLink Logo" id="HomePage"><img src="../static/Images/Logo.png" alt="Logo"
                 class="Logo"></a>
-            <div id="LinkContainer">
-                <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab">Profile</a>
-                <a href="./upload" class="NavLink">Upload</a>
-                {% if isAdmin == "True"%}
-                <div id="AdminTab">
-                    <a href="./adminPage" class="NavLink">Admin hub</a>
-                </div>
-                {% endif %}
+        <div id="LinkContainer">
+            <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab">Profile</a>
+            <a href="./upload" class="NavLink">Upload</a>
+            {% if isAdmin == "True"%}
+            <div id="AdminTab">
+                <a href="./adminPage" class="NavLink">Admin hub</a>
             </div>
+            {% endif %}
+        </div>
         </div>
     </nav>
 </header>
@@ -92,6 +92,19 @@
         </div>
         <div id="buttonContainer">
             <button onclick="generateVideo()">Generate Video</button>
+        </div>
+
+        <div id="videoContainer">
+            <h1 style="width:100%">Video Preview:</h1>
+            <video id="videoPlayer" controls autoplay muted loop>
+                <source src="" type="video/mp4">
+                Your Browser does not support HTML5
+            </video>
+            <div id="downloadVideoButtonContainer">
+                <button onclick="downloadVideo()">
+                    <i class="fas fa-download"></i> Download Video
+                </button>
+            </div>
         </div>
     </div>
 </div>

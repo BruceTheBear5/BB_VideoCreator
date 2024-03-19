@@ -84,11 +84,11 @@ searchInput.addEventListener("keypress", function (event) {
             },
             body: JSON.stringify({ search: searchValue })
         })
-        .then(response => response.json())
-        .then(images => {
-            loadImages(images);
-        })
-        .catch(error => console.error('Error fetching images:', error));
+            .then(response => response.json())
+            .then(images => {
+                loadImages(images);
+            })
+            .catch(error => console.error('Error fetching images:', error));
     }
 });
 
@@ -178,3 +178,35 @@ clear.addEventListener('click', function () {
         element.classList.remove('bi-check-circle-fill');
     });
 });
+
+function generateVideo() {
+    var imgDuration = document.getElementById("imageDuration").value;
+    var Transition = document.getElementById("transitionType").value;
+    var vidResolution = document.getElementById("resolution").value;
+
+    var requestData = {
+        imgDuration: imgDuration,
+        Transition: Transition,
+        vidResolution: vidResolution
+    };
+
+    fetch('/videoCreate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+    })
+        .then(response => {
+            if (response.ok) {
+                console.log("Hi");
+                document.getElementById('videoPlayer').querySelector('source').src = '../static/output_video.mp4';
+                document.getElementById('videoPlayer').load();
+            } else {
+                console.error('Failed to generate video');
+            }
+        })
+        .catch(error => {
+            console.error('Error generating video:', error);
+        });
+}
