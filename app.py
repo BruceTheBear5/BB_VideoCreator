@@ -214,16 +214,33 @@ def getSortedImageDate():
         print("Error:", e)
         return jsonify({'error': str(e)}), 500
     
-@app.route('/getUploadedAudio') #For JS
-def getUploadedAudio(userId):
+@app.route('/getPreloadedAudio')
+def getPreloadedAudio():
     try:
+        userId = 1
         audio = retrieve_audio_from_mysql(userId)
         audioData = []
         for a in audio:
             encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
             ad = {'data': encoded_audio, 'name': a.file_name}
             audioData.append(ad)
-        return audioData
+        return jsonify(audioData)
+    except Exception as e:
+        print("Error:", e)
+        return Response(status=500)
+    
+@app.route('/getUploadedAudio') #For JS
+def getUploadedAudio():
+    try:
+        audioData = []   
+        userId = session.get("userId")
+        audio = retrieve_audio_from_mysql(userId)
+        for a in audio:
+            encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
+            ad = {'data': encoded_audio, 'name': a.file_name}
+            audioData.append(ad)
+            
+        return jsonify(audioData)
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
@@ -343,19 +360,7 @@ def upload_audio():
 def create():
     try:
         if "userId" in session:
-            audio = retrieve_audio_from_mysql(1)
-            audioData = []
-            for a in audio:
-                encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
-                ad = {'data': encoded_audio, 'name': a.file_name}
-                audioData.append(ad)    
-            audio = retrieve_audio_from_mysql(session['userId'])
-            for a in audio:
-                encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
-                ad = {'data': encoded_audio, 'name': a.file_name}
-                audioData.append(ad)
-
-            return render_template('workspace.html', audio = audioData, username = session["username"], isAdmin = session["userIsAdmin"])
+            return render_template('workspace.html', username = session["username"], isAdmin = session["userIsAdmin"])
 
     except Exception as e:
         print("Error:", e)
