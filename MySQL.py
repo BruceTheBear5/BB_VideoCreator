@@ -134,30 +134,37 @@ def retrieve_users_from_mysql(email):
 
     except mysql.connector.Error as error:
         print("Failed to retrieve data from MySQL database:", error)
-
-def retrieve_image_from_mysql(userId):
+        
+def retrieve_images_from_mysql(userId):
     try:
-        query = "SELECT file_data, file_name FROM images WHERE user_id = %s"
+        limit=5
+        images = []
+        offset = 0
         
-        cursor.execute(query, (userId, ))
-        rows = cursor.fetchall()
-        
-        Images = []
-        if rows:
-            for i, row in enumerate(rows):
+        while True:
+            query = "SELECT file_data, file_name FROM images WHERE user_id = %s LIMIT %s OFFSET %s"
+            cursor.execute(query, (userId, limit, offset))
+            rows = cursor.fetchall()
+            
+            if not rows:
+                break
+            
+            for row in rows:
                 file_name = row[1]
                 image_len = len(row[0])
                 file_type = "image/jpg"
                 file_data = row[0]
                 upload_date = datetime.now()
                 image = Image(file_name, image_len, file_type, file_data, upload_date)
-                Images.append(image)
+                images.append(image)
                 
-        return Images
+            offset += limit
+        
+        return images
 
     except mysql.connector.Error as error:
-        print("Failed to retrieve image from MySQL database:", error)
-
+        print("Failed to retrieve images from MySQL database:", error)
+        
 def upload_profile_image(user_id, image_name):
     """When user is created, use upload_profile_image(user_id, "./Images/alt_image.jpg")"""
     try:     
@@ -365,6 +372,8 @@ def search_mysql(userId, searchStr):
         print("Failed to retrieve users:", error)
         return []
 
+
+connectDB()
 # users = [
 #     User("John Doe", "johndoe", "john@example.com", "password123", isAdmin="False"),
 #     User("Jane Smith", "janesmith", "jane@example.com", "password456", isAdmin="True"),
@@ -383,7 +392,7 @@ def search_mysql(userId, searchStr):
 #     print(type(user.isAdmin))
 
 # save_image_to_mysql(1, "./static/Images/Logo.png")
-# retrieve_image_from_mysql(3)
+retrieve_images_from_mysql(3)
 # upload_profile_image(1, "./static/Images/alt_image.jpg")
 # retrieve_profile_image(1)
 
@@ -400,3 +409,4 @@ def search_mysql(userId, searchStr):
 
 # con = connect_to_database()
 # con.close
+
