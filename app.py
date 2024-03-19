@@ -139,7 +139,7 @@ def profileData(username):
         if "userId" in session:
             UserEmail = session["userEmail"]
             user = retrieve_users_from_mysql(UserEmail)
-            profile_image = retrieve_profile_image(user.id)
+            profile_image = retrieve_profile_image(user.id) #try below functions in JS
             if profile_image == None:
                 upload_profile_image(user.id, "./static/Images/alt_image.jpg")
             profile_image = retrieve_profile_image(user.id)
@@ -161,6 +161,47 @@ def profileData(username):
             return render_template('profile.html', user = user, profileImage = profileImage, images = imageData, audio = audioData, username = user.username, isAdmin = user.isAdmin)
         else:
             return redirect(url_for('home'))
+    except Exception as e:
+        print("Error:", e)
+        return Response(status=500)
+    
+@app.route('/profilePicture') #For JS
+def getProfileImage(userId):
+    try:
+        profile_image = retrieve_profile_image(userId)
+        if profile_image == None:
+            upload_profile_image(userId, "./static/Images/alt_image.jpg")
+        profile_image = retrieve_profile_image(userId)
+        profileImage = base64.b64encode(profile_image.file_data).decode('utf-8')
+        return profileImage
+    except Exception as e:
+        print("Error:", e)
+        return Response(status=500)
+    
+@app.route('/getUploadedImages') #For JS
+def getUploadedImages(userId):
+    try:
+        images = retrieve_image_from_mysql(userId)
+        imageData = []
+        for i in images:
+            encoded_image = base64.b64encode(i.file_data).decode('utf-8')
+            img = {'data' : encoded_image, 'name': i.file_name}
+            imageData.append(img)
+        return imageData
+    except Exception as e:
+        print("Error:", e)
+        return Response(status=500)
+    
+@app.route('/getUploadedAudio') #For JS
+def getUploadedAudio(userId):
+    try:
+        audio = retrieve_audio_from_mysql(userId)
+        audioData = []
+        for a in audio:
+            encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
+            ad = {'data': encoded_audio, 'name': a.file_name}
+            audioData.append(ad)
+        return audioData
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
@@ -255,20 +296,20 @@ def upload_images():
 def create():
     try:
         if "userId" in session:
-            images = retrieve_image_from_mysql(session["userId"])
+            images = retrieve_image_from_mysql(session["userId"]) #try below functions in JS
             imageData = []
             for i in images:
                 encoded_image = base64.b64encode(i.file_data).decode('utf-8')
                 img = {'data' : encoded_image, 'name': i.file_name}
                 imageData.append(img)
 
-            audio = retrieve_audio_from_mysql(1)
+            audio = retrieve_audio_from_mysql(1) #try below functions in JS
             audioData = []
             for a in audio:
                 encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
                 ad = {'data': encoded_audio, 'name': a.file_name}
                 audioData.append(ad)    
-            audio = retrieve_audio_from_mysql(session['userId'])
+            audio = retrieve_audio_from_mysql(session['userId']) #try below functions in JS
             for a in audio:
                 encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
                 ad = {'data': encoded_audio, 'name': a.file_name}

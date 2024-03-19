@@ -20,7 +20,9 @@ def home():
 @app.route('/connect-db')
 def connect_db():
     try:
-        connectDB()
+        connection = connectDB()
+        if connection is None:
+            return render_template('Error404.html')
         return "Database connection established.", 200
     except Exception as e:
         return str(e), 500
@@ -206,6 +208,8 @@ def upload_images():
             if os.path.isfile(file_path):
                 os.remove(file_path)
         os.rmdir(TEMP_DIR)
+    else:
+        print("Path doesnot exist")
 
     return redirect(url_for('create'))
     

@@ -113,7 +113,6 @@ def save_image_to_mysql(user_id, image_path, image_name):
         cursor.execute(insert_query, image_values)
 
         connection.commit()
-        print("Image saved to MySQL database successfully.")
 
     except psycopg2.Error as error:
         print("Failed to save image to MySQL database:", error)
@@ -161,13 +160,10 @@ def retrieve_image_from_mysql(userId):
 
         cursor = connection.cursor()
         query = "SELECT file_data, file_name FROM images WHERE user_id = %s"
-        
+        Images = []  
         cursor.execute(query, (userId, ))
         rows = cursor.fetchall()
-        
-        Images = []
-        if rows:
-            for i, row in enumerate(rows):
+        for row in rows:
                 file_name = row[1]
                 image_len = len(row[0])
                 file_type = "image/jpg"
@@ -413,10 +409,10 @@ def sort_mysql(userId, sortBy):
     cursor = None
     try:
         connection = get_connection()
-
         cursor = connection.cursor()
-        query = f"SELECT file_data, file_name FROM images WHERE user_id = %s ORDER BY {sortBy}"
-        cursor.execute(query, (userId,))
+        query = f"SELECT file_data, file_name FROM images WHERE user_id = {userId} ORDER BY {sortBy}"
+        
+        cursor.execute(query)
         rows = cursor.fetchall()
         cursor.close()
         connection.close()
@@ -486,6 +482,7 @@ def search_mysql(userId, searchStr):
         if connection:
             release_connection(connection)
 
+
 # users = [
 #     User("John Doe", "johndoe", "john@example.com", "password123", isAdmin="False"),
 #     User("Jane Smith", "janesmith", "jane@example.com", "password456", isAdmin="True"),
@@ -504,8 +501,8 @@ def search_mysql(userId, searchStr):
 #     print(type(user.isAdmin))
 
 # save_image_to_mysql(1, "./static/Images/Logo.png")
-# retrieve_image_from_mysql(3)
-# upload_profile_image(2, "./static/Images/alt_image.jpg")
+# retrieve_images_from_mysql(3)
+# upload_profile_image(1, "./static/Images/alt_image.jpg")
 # retrieve_profile_image(1)
 
 # AdminRetrieve()
@@ -514,10 +511,12 @@ def search_mysql(userId, searchStr):
 # save_audio_to_mysql(1, '/home/saiyamjain/Downloads/try.mp3')
 # retrieve_audio_from_mysql(3)
             
-# sort_mysql(1, "file_name")
+# start_connection_pool()
+# sort_mysql(3, "file_name")
 # sort_mysql(1, "uploaded_at")
-# sort_mysql(1, "file_size")
-# search_mysql(1, "mac")
+# sort_mysql(3, "file_size")
+# search_mysql(3, "C")
 
-# con = get_connection()
+# con = connect_to_database()
 # con.close
+
