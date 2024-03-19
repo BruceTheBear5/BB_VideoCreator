@@ -132,7 +132,7 @@ button{
   padding: 1rem 1rem;
   border: none;
   border-radius: 5vh;
-  width: 35%;
+  width: 33%;
   background: var(--accent);
   cursor: pointer;
   transition: 0.5s;
@@ -143,15 +143,8 @@ button:hover{
   background: var(--accent-hover);
 }
 
-#audioForm{
+#musicUpload{
   width: 70vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-#audioForm button{
-  width: 40%;
 }
 
 input[type="file"] {
@@ -178,16 +171,6 @@ input[type="file"]::-webkit-file-upload-button:hover {
   background-color: var(--accent-hover);
 }
 
-
-h1 {
-  margin: 1em 0;
-  border-bottom: 1px dashed;
-  padding-bottom: 1em;
-  font-weight: lighter;
-}
-p {
-  font-style: italic;
-}
 .loader {
   position: fixed;
   top: 50%;
@@ -197,7 +180,7 @@ p {
   justify-content: center;
   align-items: center;
   width: 100vw;
-  height: 100vh;
+  height: 101vh;
   background: rgba(0, 0, 0, 0.692);
   display: none;
   transition: 0.5s;
