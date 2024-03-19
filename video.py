@@ -5,15 +5,17 @@ import os
 import math
 
 video_name = 'output_video.mp4'
-supported_formats = [".jpeg", ".jpg", ".png", ".webp"]
+supported_formats_images = [".jpeg", ".jpg", ".png", ".webp"]
 scroll_params = {
     'x_speed': 0, 
     'y_speed': 50,
     'apply_to': 'mask'
 }
 
-def createVideo(imgFolderName, musicFileName = None, timePerImage = 3, resolution = "360p", fadeIn = False, crossFadeIn=False, fadeOut = False, crossFadeOut=False, fadeInOut = False, crossFadeInOut = False, scrollEff=False):
-    images = [img for img in os.listdir(imgFolderName) if any(img.endswith(format) for format in supported_formats)]
+def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "360p", fadeIn = False, crossFadeIn=False, fadeOut = False, crossFadeOut=False, fadeInOut = False, crossFadeInOut = False, scrollEff=False):
+    images = [img for img in os.listdir(imgFolderName) if any(img.endswith(format) for format in supported_formats_images)]
+    audios = [audio for audio in os.listdir(audioFolderName) if (audio.endswith(('.mp3', '.wav', '.aac', '.mpga')))]
+    # print(audios)
     resized_image_paths = []
     clips = []
     
@@ -30,7 +32,6 @@ def createVideo(imgFolderName, musicFileName = None, timePerImage = 3, resolutio
     
     black_screen = ColorClip(size=(width, height), color=(0, 0, 0), duration=0.25)
         
-
     if(fadeIn):
         for image in images:
             img_path = os.path.join(imgFolderName, image)
@@ -98,7 +99,7 @@ def createVideo(imgFolderName, musicFileName = None, timePerImage = 3, resolutio
             resized_image_paths.append(resized_img_path)
             clip = ImageSequenceClip([resized_img_path], fps = 1)
             clip = clip.set_duration(timePerImage)
-            clip = clip.fadein(0.5).fadeout(0.5)
+            clip = clip.fadein(1).fadeout(1)
             clips.append(clip)
             
         
@@ -113,7 +114,7 @@ def createVideo(imgFolderName, musicFileName = None, timePerImage = 3, resolutio
             resized_image_paths.append(resized_img_path)
             clip = ImageSequenceClip([resized_img_path], fps = 1)
             clip = clip.set_duration(timePerImage)
-            clip = clip.crossfadein(0.5).crossfadeout(0.5)
+            clip = clip.crossfadein(1).crossfadeout(1)
             clips.append(clip)
             
     elif(scrollEff):
@@ -149,8 +150,18 @@ def createVideo(imgFolderName, musicFileName = None, timePerImage = 3, resolutio
     for clip in clips:
         final_clip = concatenate_videoclips([final_clip, clip])
         
-    if musicFileName is not None:
-        audio_clip = AudioFileClip(musicFileName)
+    if audios is not None:
+        mainAudio = ''
+        for audio in audios:
+            audioReq = os.path.join(audioFolderName, os.path.splitext(audio)[0] + os.path.splitext(audio)[1]) 
+            audio_clip = AudioFileClip(audioReq)
+            if mainAudio == '':
+                mainAudio = audio_clip
+            else:
+                mainAudioList = [mainAudio] + [audio_clip]
+                mainAudio = concatenate_audioclips(mainAudioList)
+        
+        audio_clip = mainAudio
         audio_duration = audio_clip.duration
         # print("Original audio duration:", audio_duration)
 
@@ -175,4 +186,4 @@ def createVideo(imgFolderName, musicFileName = None, timePerImage = 3, resolutio
 
     print("Video created successfully!")
 
-createVideo("./static/Images")
+createVideo("./static/Images", "./SelectedAudio", timePerImage= 10, fadeInOut= True)

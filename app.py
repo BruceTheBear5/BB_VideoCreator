@@ -50,22 +50,6 @@ def home():
 
     return render_template('index.html', isAdmin = "False", user = "False")
 
-# @app.route('/connect-db')
-# def connect_db():
-#     try:
-#         connectDB()
-#         return "Database connection established.", 200
-#     except Exception as e:
-#         return str(e), 500
-
-# @app.route('/disconnect-db')
-# def disconnect_db():
-#     try:
-#         disconnectDB()
-#         return "Database connection closed.", 200
-#     except Exception as e:
-#         return str(e), 500
-
 @app.route('/signin')
 def signin():
     return render_template('login.html', signin="True", signup="False", ForgetPassword="False")
