@@ -18,7 +18,7 @@ function loadImages(imageSet) {
             var selectButton = document.createElement("i");
             selectButton.classList.add("bi", "bi-check-circle", "close-button");
 
-            selectButton.addEventListener('click', function () {
+            img.addEventListener('click', function () {
                 toggleImage(imageSet, selectButton);
             });
 

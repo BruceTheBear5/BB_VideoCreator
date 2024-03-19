@@ -1,10 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const audioForm = document.getElementById('audioForm');
+    const uploadButton = document.getElementById('uploadButton');
+    const fileInput = document.getElementById('musicUpload');
     
-    audioForm.addEventListener('submit', function (e) {
-        e.preventDefault();
+    uploadButton.addEventListener('click', function () {
         
-        const formData = new FormData(audioForm);
+        if (fileInput.files.length === 0) {
+            console.log('No file selected');
+            return;
+        }
+        
+        const formData = new FormData();
+        for (const file of fileInput.files) {
+            formData.append('audioFile', file);
+        }
         
         fetch('/upload-audio', {
             method: 'POST',
@@ -18,6 +26,8 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(data => {
                 console.log('Audio upload successful:', data);
+                const fileInput = document.getElementById('musicUpload');
+                fileInput.value = '';
             })
             .catch(error => {
                 console.error('Error uploading audio:', error);
