@@ -53,6 +53,7 @@
         {% for image in images %}
         <div class = "image-item">
             <a href="data:image/jpeg;base64,{{ image['data'] }}" target="_blank"><img src="data:image/jpeg;base64,{{ image['data'] }}" alt="{{ image['name'] }}" /></a>
+            <label>hello</label>
         </div>
         {% endfor %}
       </div>
