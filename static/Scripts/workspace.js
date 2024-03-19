@@ -1,5 +1,6 @@
 var imageContainer = document.getElementById("imageContainer");
 var sortBySelect = document.getElementById("sortBy");
+var searchInput = document.getElementById("searchInput");
 
 function loadImages(imageSet) {
     // Ensure imageContainer exists before trying to modify it
@@ -68,6 +69,28 @@ window.onload = function () {
         })
         .catch(error => console.error('Error fetching images:', error));
 }
+
+searchInput.addEventListener("keypress", function (event) {
+    if (event.key === 'Enter') {
+        imageContainer.innerHTML = ""
+        event.preventDefault();
+        var searchValue = searchInput.value;
+        console.log("Search value:", searchValue);
+
+        fetch('/searchBy', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ search: searchValue })
+        })
+        .then(response => response.json())
+        .then(images => {
+            loadImages(images);
+        })
+        .catch(error => console.error('Error fetching images:', error));
+    }
+});
 
 sortBySelect.addEventListener("change", function () {
     console.log(sortBySelect.value);
