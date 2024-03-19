@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 {% endblock %}
 {% block scripts %}
+<script src = '../static/Scripts/workspace.js' defer></script>
 {% endblock %}
 
 {% block content %}
@@ -13,16 +14,15 @@
     <nav id="Navbar">
         <a href="./" class="NavLink Logo" id="HomePage"><img src="../static/Images/Logo.png" alt="Logo"
                 class="Logo"></a>
-            <div id="LinkContainer">
-                <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab">Profile</a>
-                <a href="./upload" class="NavLink">Upload</a>
-                {% if isAdmin == "True"%}
-                <div id="AdminTab">
-                    <a href="./adminPage" class="NavLink">Admin hub</a>
-                </div>
-                {% endif %}
+        <div id="LinkContainer">
+            <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab">Profile</a>
+            <a href="./upload" class="NavLink">Upload</a>
+            {% if isAdmin == "True"%}
+            <div id="AdminTab">
+                <a href="./adminPage" class="NavLink">Admin hub</a>
             </div>
             {% endif %}
+        </div>
         </div>
     </nav>
 </header>
@@ -30,111 +30,21 @@
 <div class="MainBody">
     <div class="Heading">The Workspace</div>
 
+    <div id="sort">
+        <label for="sortBy">SortBy</label>
+        <select id="sortBy">
+            <option value="file_name">Name</option>
+            <option value="uploaded_at">Date</option>
+            <option value="file_size">FileSize</option>
+        </select>
+    </div>
+
     <h1 style="width:100%">Previously uploaded images:</h1>
 
     <div id="imageContainer">
 
     </div>
     <button id="imageClear">Clear</button>
-    <script>
-        var imageContainer = document.getElementById("imageContainer");
-        function emptyImages() {
-            fetch('/empty-selected', {
-                method: 'POST'
-            })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('Failed to remove all images from selection.');
-                    }
-                })
-                .then(data => {
-                    console.log(data.message);
-                })
-                .catch(error => {
-                    console.error('Error:', error.message);
-                });
-        }
-
-        function toggleImage(image, selectButton) {
-            fetch('/toggle-image', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ image: image })
-            })
-                .then(response => {
-                    if (response.ok) {
-                        response.json().then(data => {
-                            if (data.selected) {
-                                selectButton.classList.remove('bi-check-circle');
-                                selectButton.classList.add('bi-check-circle-fill');
-                            } else {
-                                selectButton.classList.remove('bi-check-circle-fill');
-                                selectButton.classList.add('bi-check-circle');
-                            }
-                        });
-                    } else {
-                        console.error('Failed to toggle selected status for image.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-
-        function loadImages(imageSet) {
-            while (imageContainer.firstChild) {
-                imageContainer.removeChild(imageContainer.firstChild);
-            }
-            imageSet.forEach(function (imageSet) {
-                var img = document.createElement("img");
-                img.src = "data:image/jpeg;base64," + imageSet.data;
-                img.alt = imageSet.name;
-
-                var div = document.createElement("div");
-                div.classList.add("image-item");
-
-                var selectButton = document.createElement("i");
-                selectButton.classList.add("bi", "bi-check-circle", "close-button");
-
-                selectButton.addEventListener('click', function () {
-                    toggleImage(imageSet, selectButton);
-                });
-
-                var label = document.createElement('label');
-                label.textContent = imageSet.name;
-
-                div.appendChild(img);
-                div.appendChild(selectButton);
-                div.appendChild(label);
-                imageContainer.appendChild(div);
-            });
-        }
-
-        var clear = document.getElementById("imageClear");
-        clear.addEventListener('click', function () {
-            emptyImages();
-            var checks = imageContainer.querySelectorAll('.bi.close-button.bi-check-circle-fill');
-            checks.forEach(function (element) {
-                element.classList.add('bi-check-circle');
-                element.classList.remove('bi-check-circle-fill');
-            });
-        });
-
-        window.onload = function () {
-
-            fetch('/getUploadedImages')
-                .then(response => response.json())
-                .then(images => {
-                    loadImages(images);
-                })
-                .catch(error => console.error('Error fetching images:', error));
-            loadImages(images);
-        }
-    </script>
 
     <div id="controlContainer">
         <h1 style="width:100%">Controls :</h1>
@@ -147,10 +57,6 @@
                 <option value="{{ a['name'] }}"><span class="audioName">{{ a['name'] }}</span></option>
                 {% endfor %}
             </select>
-            <form id="audioForm" enctype="multipart/form-data">
-                <input type="file" id="musicUpload" accept="audio/*" name="audioFile">
-                <button type="submit">Upload</button>
-            </form>
         </div>
         <div id="durationSetting">
             <label for="imageDuration">Image Duration (seconds):</label>
@@ -186,4 +92,4 @@
             <button onclick="generateVideo()">Generate Video</button>
         </div>
     </div>
-{% endblock %}
+    {% endblock %}

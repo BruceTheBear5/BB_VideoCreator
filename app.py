@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, Response, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql, save_image_to_mysql, save_audio_to_mysql, start_connection_pool, close_connection_pool
+from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql, save_image_to_mysql, save_audio_to_mysql, start_connection_pool, close_connection_pool, sort_mysql
 import os
 import base64
 import jwt
@@ -166,6 +166,23 @@ def getUploadedImages():
         print("Error:", e)
         return Response(status=500)
     
+@app.route('/getSortedImage')
+def getSortedImage():
+    try:
+        sortBy = request.args.get('sortBy')  # Get the sortBy parameter from the query string
+        userId = session.get("userId")
+        images = sort_mysql(userId, sortBy)
+        imageData = []
+        for image in images:
+            encoded_image = base64.b64encode(image.file_data).decode('utf-8')
+            img = {'data': encoded_image, 'name': image.file_name}
+            imageData.append(img)
+            
+        return jsonify(imageData)
+    except Exception as e:
+        print("Error:", e)
+        return jsonify({'error': str(e)}), 500
+    
 @app.route('/getUploadedAudio') #For JS
 def getUploadedAudio(userId):
     try:
@@ -295,13 +312,6 @@ def upload_audio():
 def create():
     try:
         if "userId" in session:
-            # images = retrieve_image_from_mysql(session["userId"]) #try below functions in JS
-            # imageData = []
-            # for i in images:
-            #     encoded_image = base64.b64encode(i.file_data).decode('utf-8')
-            #     img = {'data' : encoded_image, 'name': i.file_name}
-            #     imageData.append(img)
-
             audio = retrieve_audio_from_mysql(1)
             audioData = []
             for a in audio:
@@ -313,8 +323,6 @@ def create():
                 encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
                 ad = {'data': encoded_audio, 'name': a.file_name}
                 audioData.append(ad)
-
-            # images_json = json.dumps(imageData)  
 
             return render_template('workspace.html', audio = audioData, username = session["username"], isAdmin = session["userIsAdmin"])
 
