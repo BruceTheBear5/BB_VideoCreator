@@ -1,47 +1,45 @@
-
 {% extends "base.html" %}
 {% block title %}Workspace{% endblock %}
-    
+
 {% block stylesheets %}
-    <link rel="stylesheet" href="../static/Styles/workspace.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="../static/Styles/workspace.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 {% endblock %}
 {% block scripts %}
 {% endblock %}
 
 {% block content %}
-    <header>
-        <nav id="Navbar">
-            <a href="./" class="NavLink Logo" id="HomePage"><img src="../static/Images/Logo.png" alt="Logo"
+<header>
+    <nav id="Navbar">
+        <a href="./" class="NavLink Logo" id="HomePage"><img src="../static/Images/Logo.png" alt="Logo"
                 class="Logo"></a>
-            <div id="LinkContainer">
-                <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab">Profile</a>
-                <a href="./upload-images" class="NavLink">Upload</a>
-                {% if isAdmin == "True"%}
-                <div id="AdminTab">
-                    <a href="./adminPage" class="NavLink">Admin hub</a>
-                </div>
-                {% endif %}
+        <div id="LinkContainer">
+            <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab">Profile</a>
+            <a href="./upload-images" class="NavLink">Upload</a>
+            {% if isAdmin == "True"%}
+            <div id="AdminTab">
+                <a href="./adminPage" class="NavLink">Admin hub</a>
             </div>
-        </nav>
-    </header>
-
-    <div class="MainBody">
-        <div class="Heading">The Workspace</div>
-
-        <h1 style="width:100%">Previously uploaded images:</h1>
-        
-        <div id = "imageContainer">
-            
+            {% endif %}
         </div>
-        <button id="imageClear">Clear</button>
-        <script>
-            var images = JSON.parse('{{ images | safe }}');
-            var imageContainer = document.getElementById("imageContainer");
-            function emptyImages(){
-                fetch('/empty-selected', {
-                    method: 'POST'
-                })
+    </nav>
+</header>
+
+<div class="MainBody">
+    <div class="Heading">The Workspace</div>
+
+    <h1 style="width:100%">Previously uploaded images:</h1>
+
+    <div id="imageContainer">
+
+    </div>
+    <button id="imageClear">Clear</button>
+    <script>
+        var imageContainer = document.getElementById("imageContainer");
+        function emptyImages() {
+            fetch('/empty-selected', {
+                method: 'POST'
+            })
                 .then(response => {
                     if (response.ok) {
                         return response.json();
@@ -55,17 +53,16 @@
                 .catch(error => {
                     console.error('Error:', error.message);
                 });
-            }
+        }
 
-            function toggleImage(image, selectButton) {
-                
-                fetch('/toggle-image', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ image: image })
-                })
+        function toggleImage(image, selectButton) {
+            fetch('/toggle-image', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ image: image })
+            })
                 .then(response => {
                     if (response.ok) {
                         response.json().then(data => {
@@ -84,162 +81,177 @@
                 .catch(error => {
                     console.error('Error:', error);
                 });
+        }
+
+        function loadImages(imageSet) {
+            while (imageContainer.firstChild) {
+                imageContainer.removeChild(imageContainer.firstChild);
             }
-              
-            images.forEach(function (image) {
+            imageSet.forEach(function (imageSet) {
                 var img = document.createElement("img");
-                img.src = "data:image/jpeg;base64," + image.data;
-                img.alt = image.name;
-                
+                img.src = "data:image/jpeg;base64," + imageSet.data;
+                img.alt = imageSet.name;
+
                 var div = document.createElement("div");
                 div.classList.add("image-item");
-                
+
                 var selectButton = document.createElement("i");
                 selectButton.classList.add("bi", "bi-check-circle", "close-button");
-                
+
                 selectButton.addEventListener('click', function () {
-                    toggleImage(image, selectButton);
+                    toggleImage(imageSet, selectButton);
                 });
-                
+
                 var label = document.createElement('label');
-                label.textContent = image.name;
-                
+                label.textContent = imageSet.name;
+
                 div.appendChild(img);
                 div.appendChild(selectButton);
                 div.appendChild(label);
                 imageContainer.appendChild(div);
             });
+        }
 
-            var clear = document.getElementById("imageClear");
-            clear.addEventListener('click', function (){
-                emptyImages();
-                var checks = imageContainer.querySelectorAll('.bi.close-button.bi-check-circle-fill');
-                checks.forEach(function (element) {
-                    element.classList.add('bi-check-circle');
-                    element.classList.remove('bi-check-circle-fill');
-                });
+        var clear = document.getElementById("imageClear");
+        clear.addEventListener('click', function () {
+            emptyImages();
+            var checks = imageContainer.querySelectorAll('.bi.close-button.bi-check-circle-fill');
+            checks.forEach(function (element) {
+                element.classList.add('bi-check-circle');
+                element.classList.remove('bi-check-circle-fill');
             });
+        });
 
-            </script>
+        window.onload = function () {
 
-        <div id="controlContainer">
-            <h1 style="width:100%">Controls :</h1>
-            <br>
-            <div id="musicSelection">
-                <label for="musicUpload">Add Background Music:</label>
-                <select id="backgroundMusic">
-                    <option value="">Select Background Music</option>
-                    {% for a in audio %}
-                    <option value="{{ a['name'] }}"><span class="audioName">{{ a['name'] }}</span></option>
-                    {% endfor %}
-                </select>
-                <form id="audioForm" enctype="multipart/form-data">
-                    <input type="file" id="musicUpload" accept="audio/*" name="audioFile">
-                    <button type="submit">Upload</button>
-                </form>
-            </div>
-            <div id="durationSetting">
-                <label for="imageDuration">Image Duration (seconds):</label>
-                <input type="number" id="imageDuration" min="1" value="5">
-            </div>
-            <div id="transitionEffect">
-                <label for="transitionType">Transition Effect:</label>
-                <select id="transitionType">
-                    <option value="fadeIn">Fade In</option>
-                    <option value="fadeOut">Fade Out</option>
-                    <option value="fadeInOut">Fade In Out</option>
-                    <option value="crossFadeIn">Cross Fade In</option>
-                    <option value="crossFadeOut">Cross Fade Out</option>
-                    <option value="crossFadeInOut">Cross Fade In Out</option>
-                </select>
-            </div>
-            <div id="outputSettings">
-                <label for="resolution">Video Resolution:</label>
-                <select id="resolution">
-                    <option value="360p">360p</option>
-                    <option value="720p">720p</option>
-                    <option value="1080p">1080p</option>
-                    <option value="4k">4k</option>
-                </select>
-                <label for="quality">Video Quality:</label>
-                <select id="quality">
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                </select>
-            </div>
-            <div id="buttonContainer">
-                <button onclick="generateVideo()">Generate Video</button>
-            </div>
+            fetch('/getUploadedImages')
+                .then(response => response.json())
+                .then(images => {
+                    loadImages(images);
+                })
+                .catch(error => console.error('Error fetching images:', error));
+            loadImages(images);
+        }
+    </script>
+
+    <div id="controlContainer">
+        <h1 style="width:100%">Controls :</h1>
+        <br>
+        <div id="musicSelection">
+            <label for="musicUpload">Add Background Music:</label>
+            <select id="backgroundMusic">
+                <option value="">Select Background Music</option>
+                {% for a in audio %}
+                <option value="{{ a['name'] }}"><span class="audioName">{{ a['name'] }}</span></option>
+                {% endfor %}
+            </select>
+            <form id="audioForm" enctype="multipart/form-data">
+                <input type="file" id="musicUpload" accept="audio/*" name="audioFile">
+                <button type="submit">Upload</button>
+            </form>
         </div>
-
-        <div id="videoContainer">
-            <h1 style="width:100%">Video Preview:</h1>
-            <video id="videoPlayer" controls autoplay muted loop>
-                <source src="../static/Images/WhatsApp Video 2024-02-07 at 21.42.16.mp4">
-                <source src="../static/Images/WhatsApp Video 2024-02-07 at 21.42.16.WebM">
-                Your Browser does not support HTML5
-            </video>
-            <div id="downloadVideoButtonContainer">
-                <button onclick="downloadVideo()">
-                    <i class="fas fa-download"></i> Download Video
-                </button>
-            </div>
+        <div id="durationSetting">
+            <label for="imageDuration">Image Duration (seconds):</label>
+            <input type="number" id="imageDuration" min="1" value="5">
+        </div>
+        <div id="transitionEffect">
+            <label for="transitionType">Transition Effect:</label>
+            <select id="transitionType">
+                <option value="fadeIn">Fade In</option>
+                <option value="fadeOut">Fade Out</option>
+                <option value="fadeInOut">Fade In Out</option>
+                <option value="crossFadeIn">Cross Fade In</option>
+                <option value="crossFadeOut">Cross Fade Out</option>
+                <option value="crossFadeInOut">Cross Fade In Out</option>
+            </select>
+        </div>
+        <div id="outputSettings">
+            <label for="resolution">Video Resolution:</label>
+            <select id="resolution">
+                <option value="360p">360p</option>
+                <option value="720p">720p</option>
+                <option value="1080p">1080p</option>
+                <option value="4k">4k</option>
+            </select>
+            <label for="quality">Video Quality:</label>
+            <select id="quality">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+        </div>
+        <div id="buttonContainer">
+            <button onclick="generateVideo()">Generate Video</button>
         </div>
     </div>
 
+    <div id="videoContainer">
+        <h1 style="width:100%">Video Preview:</h1>
+        <video id="videoPlayer" controls autoplay muted loop>
+            <source src="../static/Images/WhatsApp Video 2024-02-07 at 21.42.16.mp4">
+            <source src="../static/Images/WhatsApp Video 2024-02-07 at 21.42.16.WebM">
+            Your Browser does not support HTML5
+        </video>
+        <div id="downloadVideoButtonContainer">
+            <button onclick="downloadVideo()">
+                <i class="fas fa-download"></i> Download Video
+            </button>
+        </div>
+    </div>
+</div>
 
-    <script>
-        function allowDrop(event) {
-            event.preventDefault();
-        }
 
-        function drop(event) {
-            event.preventDefault();
-            var data = event.dataTransfer.getData("text/plain");
-            var img = new Image();
-            img.src = data;
-            event.target.appendChild(img);
-            var draggedItem = document.querySelector('img[src="' + data + '"]');
-            if (draggedItem) {
-                draggedItem.parentNode.removeChild(draggedItem);
-            }
+<script>
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
+    function drop(event) {
+        event.preventDefault();
+        var data = event.dataTransfer.getData("text/plain");
+        var img = new Image();
+        img.src = data;
+        event.target.appendChild(img);
+        var draggedItem = document.querySelector('img[src="' + data + '"]');
+        if (draggedItem) {
+            draggedItem.parentNode.removeChild(draggedItem);
         }
-        
-        var gridItems = document.querySelectorAll('.grid-item');
-        gridItems.forEach(function (item) {
-            item.addEventListener('dragstart', function (event) {
-                var imgSrc = item.querySelector('img').src;
-                event.dataTransfer.setData('text/plain', imgSrc);
-            });
+    }
+
+    var gridItems = document.querySelectorAll('.grid-item');
+    gridItems.forEach(function (item) {
+        item.addEventListener('dragstart', function (event) {
+            var imgSrc = item.querySelector('img').src;
+            event.dataTransfer.setData('text/plain', imgSrc);
         });
-        
-        // For Audio
-        document.addEventListener('DOMContentLoaded', function () {
-            const audioForm = document.getElementById('audioForm');
-            
-            audioForm.addEventListener('submit', function (e) {
-                e.preventDefault();
-                
-                const formData = new FormData(audioForm);
-                
-                fetch('/upload-audio', {
-                    method: 'POST',
-                    body: formData
-                })
+    });
+
+    // For Audio
+    document.addEventListener('DOMContentLoaded', function () {
+        const audioForm = document.getElementById('audioForm');
+
+        audioForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(audioForm);
+
+            fetch('/upload-audio', {
+                method: 'POST',
+                body: formData
+            })
                 .then(response => {
                     if (response.ok) {
                         return response.text();
-                        }
-                        throw new Error('Network response was not ok.');
-                    })
-                    .then(data => {
-                        console.log('Audio upload successful:', data);
-                    })
-                    .catch(error => {
-                        console.error('Error uploading audio:', error);
-                    });
+                    }
+                    throw new Error('Network response was not ok.');
+                })
+                .then(data => {
+                    console.log('Audio upload successful:', data);
+                })
+                .catch(error => {
+                    console.error('Error uploading audio:', error);
                 });
-            });
-            </script>
+        });
+    });
+</script>
 {% endblock %}

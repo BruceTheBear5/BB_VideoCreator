@@ -416,7 +416,7 @@ def sort_mysql(userId, sortBy):
         rows = cursor.fetchall()
         cursor.close()
         connection.close()
-
+        
         Images = []
         if rows:
             for i, row in enumerate(rows):
@@ -428,9 +428,7 @@ def sort_mysql(userId, sortBy):
                 image = Image(file_name, image_len, file_type, file_data, upload_date)
                 image.display()
                 Images.append(image)
-
-        print(len(Images))
-                
+                                
         return Images
     
     except psycopg2.Error as error:

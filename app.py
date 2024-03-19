@@ -163,15 +163,17 @@ def getProfileImage(userId):
         return Response(status=500)
     
 @app.route('/getUploadedImages') #For JS
-def getUploadedImages(userId):
+def getUploadedImages():
     try:
+        userId = session["userId"]
         images = retrieve_image_from_mysql(userId)
         imageData = []
         for i in images:
             encoded_image = base64.b64encode(i.file_data).decode('utf-8')
             img = {'data' : encoded_image, 'name': i.file_name}
             imageData.append(img)
-        return imageData
+            
+        return jsonify(imageData)
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
@@ -280,12 +282,12 @@ def upload_images():
 def create():
     try:
         if "userId" in session:
-            images = retrieve_image_from_mysql(session["userId"]) #try below functions in JS
-            imageData = []
-            for i in images:
-                encoded_image = base64.b64encode(i.file_data).decode('utf-8')
-                img = {'data' : encoded_image, 'name': i.file_name}
-                imageData.append(img)
+            # images = retrieve_image_from_mysql(session["userId"]) #try below functions in JS
+            # imageData = []
+            # for i in images:
+            #     encoded_image = base64.b64encode(i.file_data).decode('utf-8')
+            #     img = {'data' : encoded_image, 'name': i.file_name}
+            #     imageData.append(img)
 
             audio = retrieve_audio_from_mysql(1) #try below functions in JS
             audioData = []
@@ -299,9 +301,9 @@ def create():
                 ad = {'data': encoded_audio, 'name': a.file_name}
                 audioData.append(ad)
 
-            images_json = json.dumps(imageData)  
+            # images_json = json.dumps(imageData)  
 
-            return render_template('workspace.html', images = images_json, audio = audioData, username = session["username"], isAdmin = session["userIsAdmin"])
+            return render_template('workspace.html', audio = audioData, username = session["username"], isAdmin = session["userIsAdmin"])
 
     except Exception as e:
         print("Error:", e)
