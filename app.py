@@ -238,8 +238,7 @@ def getUploadedAudio():
         for a in audio:
             encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
             ad = {'data': encoded_audio, 'name': a.file_name}
-            audioData.append(ad)
-            
+            audioData.append(ad)            
         return jsonify(audioData)
     except Exception as e:
         print("Error:", e)
