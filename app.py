@@ -281,23 +281,24 @@ def upload_images():
                 os.remove(file_path)
         os.rmdir(TEMP_DIR)
 
-    return redirect(url_for('create'))
+    return
 
 @app.route('/upload-audio', methods=['POST'])
 def upload_audio():
     if 'audioFile' not in request.files:
         return "No audio file uploaded", 400
 
-    audio_file = request.files['audioFile']
+    audio_files = request.files.getlist('audioFile')
     TEMP_DIR = './temp/'
 
     if not os.path.exists(TEMP_DIR):
         os.makedirs(TEMP_DIR)
 
-    if audio_file.filename != '':
-        filename = os.path.join(TEMP_DIR, audio_file.filename)
-        audio_file.save(filename)
-        save_audio_to_mysql(session.get("userId"), filename)
+    for audio_file in audio_files:
+        if audio_file.filename != '':
+            filename = os.path.join(TEMP_DIR, audio_file.filename)
+            audio_file.save(filename)
+            save_audio_to_mysql(session.get("userId"), filename)
 
     if os.path.exists(TEMP_DIR):
         for file_name in os.listdir(TEMP_DIR):
@@ -306,7 +307,7 @@ def upload_audio():
                 os.remove(file_path)
         os.rmdir(TEMP_DIR)
 
-    return "Audio file uploaded successfully"
+    return "Audio files uploaded successfully"
 
 @app.route('/workspace')
 def create():

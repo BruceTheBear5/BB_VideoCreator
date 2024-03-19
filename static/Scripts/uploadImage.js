@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(data => {
             console.log('Redirecting...');
-            // window.location.href = '/workspace';
+            window.location.href = '/workspace';
         })
         .catch(error => {
             console.error('Error uploading images:', error);
