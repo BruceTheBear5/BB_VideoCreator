@@ -1,12 +1,13 @@
 import os
-import mysql.connector
 from mutagen.mp3 import MP3
 import wave
 import cv2
 import numpy as np
-import psycopg2
+import psycopg2.pool
 from datetime import datetime
 
+DATABASE_URL = "postgresql://bond:hkJBMZZaRBmmcaGiKDM8rg@project-8970.8nk.gcp-asia-southeast1.cockroachlabs.cloud:26257/project?sslmode=require"
+connection_pool = None
 
 class User:
     def __init__(self, name, username, email, password, id=-1, isAdmin="False"):
@@ -55,71 +56,81 @@ class Audio:
         self.file_data = file_data
         self.duration = duration
         self.upload_date = upload_date       
-        
-def connect_to_database():
+
+def start_connection_pool():
     try:
-        print("Connecting to the database...")
-        global connection
-        connection = psycopg2.connect("postgresql://bond:hkJBMZZaRBmmcaGiKDM8rg@project-8970.8nk.gcp-asia-southeast1.cockroachlabs.cloud:26257/project?sslmode=require")
-        print("Connected successfully")
+        global connection_pool
+        print("Creating Connection to database...")
+        connection_pool = psycopg2.pool.ThreadedConnectionPool(1, 10, dsn=DATABASE_URL)
+        print("Connection pool created successfully")
         return
     except psycopg2.OperationalError as e:
         print("Could not connect to database:", e)
         return None
-    
-def cursorMake():
-    try:
-        global cursor
-        cursor = connection.cursor()
-        return
-    except:
-        return None
-    
-def connectDB():
-    try:
-        connect_to_database()
-        if(connection):
-            cursorMake()
-        else:
-            return None
-        return
-    except:
-        return None
-    
-def disconnectDB():
-    try:
-        print("Disconnected from database.")
-        if(cursor):
-            cursor.close()
-        if(connection):
-            connection.close()
-    except:
-        return None
-    
+
+def close_connection_pool():
+    print("Disconnectig from Database...")
+    global connection_pool
+    if connection_pool:
+        connection_pool.closeall()  
+    print("Connection to Database has been severed")
+
+def get_connection():
+    return connection_pool.getconn()
+
+def release_connection(connection):
+    connection_pool.putconn(connection)
+
 def save_data_to_mysql(data):
+    connection = None
+    cursor = None
     try:
+        connection = get_connection()
+        cursor = connection.cursor()
         data.UploadData(cursor)
         connection.commit()
         print("Data saved to MySQL database successfully.")
-    except mysql.connector.Error as error:
+    except psycopg2.Error as error:
         print("Failed to save data to MySQL database:", error)
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            release_connection(connection)
 
-def save_image_to_mysql(user_id, image_name):
+def save_image_to_mysql(user_id, image_path, image_name):
+    connection = None
+    cursor = None
     try:
-        with open(image_name, "rb") as file:
+        connection = get_connection() 
+        cursor = connection.cursor()
+
+        with open(image_path, "rb") as file:
             image_data = file.read()
 
         insert_query = """INSERT INTO images (user_id, file_name, file_size, file_type, file_data) VALUES (%s, %s, %s, %s, %s)"""
-        image_values = (user_id, image_name.split("./temp/",1)[1], len(image_data), "image/jpeg", image_data)
+        image_values = (user_id, image_name, len(image_data), "image/jpeg", image_data)
         cursor.execute(insert_query, image_values)
 
         connection.commit()
 
-    except mysql.connector.Error as error:
+    except psycopg2.Error as error:
         print("Failed to save image to MySQL database:", error)
+
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            release_connection(connection)
             
 def retrieve_users_from_mysql(email):
+    connection = None
+    cursor = None
     try:
+        connection = get_connection()
+
+        cursor = connection.cursor()
+
         query = "SELECT * FROM Users WHERE Users.email = %s"
         cursor.execute(query, (email, ))
 
@@ -132,14 +143,23 @@ def retrieve_users_from_mysql(email):
                 print("Failed to retrieve data from MySQL database:")
                 return None
 
-    except mysql.connector.Error as error:
+    except psycopg2.Error as error:
         print("Failed to retrieve data from MySQL database:", error)
-        
-def retrieve_images_from_mysql(userId):
+
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            release_connection(connection)
+
+def retrieve_image_from_mysql(userId):
+    connection = None
+    cursor = None
     try:
-        limit=5
-        images = []
-        offset = 0
+        connection = get_connection()
+
+        cursor = connection.cursor()
+        query = "SELECT file_data, file_name FROM images WHERE user_id = %s"
         
         while True:
             query = "SELECT file_data, file_name FROM images WHERE user_id = %s LIMIT %s OFFSET %s"
@@ -156,18 +176,29 @@ def retrieve_images_from_mysql(userId):
                 file_data = row[0]
                 upload_date = datetime.now()
                 image = Image(file_name, image_len, file_type, file_data, upload_date)
-                images.append(image)
-                
-            offset += limit
-        
-        return images
+                Images.append(image)
 
-    except mysql.connector.Error as error:
-        print("Failed to retrieve images from MySQL database:", error)
-        
+        print("Data retrieved from MySQL database successfully.")            
+        return Images
+
+    except psycopg2.Error as error:
+        print("Failed to retrieve image from MySQL database:", error)
+
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            release_connection(connection)
+
 def upload_profile_image(user_id, image_name):
     """When user is created, use upload_profile_image(user_id, "./Images/alt_image.jpg")"""
-    try:     
+    connection = None
+    cursor = None
+    try:
+        connection = get_connection()
+
+        cursor = connection.cursor()
+        
         if(retrieve_profile_image(user_id) != None):
             delete_query = "DELETE FROM profile_pictures WHERE user_id = %s"
             cursor.execute(delete_query, (user_id,))
@@ -184,11 +215,22 @@ def upload_profile_image(user_id, image_name):
 
         print("Profile image uploaded successfully.")
 
-    except mysql.connector.Error as error:
+    except psycopg2.Error as error:
         print("Failed to upload profile image:", error)
 
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            release_connection(connection)
+
 def retrieve_profile_image(userId):
+    connection = None
+    cursor = None
     try:
+        connection = get_connection()
+        
+        cursor = connection.cursor()
         query = "SELECT file_data FROM profile_pictures WHERE user_id = %s"
         
         cursor.execute(query, (userId, ))
@@ -206,8 +248,14 @@ def retrieve_profile_image(userId):
             print("Image not found in the database.")
             return None
      
-    except mysql.connector.Error as error:
+    except psycopg2.Error as error:
         print("Failed to upload profile image:", error)
+
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            release_connection(connection)  
   
 def get_duration(file_path, file_format):
     if file_format.lower() == "mp3":
@@ -224,9 +272,13 @@ def get_duration(file_path, file_format):
     return duration_seconds
 
 def save_audio_to_mysql(user_id, relative_file_path):
+    connection = None
+    cursor = None
     try:
         absolute_file_path = os.path.abspath(relative_file_path)
         filename = os.path.basename(absolute_file_path)
+        connection = get_connection()
+        cursor = connection.cursor()
 
         with open(absolute_file_path, "rb") as file:
             audio_data = file.read()
@@ -248,13 +300,25 @@ def save_audio_to_mysql(user_id, relative_file_path):
 
     except FileNotFoundError:
         print("Error: Audio file '{}' not found.".format(absolute_file_path))
-    except mysql.connector.Error as error:
+    except psycopg2.Error as error:
         print("Failed to save audio file to MySQL database:", error)
     except ValueError as error:
         print("Failed to extract duration:", error)
+
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            release_connection(connection)
             
 def retrieve_audio_from_mysql(user_id):
+    connection = None
+    cursor = None
     try:
+        connection = get_connection()
+
+        cursor = connection.cursor()
+
         select_query = "SELECT filename, file_data, duration_seconds, file_size_bytes, file_format FROM audio_files WHERE userId = %s"
         cursor.execute(select_query, (user_id,))
         audio_files = cursor.fetchall()
@@ -273,11 +337,23 @@ def retrieve_audio_from_mysql(user_id):
         print("Audio files retrieved from MySQL database successfully.")
         return audio
 
-    except mysql.connector.Error as error:
+    except psycopg2.Error as error:
         print("Failed to retrieve audio files from MySQL database:", error)
+
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            release_connection(connection)
             
 def AdminRetrieve():
+    connection = None
+    cursor = None
     try:
+        connection = get_connection()
+
+        cursor = connection.cursor()
+
         query = "SELECT * FROM Users"
         cursor.execute(query)
         rows = cursor.fetchall()
@@ -290,12 +366,24 @@ def AdminRetrieve():
 
         return Users
     
-    except mysql.connector.Error as error:
+    except psycopg2.Error as error:
         print("Failed to retrieve users:", error)
         return []
+        
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            release_connection(connection)
 
 def AdminRetrieveProfilePic():
+    connection = None
+    cursor = None
     try:
+        connection = get_connection()
+
+        cursor = connection.cursor()
+
         query = "SELECT file_data, filename, filesize, file_type FROM profile_pictures"
         cursor.execute(query)
         rows = cursor.fetchall()
@@ -312,12 +400,23 @@ def AdminRetrieveProfilePic():
                 
         return profile_picture
     
-    except mysql.connector.Error as error:
+    except psycopg2.Error as error:
         print("Failed to retrieve users:", error)
         return []
+        
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            release_connection(connection)
 
 def sort_mysql(userId, sortBy):
+    connection = None
+    cursor = None
     try:
+        connection = get_connection()
+
+        cursor = connection.cursor()
         query = f"SELECT file_data, file_name FROM images WHERE user_id = %s ORDER BY {sortBy}"
         cursor.execute(query, (userId,))
         rows = cursor.fetchall()
@@ -340,12 +439,23 @@ def sort_mysql(userId, sortBy):
                 
         return Images
     
-    except mysql.connector.Error as error:
+    except psycopg2.Error as error:
         print("Failed to retrieve users:", error)
         return []
+        
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            release_connection(connection)
 
 def search_mysql(userId, searchStr):
+    connection = None
+    cursor = None
     try:
+        connection = get_connection()
+
+        cursor = connection.cursor()
         query = "SELECT file_data, file_name FROM images WHERE user_id = %s AND file_name LIKE %s"
         cursor.execute(query, (userId, f"{searchStr}%"))
         rows = cursor.fetchall()
@@ -368,9 +478,15 @@ def search_mysql(userId, searchStr):
                 
         return Images
     
-    except mysql.connector.Error as error:
+    except psycopg2.Error as error:
         print("Failed to retrieve users:", error)
         return []
+        
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            release_connection(connection)
 
 
 connectDB()
@@ -392,8 +508,13 @@ connectDB()
 #     print(type(user.isAdmin))
 
 # save_image_to_mysql(1, "./static/Images/Logo.png")
+<<<<<<< HEAD
 retrieve_images_from_mysql(3)
 # upload_profile_image(1, "./static/Images/alt_image.jpg")
+=======
+# retrieve_image_from_mysql(3)
+# upload_profile_image(2, "./static/Images/alt_image.jpg")
+>>>>>>> 7f6fdcb9419b6752cf8816d8302473610f88393d
 # retrieve_profile_image(1)
 
 # AdminRetrieve()
@@ -407,6 +528,11 @@ retrieve_images_from_mysql(3)
 # sort_mysql(1, "file_size")
 # search_mysql(1, "mac")
 
+<<<<<<< HEAD
 # con = connect_to_database()
 # con.close
 
+=======
+# con = get_connection()
+# con.close
+>>>>>>> 7f6fdcb9419b6752cf8816d8302473610f88393d
