@@ -13,12 +13,14 @@
     <nav id="Navbar">
         <a href="./" class="NavLink Logo" id="HomePage"><img src="../static/Images/Logo.png" alt="Logo"
                 class="Logo"></a>
-        <div id="LinkContainer">
-            <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab">Profile</a>
-            <a href="./upload-images" class="NavLink">Upload</a>
-            {% if isAdmin == "True"%}
-            <div id="AdminTab">
-                <a href="./adminPage" class="NavLink">Admin hub</a>
+            <div id="LinkContainer">
+                <a href="/profile/{{ username }}" class="NavLink" id="ProfileTab">Profile</a>
+                <a href="./upload" class="NavLink">Upload</a>
+                {% if isAdmin == "True"%}
+                <div id="AdminTab">
+                    <a href="./adminPage" class="NavLink">Admin hub</a>
+                </div>
+                {% endif %}
             </div>
             {% endif %}
         </div>
@@ -184,74 +186,4 @@
             <button onclick="generateVideo()">Generate Video</button>
         </div>
     </div>
-
-    <div id="videoContainer">
-        <h1 style="width:100%">Video Preview:</h1>
-        <video id="videoPlayer" controls autoplay muted loop>
-            <source src="../static/Images/WhatsApp Video 2024-02-07 at 21.42.16.mp4">
-            <source src="../static/Images/WhatsApp Video 2024-02-07 at 21.42.16.WebM">
-            Your Browser does not support HTML5
-        </video>
-        <div id="downloadVideoButtonContainer">
-            <button onclick="downloadVideo()">
-                <i class="fas fa-download"></i> Download Video
-            </button>
-        </div>
-    </div>
-</div>
-
-
-<script>
-    function allowDrop(event) {
-        event.preventDefault();
-    }
-
-    function drop(event) {
-        event.preventDefault();
-        var data = event.dataTransfer.getData("text/plain");
-        var img = new Image();
-        img.src = data;
-        event.target.appendChild(img);
-        var draggedItem = document.querySelector('img[src="' + data + '"]');
-        if (draggedItem) {
-            draggedItem.parentNode.removeChild(draggedItem);
-        }
-    }
-
-    var gridItems = document.querySelectorAll('.grid-item');
-    gridItems.forEach(function (item) {
-        item.addEventListener('dragstart', function (event) {
-            var imgSrc = item.querySelector('img').src;
-            event.dataTransfer.setData('text/plain', imgSrc);
-        });
-    });
-
-    // For Audio
-    document.addEventListener('DOMContentLoaded', function () {
-        const audioForm = document.getElementById('audioForm');
-
-        audioForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const formData = new FormData(audioForm);
-
-            fetch('/upload-audio', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => {
-                    if (response.ok) {
-                        return response.text();
-                    }
-                    throw new Error('Network response was not ok.');
-                })
-                .then(data => {
-                    console.log('Audio upload successful:', data);
-                })
-                .catch(error => {
-                    console.error('Error uploading audio:', error);
-                });
-        });
-    });
-</script>
 {% endblock %}

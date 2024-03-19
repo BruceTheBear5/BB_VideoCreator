@@ -123,14 +123,15 @@ def profileData(username):
         if "userId" in session:
             UserEmail = session["userEmail"]
             user = retrieve_users_from_mysql(UserEmail)
-            profile_image = retrieve_profile_image(user.id) #try below functions in JS
+            profile_image = retrieve_profile_image(user.id)
             if profile_image == None:
                 upload_profile_image(user.id, "./static/Images/alt_image.jpg")
-            profile_image = retrieve_profile_image(user.id)
+                profile_image = retrieve_profile_image(user.id)
             profileImage = base64.b64encode(profile_image.file_data).decode('utf-8')
             images = retrieve_image_from_mysql(user.id)
             imageData = []
             for i in images:
+                print()
                 encoded_image = base64.b64encode(i.file_data).decode('utf-8')
                 img = {'data' : encoded_image, 'name': i.file_name}
                 imageData.append(img)
@@ -145,19 +146,6 @@ def profileData(username):
             return render_template('profile.html', user = user, profileImage = profileImage, images = imageData, audio = audioData, username = user.username, isAdmin = user.isAdmin)
         else:
             return redirect(url_for('home'))
-    except Exception as e:
-        print("Error:", e)
-        return Response(status=500)
-    
-@app.route('/profilePicture') #For JS
-def getProfileImage(userId):
-    try:
-        profile_image = retrieve_profile_image(userId)
-        if profile_image == None:
-            upload_profile_image(userId, "./static/Images/alt_image.jpg")
-        profile_image = retrieve_profile_image(userId)
-        profileImage = base64.b64encode(profile_image.file_data).decode('utf-8')
-        return profileImage
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
@@ -242,7 +230,7 @@ def Admin():
         print("Error:", e)
         return Response(status=500)
 
-@app.route('/upload-images')
+@app.route('/upload')
 def upload():
     try:
         if "userId" in session:
@@ -251,7 +239,7 @@ def upload():
         print("Error:", e)
         return Response(status=500)
 
-@app.route('/Upload', methods=['POST'])
+@app.route('/Upload-images', methods=['POST'])
 def upload_images():
     if 'files[]' not in request.files:
         return "No files uploaded", 400
@@ -278,7 +266,32 @@ def upload_images():
 
     return redirect(url_for('create'))
 
-@app.route('/create-video')
+@app.route('/upload-audio', methods=['POST'])
+def upload_audio():
+    if 'audioFile' not in request.files:
+        return "No audio file uploaded", 400
+
+    audio_file = request.files['audioFile']
+    TEMP_DIR = './temp/'
+
+    if not os.path.exists(TEMP_DIR):
+        os.makedirs(TEMP_DIR)
+
+    if audio_file.filename != '':
+        filename = os.path.join(TEMP_DIR, audio_file.filename)
+        audio_file.save(filename)
+        save_audio_to_mysql(session.get("userId"), filename)
+
+    if os.path.exists(TEMP_DIR):
+        for file_name in os.listdir(TEMP_DIR):
+            file_path = os.path.join(TEMP_DIR, file_name)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+        os.rmdir(TEMP_DIR)
+
+    return "Audio file uploaded successfully"
+
+@app.route('/workspace')
 def create():
     try:
         if "userId" in session:
@@ -289,13 +302,13 @@ def create():
             #     img = {'data' : encoded_image, 'name': i.file_name}
             #     imageData.append(img)
 
-            audio = retrieve_audio_from_mysql(1) #try below functions in JS
+            audio = retrieve_audio_from_mysql(1)
             audioData = []
             for a in audio:
                 encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
                 ad = {'data': encoded_audio, 'name': a.file_name}
                 audioData.append(ad)    
-            audio = retrieve_audio_from_mysql(session['userId']) #try below functions in JS
+            audio = retrieve_audio_from_mysql(session['userId'])
             for a in audio:
                 encoded_audio = base64.b64encode(a.file_data).decode('utf-8')
                 ad = {'data': encoded_audio, 'name': a.file_name}
@@ -342,30 +355,6 @@ def remove_all_selected_images():
     
     return jsonify({'message': 'All images removed from selection'})
 
-@app.route('/upload-audio', methods=['POST'])
-def upload_audio():
-    if 'audioFile' not in request.files:
-        return "No audio file uploaded", 400
-
-    audio_file = request.files['audioFile']
-    TEMP_DIR = './temp/'
-
-    if not os.path.exists(TEMP_DIR):
-        os.makedirs(TEMP_DIR)
-
-    if audio_file.filename != '':
-        filename = os.path.join(TEMP_DIR, audio_file.filename)
-        audio_file.save(filename)
-        save_audio_to_mysql(session.get("userId"), filename)
-
-    if os.path.exists(TEMP_DIR):
-        for file_name in os.listdir(TEMP_DIR):
-            file_path = os.path.join(TEMP_DIR, file_name)
-            if os.path.isfile(file_path):
-                os.remove(file_path)
-        os.rmdir(TEMP_DIR)
-
-    return "Audio file uploaded successfully"
 
 @app.route('/logout')
 def logout():
