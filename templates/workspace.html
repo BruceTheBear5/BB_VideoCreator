@@ -52,10 +52,6 @@
         <div id="musicSelection">
             <label for="musicUpload">Add Background Music:</label>
             <select id="backgroundMusic">
-                <option value="">Select Background Music</option>
-                {% for a in audio %}
-                <option value="{{ a['name'] }}"><span class="audioName">{{ a['name'] }}</span></option>
-                {% endfor %}
             </select>
         </div>
         <div id="durationSetting">

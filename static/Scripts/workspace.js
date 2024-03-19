@@ -35,13 +35,44 @@ function loadImages(imageSet) {
     }
 }
 
+function loadAudioOptions(audioSet) {
+    var audioSelect = document.getElementById("audioSelect");
+    while (audioSelect.firstChild) {
+        audioSelect.removeChild(audioSelect.firstChild);
+    }
+
+    var option = document.createElement("option");
+    option.value = "";
+    option.textContent = "Select Background Music";
+    audioSelect.appendChild(option);
+
+    audioSet.forEach(function (audio) {
+        var option = document.createElement("option");
+        option.value = audio.name;
+        option.textContent = audio.name;
+        audioSelect.appendChild(option);
+    });
+}
 
 window.onload = function () {
     fetch('/getUploadedImages')
         .then(response => response.json())
         .then(images => {
-            print("F");
             loadImages(images);
+        })
+        .catch(error => console.error('Error fetching images:', error));
+
+    fetch('/getPreloadedAudio')
+        .then(response => response.json())
+        .then(audios => {
+            loadAudioOptions(audios);
+        })
+        .catch(error => console.error('Error fetching images:', error));
+
+    fetch('/getUploadedAudio')
+        .then(response => response.json())
+        .then(audios => {
+            loadAudioOptions(audios);
         })
         .catch(error => console.error('Error fetching images:', error));
 }
