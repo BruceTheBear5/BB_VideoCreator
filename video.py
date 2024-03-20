@@ -1,6 +1,7 @@
 from moviepy.editor import ImageSequenceClip, AudioFileClip, concatenate_audioclips, concatenate_videoclips, ColorClip
 from moviepy.video.fx import fadein, fadeout
 from PIL import Image, ImageOps
+import io
 import os
 import numpy as np
 import math
@@ -9,7 +10,7 @@ import shutil
 video_name = './output_video.mp4'
 supported_formats_images = [".jpeg", ".jpg", ".png", ".webp"]
 
-def createVideo(imgFolderName, audioFolderName, userId, timePerImage = 3, resolution = "360p", tranistion = None):
+def createVideo(imgFolderName, audioFolderName, userId, timePerImage = 3, resolution = "360p", quality = "low", tranistion = None):
     final_video_path = f'./static/output/user{userId}/'
     if not os.path.exists(final_video_path):
         os.makedirs(final_video_path)
@@ -39,15 +40,25 @@ def createVideo(imgFolderName, audioFolderName, userId, timePerImage = 3, resolu
         width, height = 3840, 2160
     else:
         width, height = 640, 360   
+        
+    if quality == 'low':
+        setQuality = 33
+    elif quality == 'medium':
+        setQuality = 67
+    else:
+        setQuality = 100
     
     black_screen = ColorClip(size=(width, height), color=(0, 0, 0), duration=0.5)
     
     for image in images:
         img_path = os.path.join(imgFolderName, image)
+
         img = Image.open(img_path)
         img = img.convert('RGB')
         img = ImageOps.pad(img, (width, height), color="black")
-        
+        img_io = io.BytesIO()
+        img.save(img_io, 'JPEG', quality = setQuality)
+        img = Image.open(img_io)
         img_array = np.array(img)
         clip = ImageSequenceClip([img_array], fps=1)
         clip = clip.set_duration(timePerImage)
@@ -112,4 +123,4 @@ def createVideo(imgFolderName, audioFolderName, userId, timePerImage = 3, resolu
     return
 
 if __name__ == "__main__":
-    createVideo("./static/Images", "./SelectedAudio", timePerImage= 3)
+    createVideo("./static/Images", "./SelectedAudio", 1, timePerImage= 3, tranistion = "fadeIn")
