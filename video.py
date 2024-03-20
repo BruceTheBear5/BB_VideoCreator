@@ -6,7 +6,6 @@ import math
 import shutil
 
 video_name = './output_video.mp4'
-final_video_path = './static/output_video.mp4'
 supported_formats_images = [".jpeg", ".jpg", ".png", ".webp"]
 scroll_params = {
     'x_speed': 0, 
@@ -14,7 +13,8 @@ scroll_params = {
     'apply_to': 'mask'
 }
 
-def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "360p", tranistion = None):
+def createVideo(imgFolderName, audioFolderName, userId, timePerImage = 3, resolution = "360p", tranistion = None):
+    final_video_path = f'./static/output/user{userId}/'
     if not os.path.exists(imgFolderName):
         os.makedirs(imgFolderName)
     if not os.path.exists(audioFolderName):
@@ -185,7 +185,7 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
     for resized_img_path in resized_image_paths:
         os.remove(resized_img_path)
 
-    shutil.move(video_name, final_video_path)
+    shutil.move(video_name, final_video_path + 'output_video.mp4')
     
     print("Video created successfully!")
 

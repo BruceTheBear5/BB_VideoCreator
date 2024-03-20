@@ -255,8 +255,9 @@ def videoCreate():
         Transition = request.json.get('Transition', None)
         vidResolution = request.json.get('vidResolution', '360p')
         
-        createVideo(f'./Selected/user{session["userId"]}',f'./SelectedAudio/user{session["userId"]}', timePerImage=imgDuration, resolution=vidResolution, tranistion = Transition)
-        return jsonify({'message': 'Video generation successful'})
+        createVideo(f'./Selected/user{session["userId"]}',f'./SelectedAudio/user{session["userId"]}', session["userId"], timePerImage=imgDuration, resolution=vidResolution, tranistion = Transition)
+        video_path = f'../static/output/user{session["userId"]}/output_video.mp4'
+        return jsonify({'message': 'Video generation successful', 'video_path': video_path})
     except Exception as e:
         print("Error:", e)
         return jsonify({'error': str(e)}), 500
@@ -425,7 +426,7 @@ def toggle_selected_audio():
         with open(audio_path, 'wb') as f:
             audio_bytes = base64.b64decode(audio_data['data'])
             f.write(audio_bytes)
-    return
+    return jsonify({'message' : 'audio selected/deselected'})
 
 @app.route('/empty-selected', methods=['POST'])
 def remove_all_selected():
@@ -447,6 +448,21 @@ def remove_all_selected():
         os.rmdir(TEMP_DIR)
     
     return jsonify({'message': 'All images and audios removed from selection'})
+
+@app.route('/delete-video')
+def delVid():
+    try:
+        TEMP_DIR = f'./static/output/user{session["userId"]}/'
+        if os.path.exists(TEMP_DIR):
+            for filename in os.listdir(TEMP_DIR):
+                file_path = os.path.join(TEMP_DIR, filename)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+            os.rmdir(TEMP_DIR)
+        return jsonify({'message': 'Video deleted successfully'})
+    except Exception as e:
+        print("Error:", e)
+        return Response(status=500)
 
 @app.route('/deleteUser')
 def delUser():
