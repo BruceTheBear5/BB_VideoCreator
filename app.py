@@ -331,7 +331,7 @@ def upload_images():
 
     files = request.files.getlist('files[]')
 
-    TEMP_DIR = f'./tempImg/user{session["userId"]}'
+    TEMP_DIR = f'./tempImg/user{session["userId"]}/'
 
     if not os.path.exists(TEMP_DIR):
         os.makedirs(TEMP_DIR)
@@ -340,7 +340,7 @@ def upload_images():
         if file.filename != '':
             filepath = os.path.join(TEMP_DIR, file.filename)
             file.save(filepath)
-            save_image_to_mysql(session.get("userId"), filepath, file.filename)
+            save_image_to_mysql(session["userId"], filepath, file.filename)
 
     if os.path.exists(TEMP_DIR):
         for file_name in os.listdir(TEMP_DIR):
@@ -349,7 +349,7 @@ def upload_images():
                 os.remove(file_path)
         os.rmdir(TEMP_DIR)
 
-    return
+    return "Images uploaded successfully"
 
 @app.route('/upload-audio', methods=['POST'])
 def upload_audio():
@@ -357,7 +357,7 @@ def upload_audio():
         return "No audio file uploaded", 400
 
     audio_files = request.files.getlist('audioFile')
-    TEMP_DIR = f'./tempAudio/user{session["userId"]}'
+    TEMP_DIR = f'./tempAudio/user{session["userId"]}/'
 
     if not os.path.exists(TEMP_DIR):
         os.makedirs(TEMP_DIR)
