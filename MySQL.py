@@ -190,7 +190,6 @@ def upload_profile_image(user_id, image_name):
     cursor = None
     try:
         connection = get_connection()
-
         cursor = connection.cursor()
         
         if(retrieve_profile_image(user_id) != None):
@@ -207,8 +206,7 @@ def upload_profile_image(user_id, image_name):
         cursor.execute(query, profileData)
         connection.commit()
 
-        print("Profile image uploaded successfully.")
-
+        return
     except psycopg2.Error as error:
         print("Failed to upload profile image:", error)
 
@@ -327,8 +325,6 @@ def retrieve_audio_from_mysql(user_id):
             AudioData = Audio(file_name, file_size, file_format, file_data, duration)
             audio.append(AudioData)
 
-            
-        print("Audio files retrieved from MySQL database successfully.")
         return audio
 
     except psycopg2.Error as error:
@@ -345,7 +341,6 @@ def AdminRetrieve():
     cursor = None
     try:
         connection = get_connection()
-
         cursor = connection.cursor()
 
         query = "SELECT * FROM Users"
@@ -375,7 +370,6 @@ def AdminRetrieveProfilePic():
     cursor = None
     try:
         connection = get_connection()
-
         cursor = connection.cursor()
 
         query = "SELECT file_data, filename, filesize, file_type FROM profile_pictures"
@@ -444,10 +438,10 @@ def search_mysql(userId, searchStr):
     cursor = None
     try:
         connection = get_connection()
-
         cursor = connection.cursor()
+        
         query = "SELECT file_data, file_name FROM images WHERE user_id = %s AND file_name LIKE %s"
-        cursor.execute(query, (userId, f"{searchStr}%"))
+        cursor.execute(query, (userId, f"%{searchStr}%"))
         rows = cursor.fetchall()
 
         Images = []
@@ -482,6 +476,7 @@ def deleteUser(userId):
     try:
         connection = get_connection()
         cursor = connection.cursor()
+        
         query = "DELETE FROM audio_files WHERE userid = %s"
         cursor.execute(query, (userId, ))
         query = "DELETE FROM images WHERE user_id = %s"

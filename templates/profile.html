@@ -1,99 +1,66 @@
 {% extends "base.html" %}
-  {% block title %}Profile{% endblock %}
-  {% block stylesheets %}
-    <link rel="stylesheet" href="../static/Styles/profile.css" />
-  {% endblock %}
-  {% block scripts %}
-  <script src = '../static/Scripts/profilePage.js' defer></script>
-  {% endblock %}
+{% block title %}Profile{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="../static/Styles/profile.css" />
+{% endblock %}
+{% block scripts %}
+<script src='../static/Scripts/profilePage.js' defer></script>
+{% endblock %}
 
-  {% block content %}
-  <header>
-    <nav id="Navbar">
-      <a href="../" class="NavLink Logo" id="HomePage"><img src="../static/Images/Logo.png" alt="Logo" class="Logo"></a>
-      
-      <div id="LinkContainer">
-        <a href="../upload" class="NavLink">Upload</a>
-        <a href="../workspace" class="NavLink">Create</a>
-        {% if isAdmin == "True"%}
-        <div id="AdminTab">
-          <a href="../adminPage" class="NavLink">Admin hub</a>
-        </div>
-        {% endif %}
-      </div>
-    </nav>
-  </header>
+{% block content %}
+<header>
+  <nav id="Navbar">
+    <a href="../" class="NavLink Logo" id="HomePage"><img src="../static/Images/Logo.png" alt="Logo" class="Logo"></a>
 
-  <div class="MainBody">
-    <div class="Heading">Profile</div>
-    <div class="Profile">
-      <div id="profileContent">
-        <ul>
-          <li>Name : <span style = "color: var(--font)">{{user.name}}</span></li>
-          <li>Username : <span style = "color: var(--font)">{{user.username}}</span></li>
-          <li>Email : <span style = "color: var(--font)">{{user.email}}</span></li>
-          <li><a href="{{ url_for('logout') }}" style="text-decoration: none;">Logout</a></li>
-          <li><a href="{{ url_for('delUser') }}" style="text-decoration: none;">Delete User</a></li>
-        </ul>
+    <div id="LinkContainer">
+      <a href="../upload" class="NavLink">Upload</a>
+      <a href="../workspace" class="NavLink">Create</a>
+      {% if isAdmin == "True"%}
+      <div id="AdminTab">
+        <a href="../adminPage" class="NavLink">Admin hub</a>
       </div>
-      <div id="pp">
-        <div id="profilePhoto">
-          <img src="data:image/jpeg;base64,{{ profileImage }}" alt="Profile Pic" id="profilePic">
-        </div>
-        <form action="/Profile/{{username}}" method="post" enctype="multipart/form-data">
-          <input type="file" name="image" accept="image/*" required class="browseButton">
-          <input type="submit" value="Upload" class="uploadButton">
-        </form>
-      </div>
+      {% endif %}
     </div>
+  </nav>
+</header>
 
-    <div class="Previous">
-      <div class="uploaded">
-      <h1>Previously uploaded Images</h1><br>
-      <div id = "imageContainer">
-        
-      </div>
+<div class="MainBody">
+  <div class="Heading">Profile</div>
+  <div class="Profile">
+    <div id="profileContent">
+      <ul>
+        <li>Name : <span style="color: var(--font)">{{user.name}}</span></li>
+        <li>Username : <span style="color: var(--font)">{{user.username}}</span></li>
+        <li>Email : <span style="color: var(--font)">{{user.email}}</span></li>
+        <li><a href="{{ url_for('logout') }}" style="text-decoration: none;">Logout</a></li>
+        <li><a href="{{ url_for('delUser') }}" style="text-decoration: none;">Delete User</a></li>
+      </ul>
     </div>
-      
-      <div class="uploaded">
-        <h1>Previously uploaded Music</h1><br>
-        <div id="musicContainer">
-          
-        </div>
+    <div id="pp">
+      <div id="profilePhoto">
+        <img src="data:image/jpeg;base64,{{ profileImage }}" alt="Profile Pic" id="profilePic">
+      </div>
+      <div>
+        <input type="file" name="image" accept="image/*" required class="browseButton" id="profileUpload">
+        <input type="submit" value="Upload" class="uploadButton" id="uploadButton">
       </div>
     </div>
   </div>
-  <!-- <script>
-    document.getElementById("profilePicInput").addEventListener("change", function (event) {
-      const file = event.target.files[0];
-      const userId = "123";
-      if (file && userId) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const imageData = e.target.result;
-          document.getElementById("profilePic").src = imageData;
-          uploadProfilePicture(userId, file);
-        };
-        reader.readAsDataURL(file);
-      }
-    });
 
-    function uploadProfilePicture(imageData) {
-      fetch("backendEndpoint", {
-        method: "POST",
-        body: formData
-      })
-        .then((response) => {
-          if (response.ok) {
-            console.log("Profile picture uploaded successfully");
-          } else {
-            console.error("Failed to upload profile picture");
-          }
-        })
-        .catch((error) => {
-          console.error("Error uploading profile picture:", error);
-        });
-    }
+  <div class="Previous">
+    <div class="uploaded">
+      <h1>Previously uploaded Images</h1><br>
+      <div id="imageContainer">
 
-  </script> -->
-  {% endblock %}
+      </div>
+    </div>
+
+    <div class="uploaded">
+      <h1>Previously uploaded Music</h1><br>
+      <div id="musicContainer">
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

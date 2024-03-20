@@ -261,11 +261,10 @@ def videoCreate():
         print("Error:", e)
         return jsonify({'error': str(e)}), 500
 
-@app.route('/Profile/<username>', methods=['POST'])
-def uploadProfileImage(username):
+@app.route('/profileUpload', methods=['POST'])
+def uploadProfileImage():
     try:
         user_id = session["userId"]
-        username = session["username"]
         image_file = request.files['image']
 
         TEMP_DIR = './temp/'
@@ -277,6 +276,9 @@ def uploadProfileImage(username):
         image_file.save(image_path)
 
         upload_profile_image(user_id, image_path)
+        with open(image_path, 'rb') as f:
+            encoded_image = base64.b64encode(f.read()).decode('utf-8')
+        img = [{'data': encoded_image}]
 
         if os.path.exists(TEMP_DIR):
             for file_name in os.listdir(TEMP_DIR):
@@ -284,8 +286,8 @@ def uploadProfileImage(username):
                 if os.path.isfile(file_path):
                     os.remove(file_path)
             os.rmdir(TEMP_DIR)
-
-        return redirect(url_for('profileData', username=username))
+            
+        return jsonify(img)
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
