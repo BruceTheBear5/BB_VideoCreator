@@ -10,15 +10,10 @@ import shutil
 video_name = './output_video.mp4'
 supported_formats_images = [".jpeg", ".jpg", ".png", ".webp"]
 
-<<<<<<< HEAD
-def createVideo(imgFolderName, audioFolderName, userId, timePerImage = 3, resolution = "360p", tranistion = None):
-    final_video_path = f'./static/output/user{userId}/'
-=======
 def createVideo(imgFolderName, audioFolderName, userId, timePerImage = 3, resolution = "360p", quality = "low", tranistion = None):
     final_video_path = f'./static/output/user{userId}/'
     if not os.path.exists(final_video_path):
         os.makedirs(final_video_path)
->>>>>>> cf073a85526667c9b15f596afd969ed84127449c
     if not os.path.exists(imgFolderName):
         os.makedirs(imgFolderName)
     if not os.path.exists(audioFolderName):
@@ -101,11 +96,20 @@ def createVideo(imgFolderName, audioFolderName, userId, timePerImage = 3, resolu
     for clip in clips:
         final_clip = concatenate_videoclips([final_clip, clip])
         
-    
+    # mainAudio = None  
+
+    # audio_clips = []
+
+    # finally:
+    #     for audio_clip in audio_clips:
+    #         audio_clip.close()
+
+    audio_clips = []
     mainAudio = ''
     for audio in audios:
         audioReq = os.path.join(audioFolderName, os.path.splitext(audio)[0] + os.path.splitext(audio)[1]) 
         audio_clip = AudioFileClip(audioReq)
+        audio_clips.append(audio_clip)
         if mainAudio == '':
             mainAudio = audio_clip
         else:
@@ -122,20 +126,12 @@ def createVideo(imgFolderName, audioFolderName, userId, timePerImage = 3, resolu
         concatenated_audio_clip = concatenated_audio_clip.set_duration(video_duration)
         final_clip = final_clip.set_audio(concatenated_audio_clip)
 
-    
     final_clip.write_videofile(video_name, fps = 1)
-<<<<<<< HEAD
-
-    for resized_img_path in resized_image_paths:
-        os.remove(resized_img_path)
-
     shutil.move(video_name, final_video_path + 'output_video.mp4')
-    
-    print("Video created successfully!")
-=======
-    shutil.move(video_name, final_video_path + 'output_video.mp4')
+
+    for audio in audio_clips:
+        audio.close()
     return
->>>>>>> cf073a85526667c9b15f596afd969ed84127449c
 
 if __name__ == "__main__":
     createVideo("./static/Images", "./SelectedAudio", 1, timePerImage= 3, tranistion = "fadeIn")

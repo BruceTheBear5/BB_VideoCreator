@@ -449,7 +449,7 @@ def remove_all_selected():
     
     return jsonify({'message': 'All images and audios removed from selection'})
 
-@app.route('/delete-video')
+@app.route('/delete-video', methods=['POST'])
 def delVid():
     try:
         TEMP_DIR = f'./static/output/user{session["userId"]}/'
