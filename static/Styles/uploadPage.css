@@ -8,11 +8,9 @@ body{
   background-color: var(--bg);
 } 
 
-.Heading{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 5vh;
+h1{
+  padding-top: 10vh;
+  padding-bottom: 4vh;
 }
 
 #drop-area {

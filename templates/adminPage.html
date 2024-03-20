@@ -19,7 +19,7 @@
 </header>
 
 <div class="MainBody">
-    <div class="Heading">Admin Controls</div>
+    <div class="HeadingContainer"><div class="Heading">Admin Controls</div></div>
 
     <div class="Controls">
         <div class="smallFeatures">
@@ -30,7 +30,7 @@
         </div>
 
         <div class="Features">
-            <div class="viewAccounts">View all Accounts</div>
+            <div class="viewAccounts"></div>
             <div id="viewAccountsList" class="accountList">
                 {% for i in range(user|length) %}
                 {% set user_item = user[i] %}
