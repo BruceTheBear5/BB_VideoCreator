@@ -109,14 +109,14 @@ document.addEventListener('DOMContentLoaded', function () {
         allFiles.forEach(file => {
             formData.append('files[]', file);
         });
-        document.querySelector('.loader').classList.add('show');
+        // document.querySelector('.loader').classList.add('show');
         fetch('/Upload-images', {
             method: 'POST',
             body: formData
         })
             .then(response => {
                 if (response.ok) {
-                    document.querySelector('.loader').classList.remove('show');
+                    // document.querySelector('.loader').classList.remove('show');
                     return response.text();
                 }
                 alert("ERROR: Please upload an image.");
