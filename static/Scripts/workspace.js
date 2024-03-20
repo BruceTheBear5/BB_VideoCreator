@@ -278,3 +278,15 @@ window.addEventListener('beforeunload', function(event) {
     clearSelection();
     event.returnValue = 'Your selection of images and audio will not be saved.';
 });
+
+function downloadVideo() {
+    var videoSource = document.getElementById('videoPlayer').querySelector('source').src;
+    
+    var downloadLink = document.createElement('a');
+    downloadLink.href = videoSource;
+    downloadLink.download = 'output_video.mp4';
+    
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}

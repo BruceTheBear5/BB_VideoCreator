@@ -362,9 +362,9 @@ def upload_audio():
 
     for audio_file in audio_files:
         if audio_file.filename != '':
-            filename = os.path.join(TEMP_DIR, audio_file.filename)
-            audio_file.save(filename)
-            save_audio_to_mysql(session.get("userId"), filename)
+            filepath = os.path.join(TEMP_DIR, audio_file.filename)
+            audio_file.save(filepath)
+            save_audio_to_mysql(session.get("userId"), filepath, audio_file.filename)
 
     if os.path.exists(TEMP_DIR):
         for file_name in os.listdir(TEMP_DIR):
