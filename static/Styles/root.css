@@ -31,6 +31,9 @@ h1{
     font-size: 2rem;
     text-align: left;
     color: var(--accent);
+    text-align: center;
+    font-weight: 500;
+    width: 100%;
 }
 
 h2{
@@ -39,10 +42,14 @@ h2{
 
 .Heading {
     text-align: center;
-    font-weight: 500;
-    font-size: 4rem;
-    width: 100%;
-    color: var(--font);
+    font-weight: 600;
+    font-size: 5rem;
+    display: inline-block;
+    background: linear-gradient(to right, var(--accent), var(--accent2));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: gradientTransition 5s infinite ease;
 }
 
 nav {
@@ -106,6 +113,11 @@ nav {
     padding-bottom: 5%;
 }
 
+.HeadingContainer{
+    text-align: center;
+    width: 100%
+}
+
 #footer {
     background-color: #000000;
     color: var(--font);
@@ -124,9 +136,6 @@ nav {
     margin-bottom: 1rem;
 }
 
-body {
-  background-color: #222;
-}
 #preloader {
     position: fixed;
     top: 0;
@@ -196,5 +205,42 @@ body {
         -webkit-transform: rotate(360deg);
         -ms-transform: rotate(360deg);
         transform: rotate(360deg);
+    }
+}
+
+@media only screen and (max-width: 1024px){
+    :root{
+        font-size: 3vw;
+    }
+    
+    nav{
+        flex-direction: row;
+        height: 5%;
+        width: 100%;
+        align-items: center;
+        background-color: #c95efbc1;
+        font-size: 1.5rem;
+    }
+
+    nav #LinkContainer{
+        width: 90%;
+        flex-direction: row;
+        
+    }
+
+    .MainBody{
+        padding-top: 15%;
+        padding-left: 5%;
+        padding-right: 5%;
+        padding-bottom: 5%;
+    }
+
+    .Heading{
+        margin-top: 10%;
+        font-size: 3rem;
+    }
+
+    #footer{
+        width: 100%;
     }
 }

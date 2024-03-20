@@ -486,6 +486,48 @@ def search_mysql(userId, searchStr):
         if connection:
             release_connection(connection)
             
+def deleteAllImages(userId):
+    connection = None
+    cursor = None
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        query = "DELETE FROM images WHERE user_id = %s"
+        cursor.execute(query, (userId, ))
+        connection.commit()
+        return
+
+    except psycopg2.Error as error:
+        print("Failed to retrieve users:", error)
+        return []
+        
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            release_connection(connection)  
+
+def deleteAllAudio(userId):
+    connection = None
+    cursor = None
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        query = "DELETE FROM audio_files WHERE userid = %s"
+        cursor.execute(query, (userId, ))
+        connection.commit()
+        return
+
+    except psycopg2.Error as error:
+        print("Failed to retrieve users:", error)
+        return []
+        
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            release_connection(connection)  
+            
 def deleteUser(userId):
     connection = None
     cursor = None

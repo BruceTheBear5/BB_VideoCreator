@@ -70,7 +70,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width:440px;
+    width:35rem;
 }
 
 .leftDetails {
@@ -96,4 +96,10 @@
 .username, .email, .Admin, .Id, .name {
     font-size: 1rem;
     margin-bottom: 0.5rem;
+}
+
+@media only screen and (max-width: 1024px){
+    .MainBody{
+        padding-left: 5%;
+    }
 }

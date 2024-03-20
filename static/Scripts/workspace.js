@@ -210,19 +210,19 @@ function emptyImages() {
     fetch('/empty-selected', {
         method: 'POST'
     })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Failed to remove all images from selection.');
-            }
-        })
-        .then(data => {
-            console.log(data.message);
-        })
-        .catch(error => {
-            console.error('Error:', error.message);
-        });
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Failed to remove all images from selection.');
+        }
+    })
+    .then(data => {
+        console.log(data.message);
+    })
+    .catch(error => {
+        console.error('Error:', error.message);
+    });
 }
 
 var clear = document.getElementById("imageClear");
@@ -246,11 +246,13 @@ function generateVideo() {
     var imgDuration = document.getElementById("imageDuration").value;
     var Transition = document.getElementById("transitionType").value;
     var vidResolution = document.getElementById("resolution").value;
+    var quality = document.getElementById("quality").value;
 
     var requestData = {
         imgDuration: imgDuration,
         Transition: Transition,
-        vidResolution: vidResolution
+        vidResolution: vidResolution,
+        quality: quality
     };
 
     fetch('/videoCreate', {
@@ -260,21 +262,43 @@ function generateVideo() {
         },
         body: JSON.stringify(requestData)
     })
-        .then(response => {
-            if (response.ok) {
-                document.getElementById('videoPlayer').querySelector('source').src = '../static/output_video.mp4';
-                document.getElementById('videoPlayer').load();
-            } else {
-                console.error('Failed to generate video');
-            }
-        })
-        .catch(error => {
-            console.error('Error generating video:', error);
-        });
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            console.log(data.message);
+            document.getElementById('videoPlayer').querySelector('source').src = data.video_path;
+            document.getElementById('videoPlayer').load();
+        } else {
+            console.error('Error:', data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error generating video:', error);
+    });
+}
+
+function deleteVideo() {
+    fetch('/delete-video', {
+        method: 'POST'
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Failed to delete video');
+        }
+    })
+    .then(data => {
+        console.log(data.message);
+    })
+    .catch(error => {
+        console.error('Error:', error.message);
+    });
 }
 
 window.addEventListener('beforeunload', function(event) {
     event.preventDefault();
+    deleteVideo();
     clearSelection();
     event.returnValue = 'Your selection of images and audio will not be saved.';
 });
@@ -285,6 +309,7 @@ function downloadVideo() {
     var downloadLink = document.createElement('a');
     downloadLink.href = videoSource;
     downloadLink.download = 'output_video.mp4';
+    downloadLink.style.textDecoration = 'none';
     
     document.body.appendChild(downloadLink);
     downloadLink.click();

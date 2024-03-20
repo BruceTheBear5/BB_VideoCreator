@@ -1,13 +1,5 @@
 @import url('./root.css');
 
-*{
-    color: var(--font);
-}
-
-body{
-    background-color: var(--bg);
-}
-
 .MainBody{
     padding-left: 18%;
     padding-right: 7.5%;
@@ -217,14 +209,14 @@ button:hover {
     width: 100%;
     height: auto;
     border-radius: 8px;
-    box-shadow: 0px 4px 8px var(--shadow); /* Using variable from root.css */
+    box-shadow: 0px 4px 8px var(--shadow); 
 }
 .controls-overlay {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: var(--alter-bg); /* Using variable from root.css */
+    background-color: var(--alter-bg); 
     padding: 8px;
     box-sizing: border-box;
     display: flex;
@@ -377,3 +369,19 @@ input[type="range"]::-webkit-slider-thumb:hover {
     width: 100%;
     box-sizing: border-box;
   }
+
+@media only screen and (max-width: 1024px){
+
+    .MainBody{
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    #imageContainer{
+        width: 85%;
+    }
+
+    #musicContainer{
+        width: 85%;
+    }
+}

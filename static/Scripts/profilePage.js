@@ -34,11 +34,12 @@ function loadAudio(audioSet) {
     audioSet.forEach(function (audio) {
         var cell = document.createElement("div");
         cell.classList.add('audioCell');
-
-        var name = document.createElement("span");
+        
+        var name = document.createElement("label");
         name.classList.add('audioName');
+        name.setAttribute('for', 'audio:'+audio.name)
         name.textContent = "" + audio.name;
-
+        
         var controls = document.createElement("audio");
         controls.setAttribute('controls', '');
 

@@ -1,13 +1,5 @@
 @import "./root.css";
 
-*{
-    color: var(--font);
-}
-
-body{
-    background-color: var(--bg);
-}
-
 .MainBody{
     display: flex;
     justify-content: center;

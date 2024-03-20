@@ -45,8 +45,10 @@ def createVideo(imgFolderName, audioFolderName, userId, timePerImage = 3, resolu
         setQuality = 33
     elif quality == 'medium':
         setQuality = 67
-    else:
+    elif quality == 'high':
         setQuality = 100
+    else:
+        setQuality = 33
     
     black_screen = ColorClip(size=(width, height), color=(0, 0, 0), duration=0.5)
     
@@ -96,11 +98,20 @@ def createVideo(imgFolderName, audioFolderName, userId, timePerImage = 3, resolu
     for clip in clips:
         final_clip = concatenate_videoclips([final_clip, clip])
         
-    
+    # mainAudio = None  
+
+    # audio_clips = []
+
+    # finally:
+    #     for audio_clip in audio_clips:
+    #         audio_clip.close()
+
+    audio_clips = []
     mainAudio = ''
     for audio in audios:
         audioReq = os.path.join(audioFolderName, os.path.splitext(audio)[0] + os.path.splitext(audio)[1]) 
         audio_clip = AudioFileClip(audioReq)
+        audio_clips.append(audio_clip)
         if mainAudio == '':
             mainAudio = audio_clip
         else:
@@ -117,9 +128,11 @@ def createVideo(imgFolderName, audioFolderName, userId, timePerImage = 3, resolu
         concatenated_audio_clip = concatenated_audio_clip.set_duration(video_duration)
         final_clip = final_clip.set_audio(concatenated_audio_clip)
 
-    
     final_clip.write_videofile(video_name, fps = 1)
     shutil.move(video_name, final_video_path + 'output_video.mp4')
+
+    for audio in audio_clips:
+        audio.close()
     return
 
 if __name__ == "__main__":
