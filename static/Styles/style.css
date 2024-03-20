@@ -98,9 +98,10 @@
 }
 
 #im{
-    margin-top: 2rem;
-    width: 100%;
-    margin-bottom: 2rem;
+    margin-top: 4rem;
+    margin-left:15%;
+    width: 70%;
+    margin-bottom: 4rem;
 }
 
 .UsageOfSite{
@@ -163,4 +164,28 @@
     animation: scrollIn 0.8s ease forwards; /* Apply animation */
 }
 
-
+@media only screen and (max-width: 1024px){
+    .MainBody{
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+    #IntroToSite{
+        font-size: 1rem;
+    }
+    #UsageOfSite{
+        font-size: 0.75rem;
+    }
+    .LogoName{
+        font-size: 7rem;
+    }
+    #by{
+        font-size: 3rem;
+    }
+    #typed{
+        font-size: 3rem;
+    }
+    #im{
+        margin-left:15%;
+    }
+    
+}
