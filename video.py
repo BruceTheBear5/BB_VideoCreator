@@ -45,8 +45,10 @@ def createVideo(imgFolderName, audioFolderName, userId, timePerImage = 3, resolu
         setQuality = 33
     elif quality == 'medium':
         setQuality = 67
-    else:
+    elif quality == 'high':
         setQuality = 100
+    else:
+        setQuality = 33
     
     black_screen = ColorClip(size=(width, height), color=(0, 0, 0), duration=0.5)
     

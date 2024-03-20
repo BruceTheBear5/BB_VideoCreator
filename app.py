@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, Response, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql, save_image_to_mysql, save_audio_to_mysql, start_connection_pool, close_connection_pool, sort_mysql, search_mysql, deleteUser
+from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql, save_image_to_mysql, save_audio_to_mysql, start_connection_pool, close_connection_pool, sort_mysql, search_mysql, deleteUser, deleteAllImages, deleteAllAudio
 from video import createVideo
 import os
 import base64
@@ -254,8 +254,9 @@ def videoCreate():
         imgDuration = request.json.get('imgDuration', '5')
         Transition = request.json.get('Transition', None)
         vidResolution = request.json.get('vidResolution', '360p')
+        quality = request.json.get('quality', 'low')
         
-        createVideo(f'./Selected/user{session["userId"]}',f'./SelectedAudio/user{session["userId"]}', session["userId"], timePerImage=imgDuration, resolution=vidResolution, tranistion = Transition)
+        createVideo(f'./Selected/user{session["userId"]}',f'./SelectedAudio/user{session["userId"]}', session["userId"], timePerImage=imgDuration, resolution=vidResolution, tranistion = Transition, quality= quality)
         video_path = f'../static/output/user{session["userId"]}/output_video.mp4'
         return jsonify({'message': 'Video generation successful', 'video_path': video_path})
     except Exception as e:
@@ -463,6 +464,27 @@ def delVid():
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
+
+@app.route('/deleteAllImagesofUser')
+def deleteAllImagesofUser():
+    try:
+        userId = session["userId"]
+        deleteAllImages(userId)
+        return jsonify({'message': 'Successful'})
+    except Exception as e:
+        print("Error:", e)
+        return Response(status=500)
+    
+@app.route('/deleteAllAudiosofUser')
+def deleteAllAudiosofUser():
+    try:
+        userId = session["userId"]
+        deleteAllAudio(userId)
+        return jsonify({'message': 'Successful'})
+    except Exception as e:
+        print("Error:", e)
+        return Response(status=500)
+
 
 @app.route('/deleteUser')
 def delUser():
