@@ -470,7 +470,7 @@ def deleteAllImagesofUser():
     try:
         userId = session["userId"]
         deleteAllImages(userId)
-        return jsonify({'message': 'Successful'})
+        return jsonify({'message': 'successfully'})
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
@@ -480,11 +480,10 @@ def deleteAllAudiosofUser():
     try:
         userId = session["userId"]
         deleteAllAudio(userId)
-        return jsonify({'message': 'Successful'})
+        return jsonify({'message': 'successfully'})
     except Exception as e:
         print("Error:", e)
         return Response(status=500)
-
 
 @app.route('/deleteUser')
 def delUser():
