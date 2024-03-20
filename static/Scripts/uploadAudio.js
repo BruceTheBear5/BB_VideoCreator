@@ -14,13 +14,13 @@ document.addEventListener('DOMContentLoaded', function () {
             formData.append('audioFile', file);
         }
 
-        document.querySelector('.loader').classList.add('show');
+        // document.querySelector('.loader').classList.add('show');
         fetch('/upload-audio', {
             method: 'POST',
             body: formData
         })
             .then(response => {
-                document.querySelector('.loader').classList.remove('show');
+                // document.querySelector('.loader').classList.remove('show');
                 if (response.ok) {
                     return response.text();
                 }
