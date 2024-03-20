@@ -246,11 +246,13 @@ function generateVideo() {
     var imgDuration = document.getElementById("imageDuration").value;
     var Transition = document.getElementById("transitionType").value;
     var vidResolution = document.getElementById("resolution").value;
+    var quality = document.getElementById("quality").value;
 
     var requestData = {
         imgDuration: imgDuration,
         Transition: Transition,
-        vidResolution: vidResolution
+        vidResolution: vidResolution,
+        quality: quality
     };
 
     fetch('/videoCreate', {

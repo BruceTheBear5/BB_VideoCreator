@@ -254,8 +254,9 @@ def videoCreate():
         imgDuration = request.json.get('imgDuration', '5')
         Transition = request.json.get('Transition', None)
         vidResolution = request.json.get('vidResolution', '360p')
+        quality = request.json.get('quality', 'low')
         
-        createVideo(f'./Selected/user{session["userId"]}',f'./SelectedAudio/user{session["userId"]}', session["userId"], timePerImage=imgDuration, resolution=vidResolution, tranistion = Transition)
+        createVideo(f'./Selected/user{session["userId"]}',f'./SelectedAudio/user{session["userId"]}', session["userId"], timePerImage=imgDuration, resolution=vidResolution, tranistion = Transition, quality= quality)
         video_path = f'../static/output/user{session["userId"]}/output_video.mp4'
         return jsonify({'message': 'Video generation successful', 'video_path': video_path})
     except Exception as e:
