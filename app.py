@@ -255,7 +255,7 @@ def videoCreate():
         Transition = request.json.get('Transition', None)
         vidResolution = request.json.get('vidResolution', '360p')
         
-        createVideo('./Selected/','./SelectedAudio/', timePerImage=imgDuration, resolution=vidResolution, tranistion = Transition)
+        createVideo(f'./Selected/user{session["userId"]}',f'./SelectedAudio/user{session["userId"]}', timePerImage=imgDuration, resolution=vidResolution, tranistion = Transition)
         return jsonify({'message': 'Video generation successful'})
     except Exception as e:
         print("Error:", e)
@@ -329,7 +329,7 @@ def upload_images():
 
     files = request.files.getlist('files[]')
 
-    TEMP_DIR = './temp/'
+    TEMP_DIR = f'./tempImg/user{session["userId"]}'
 
     if not os.path.exists(TEMP_DIR):
         os.makedirs(TEMP_DIR)
@@ -355,16 +355,16 @@ def upload_audio():
         return "No audio file uploaded", 400
 
     audio_files = request.files.getlist('audioFile')
-    TEMP_DIR = './temp/'
+    TEMP_DIR = f'./tempAudio/user{session["userId"]}'
 
     if not os.path.exists(TEMP_DIR):
         os.makedirs(TEMP_DIR)
 
     for audio_file in audio_files:
         if audio_file.filename != '':
-            filename = os.path.join(TEMP_DIR, audio_file.filename)
-            audio_file.save(filename)
-            save_audio_to_mysql(session.get("userId"), filename)
+            filepath = os.path.join(TEMP_DIR, audio_file.filename)
+            audio_file.save(filepath)
+            save_audio_to_mysql(session.get("userId"), filepath, audio_file.filename)
 
     if os.path.exists(TEMP_DIR):
         for file_name in os.listdir(TEMP_DIR):
@@ -390,7 +390,7 @@ def toggle_selected_images():
     image_data = request.json.get('image')
     image_name = image_data['name']
 
-    TEMP_DIR = './Selected/'
+    TEMP_DIR = f'./Selected/user{session["userId"]}/'
     if not os.path.exists(TEMP_DIR):
         os.makedirs(TEMP_DIR)
 
@@ -412,7 +412,7 @@ def toggle_selected_audio():
     audio_data = request.json.get('audio')
     audio_name = audio_data['name']
 
-    TEMP_DIR = './SelectedAudio/'
+    TEMP_DIR = f'./SelectedAudio/user{session["userId"]}/'
     if not os.path.exists(TEMP_DIR):
         os.makedirs(TEMP_DIR)
 
@@ -430,19 +430,21 @@ def toggle_selected_audio():
 @app.route('/empty-selected', methods=['POST'])
 def remove_all_selected():
     print("Removind all selected images/audio")
-    TEMP_DIR = './Selected/'
+    TEMP_DIR = f'./Selected/user{session["userId"]}/'
     if os.path.exists(TEMP_DIR):
         for filename in os.listdir(TEMP_DIR):
             file_path = os.path.join(TEMP_DIR, filename)
             if os.path.isfile(file_path):
                 os.remove(file_path)
+        os.rmdir(TEMP_DIR)
 
-    TEMP_DIR = './SelectedAudio/'
+    TEMP_DIR = f'./SelectedAudio/user{session["userId"]}/'
     if os.path.exists(TEMP_DIR):
         for filename in os.listdir(TEMP_DIR):
             file_path = os.path.join(TEMP_DIR, filename)
             if os.path.isfile(file_path):
                 os.remove(file_path)
+        os.rmdir(TEMP_DIR)
     
     return jsonify({'message': 'All images and audios removed from selection'})
 

@@ -105,14 +105,23 @@ def save_image_to_mysql(user_id, image_path, image_name):
         connection = get_connection() 
         cursor = connection.cursor()
 
-        with open(image_path, "rb") as file:
-            image_data = file.read()
+        try:
+            name_without_extension = os.path.splitext(image_name)[0]
+            query = "SELECT COUNT(file_name) FROM images WHERE file_name like %s AND user_id = %s"
+            cursor.execute(query, (name_without_extension + '%', user_id))
+            numberOfOccurences = cursor.fetchone()[0] 
 
-        insert_query = """INSERT INTO images (user_id, file_name, file_size, file_type, file_data) VALUES (%s, %s, %s, %s, %s)"""
-        image_values = (user_id, image_name, len(image_data), "image/jpeg", image_data)
-        cursor.execute(insert_query, image_values)
+            if numberOfOccurences != 0:
+                image_name = f"{name_without_extension}{numberOfOccurences}{os.path.splitext(image_name)[1]}"
+        finally:
+            with open(image_path, "rb") as file:
+                image_data = file.read()
 
-        connection.commit()
+            insert_query = """INSERT INTO images (user_id, file_name, file_size, file_type, file_data) VALUES (%s, %s, %s, %s, %s)"""
+            image_values = (user_id, image_name, len(image_data), "image/jpeg", image_data)
+            cursor.execute(insert_query, image_values)
+
+            connection.commit()
 
     except psycopg2.Error as error:
         print("Failed to save image to MySQL database:", error)
@@ -263,7 +272,7 @@ def get_duration(file_path, file_format):
 
     return duration_seconds
 
-def save_audio_to_mysql(user_id, relative_file_path):
+def save_audio_to_mysql(user_id, relative_file_path, file_name):
     connection = None
     cursor = None
     try:
@@ -281,14 +290,23 @@ def save_audio_to_mysql(user_id, relative_file_path):
         file_format = file_extension[1:]
 
         duration_seconds = get_duration(absolute_file_path, file_format)
-        audio= Audio(filename, file_size_bytes, file_format, audio_data, duration_seconds)
+        
+        try:
+            name_without_extension = os.path.splitext(file_name)[0]
+            query = "SELECT COUNT(filename) FROM audio_files WHERE filename like %s AND userid = %s"
+            cursor.execute(query, (name_without_extension + '%', user_id))
+            numberOfOccurences = cursor.fetchone()[0] 
 
-        insert_query = """INSERT INTO audio_files (userId, filename, file_data, duration_seconds, file_size_bytes, file_format) VALUES (%s, %s, %s, %s, %s, %s)"""
-        audio_values = (user_id, audio.file_name, audio.file_data, audio.duration, audio.file_size, audio.file_type)
-        cursor.execute(insert_query, audio_values)
+            if numberOfOccurences != 0:
+                file_name = f"{name_without_extension}{numberOfOccurences}{os.path.splitext(file_name)[1]}"
+        finally:
+            audio= Audio(filename, file_size_bytes, file_format, audio_data, duration_seconds)
 
-        connection.commit()
-        print("Audio file saved to MySQL database successfully.")
+            insert_query = """INSERT INTO audio_files (userId, filename, file_data, duration_seconds, file_size_bytes, file_format) VALUES (%s, %s, %s, %s, %s, %s)"""
+            audio_values = (user_id, file_name, audio.file_data, audio.duration, audio.file_size, audio.file_type)
+            cursor.execute(insert_query, audio_values)
+
+            connection.commit()
 
     except FileNotFoundError:
         print("Error: Audio file '{}' not found.".format(absolute_file_path))
