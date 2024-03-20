@@ -97,14 +97,6 @@ def createVideo(imgFolderName, audioFolderName, userId, timePerImage = 3, resolu
         
     for clip in clips:
         final_clip = concatenate_videoclips([final_clip, clip])
-        
-    # mainAudio = None  
-
-    # audio_clips = []
-
-    # finally:
-    #     for audio_clip in audio_clips:
-    #         audio_clip.close()
 
     audio_clips = []
     mainAudio = ''

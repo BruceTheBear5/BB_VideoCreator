@@ -6,7 +6,7 @@ import numpy as np
 import psycopg2.pool
 from datetime import datetime
 
-DATABASE_URL = "postgresql://bond:hkJBMZZaRBmmcaGiKDM8rg@project-8970.8nk.gcp-asia-southeast1.cockroachlabs.cloud:26257/project?sslmode=verify-full"
+DATABASE_URL = "postgresql://bond:hkJBMZZaRBmmcaGiKDM8rg@project-8970.8nk.gcp-asia-southeast1.cockroachlabs.cloud:26257/project?sslmode=require"
 connection_pool = None
 
 class User:
