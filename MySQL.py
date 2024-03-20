@@ -6,7 +6,7 @@ import numpy as np
 import psycopg2.pool
 from datetime import datetime
 
-DATABASE_URL = "postgresql://bond:hkJBMZZaRBmmcaGiKDM8rg@project-8970.8nk.gcp-asia-southeast1.cockroachlabs.cloud:26257/project?sslmode=require"
+DATABASE_URL = "postgresql://bond:hkJBMZZaRBmmcaGiKDM8rg@project-8970.8nk.gcp-asia-southeast1.cockroachlabs.cloud:26257/project?sslmode=verify-full"
 connection_pool = None
 
 class User:
@@ -436,7 +436,6 @@ def sort_mysql(userId, sortBy):
                 file_data = row[0]
                 upload_date = datetime.now()
                 image = Image(file_name, image_len, file_type, file_data, upload_date)
-                # image.display()
                 Images.append(image)
                                 
         return Images
@@ -471,7 +470,6 @@ def search_mysql(userId, searchStr):
                 file_data = row[0]
                 upload_date = datetime.now()
                 image = Image(file_name, image_len, file_type, file_data, upload_date)
-                # image.display()
                 Images.append(image)
                 
         return Images
@@ -556,41 +554,3 @@ def deleteUser(userId):
             cursor.close()
         if connection:
             release_connection(connection)
-
-# users = [
-#     User("John Doe", "johndoe", "john@example.com", "password123", isAdmin="False"),
-#     User("Jane Smith", "janesmith", "jane@example.com", "password456", isAdmin="True"),
-#     User("Saiyam", "saiyam", "saiyam3420@gmail.com", "Saiyam20", isAdmin="True")
-# ]
-
-# save_data_to_mysql(users[2])
-# save_data_to_mysql(users[1])
-# user = retrieve_users_from_mysql("saiyam3420@gmail.com")
-# if(user):
-#     user.printUser()
-#     print(type(user.isAdmin))
-# user = retrieve_users_from_mysql("saiyam3420@gmail.com")
-# if(user):
-#     user.printUser()
-#     print(type(user.isAdmin))
-
-# save_image_to_mysql(1, "./static/Images/Logo.png")
-# retrieve_images_from_mysql(3)
-# upload_profile_image(1, "./static/Images/alt_image.jpg")
-# retrieve_profile_image(1)
-
-# AdminRetrieve()
-# AdminRetrieveProfilePic()
-
-# save_audio_to_mysql(1, '/home/saiyamjain/Downloads/try.mp3')
-# retrieve_audio_from_mysql(3)
-            
-# start_connection_pool()
-# sort_mysql(3, "file_name")
-# sort_mysql(1, "uploaded_at")
-# sort_mysql(3, "file_size")
-# search_mysql(3, "C")
-
-# con = connect_to_database()
-# con.close
-
