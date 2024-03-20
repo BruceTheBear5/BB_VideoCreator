@@ -34,12 +34,12 @@ function loadAudio(audioSet) {
     audioSet.forEach(function (audio) {
         var cell = document.createElement("div");
         cell.classList.add('audioCell');
-        
+
         var name = document.createElement("label");
         name.classList.add('audioName');
-        name.setAttribute('for', 'audio:'+audio.name)
+        name.setAttribute('for', 'audio:' + audio.name)
         name.textContent = "" + audio.name;
-        
+
         var controls = document.createElement("audio");
         controls.setAttribute('controls', '');
 
@@ -69,35 +69,6 @@ window.onload = function () {
         .catch(error => console.error('Error fetching images:', error));
 }
 
-// sortBySelect.addEventListener("change", function () {
-//     console.log(sortBySelect.value);
-//     imageContainer.innerHTML = ""
-//     var selectedValue = sortBySelect.value;
-//     if (selectedValue == "file_name") {
-//         fetch('/getSortedImageName')
-//             .then(response => response.json())
-//             .then(images => {
-//                 loadImages(images);
-//             })
-//             .catch(error => console.error('Error fetching sorted images:', error));
-//     }
-//     if (selectedValue == "uploaded_at") {
-//         fetch('/getSortedImageDate')
-//             .then(response => response.json())
-//             .then(images => {
-//                 loadImages(images);
-//             })
-//             .catch(error => console.error('Error fetching sorted images:', error));
-//     }
-//     if (selectedValue == "file_size") {
-//         fetch('/getSortedImageFileSize')
-//             .then(response => response.json())
-//             .then(images => {
-//                 loadImages(images);
-//             })
-//             .catch(error => console.error('Error fetching sorted images:', error));
-//     }
-// });
 
 uploadButton.addEventListener('click', function () {
     let imgElement = document.getElementById('profilePic');
@@ -131,3 +102,21 @@ uploadButton.addEventListener('click', function () {
             console.error('Error uploading image:', error);
         });
 });
+
+function deleteAllImages() {
+    fetch('/deleteAllImagesofUser')
+        .then(response => response.json())
+        .then(
+            imageContainer.innerHTML = ''
+        )
+        .catch(error => console.error('Error fetching images:', error));
+}
+
+function deleteAllAudios() {
+    fetch('/deleteAllAudiosofUser')
+        .then(response => response.json())
+        .then(
+            musicContainer.innerHTML = ''
+        )
+        .catch(error => console.error('Error fetching images:', error));
+}
