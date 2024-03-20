@@ -32,8 +32,6 @@ function loadAudio(audioSet) {
     musicContainer.innerHTML = '';
 
     audioSet.forEach(function (audio) {
-        console.log("" + audio.name);
-
         var cell = document.createElement("div");
         cell.classList.add('audioCell');
 

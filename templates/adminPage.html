@@ -44,7 +44,7 @@
                         <div class="Admin">Admin: {{ "Yes" if user_item.isAdmin == "True" else "No" }}</div>
                     </div>
                     <div class="profilePicture">
-                        <img src="data:image/jpeg;base64,{{ pic_item }}" alt="Profile Pic" id="profilePic">
+                        <a href="data:image/jpeg;base64,{{ pic_item }}" target="_blank"><img src="data:image/jpeg;base64,{{ pic_item }}" alt="Profile Pic" id="profilePic"></a>
                     </div>
                 </div>
                 {% endfor %}

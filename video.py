@@ -1,6 +1,6 @@
 from moviepy.editor import ImageSequenceClip, AudioFileClip, concatenate_audioclips, concatenate_videoclips, CompositeVideoClip, ColorClip
-from moviepy.video.fx.all import scroll
-from PIL import Image
+from moviepy.video.fx import fadein, fadeout
+from PIL import Image, ImageOps
 import os
 import math
 import shutil
@@ -21,7 +21,15 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
         os.makedirs(audioFolderName)
     
     images = [img for img in os.listdir(imgFolderName) if any(img.endswith(format) for format in supported_formats_images)]
+    images_with_times = [(img, os.path.getmtime(os.path.join(imgFolderName, img))) for img in images]
+    sorted_images = sorted(images_with_times, key=lambda x: x[1])
+    images = [filename for filename, _ in sorted_images]
+
     audios = [audio for audio in os.listdir(audioFolderName) if (audio.endswith(('.mp3', '.wav', '.aac', '.mpga')))]
+    audios_with_times = [(audio, os.path.getmtime(os.path.join(audioFolderName, audio))) for audio in audios]
+    sorted_audios = sorted(audios_with_times, key=lambda x: x[1])
+    audios = [filename for filename, _ in sorted_audios]
+
     # print(audios)
     resized_image_paths = []
     clips = []
@@ -44,7 +52,7 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
             img_path = os.path.join(imgFolderName, image)
             img = Image.open(img_path)
             img = img.convert('RGB')
-            img = img.resize((width, height))
+            img = ImageOps.pad(img, (width, height), color="black")
             resized_img_path = os.path.join(imgFolderName, "resized_" + os.path.splitext(image)[0] + ".jpg") 
             img.save(resized_img_path)
             resized_image_paths.append(resized_img_path)
@@ -58,7 +66,7 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
             img_path = os.path.join(imgFolderName, image)
             img = Image.open(img_path)
             img = img.convert('RGB')
-            img = img.resize((width, height))
+            img = ImageOps.pad(img, (width, height), color="black")
             resized_img_path = os.path.join(imgFolderName, "resized_" + os.path.splitext(image)[0] + ".jpg") 
             img.save(resized_img_path)
             resized_image_paths.append(resized_img_path)
@@ -72,7 +80,7 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
             img_path = os.path.join(imgFolderName, image)
             img = Image.open(img_path)
             img = img.convert('RGB')
-            img = img.resize((width, height))
+            img = ImageOps.pad(img, (width, height), color="black")
             resized_img_path = os.path.join(imgFolderName, "resized_" + os.path.splitext(image)[0] + ".jpg") 
             img.save(resized_img_path)
             resized_image_paths.append(resized_img_path)
@@ -86,7 +94,7 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
             img_path = os.path.join(imgFolderName, image)
             img = Image.open(img_path)
             img = img.convert('RGB')
-            img = img.resize((width, height))
+            img = ImageOps.pad(img, (width, height), color="black")
             resized_img_path = os.path.join(imgFolderName, "resized_" + os.path.splitext(image)[0] + ".jpg") 
             img.save(resized_img_path)
             resized_image_paths.append(resized_img_path)
@@ -100,7 +108,7 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
             img_path = os.path.join(imgFolderName, image)
             img = Image.open(img_path)
             img = img.convert('RGB')
-            img = img.resize((width, height))
+            img = ImageOps.pad(img, (width, height), color="black")
             resized_img_path = os.path.join(imgFolderName, "resized_" + os.path.splitext(image)[0] + ".jpg") 
             img.save(resized_img_path)
             resized_image_paths.append(resized_img_path)
@@ -115,7 +123,7 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
             img_path = os.path.join(imgFolderName, image)
             img = Image.open(img_path)
             img = img.convert('RGB')
-            img = img.resize((width, height))
+            img = ImageOps.pad(img, (width, height), color="black")
             resized_img_path = os.path.join(imgFolderName, "resized_" + os.path.splitext(image)[0] + ".jpg") 
             img.save(resized_img_path)
             resized_image_paths.append(resized_img_path)
@@ -124,26 +132,12 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
             clip = clip.crossfadein(1).crossfadeout(1)
             clips.append(clip)
             
-    elif(tranistion == "scrollEff"):
-        for image in images:
-            img_path = os.path.join(imgFolderName, image)
-            img = Image.open(img_path)
-            img = img.convert('RGB')
-            img = img.resize((width, height))
-            resized_img_path = os.path.join(imgFolderName, "resized_" + os.path.splitext(image)[0] + ".jpg") 
-            img.save(resized_img_path)
-            resized_image_paths.append(resized_img_path)
-            clip = ImageSequenceClip([resized_img_path], fps = 1)
-            clip = clip.set_duration(timePerImage)
-            clip_scroll = clip.fx(scroll, **scroll_params)
-            clips.append(clip_scroll)
-            
     else:
         for image in images:
             img_path = os.path.join(imgFolderName, image)
             img = Image.open(img_path)
             img = img.convert('RGB')
-            img = img.resize((width, height))
+            img = ImageOps.pad(img, (width, height), color="black")
             resized_img_path = os.path.join(imgFolderName, "resized_" + os.path.splitext(image)[0] + ".jpg") 
             img.save(resized_img_path)
             resized_image_paths.append(resized_img_path)
