@@ -40,7 +40,7 @@
       <div id="profilePhoto">
         <a href = "data:image/jpeg;base64,{{ profileImage }}" target="_blank"><img src="data:image/jpeg;base64,{{ profileImage }}" alt="Profile Pic" id="profilePic"></a>
       </div>
-      <div>
+      <div style="display: flex; justify-content: space-evenly;align-items: center;margin-top:2rem">
         <input type="file" name="image" accept="image/*" required class="browseButton" id="profileUpload">
         <input type="submit" value="Upload" class="uploadButton" id="uploadButton">
       </div>
