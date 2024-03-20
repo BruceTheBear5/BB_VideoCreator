@@ -6,6 +6,7 @@ var musicContainer = document.getElementById("musicContainer");
 
 function loadImages(imageSet) {
     imageContainer.innerHTML = '';
+    imageContainer.style.display = 'grid';
     imageSet.forEach(function (image) {
         var anchor = document.createElement("a");
         anchor.href = "data:image/jpeg;base64," + image.data;
