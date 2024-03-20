@@ -384,7 +384,7 @@ def create():
         return Response(status=500)
 
 @app.route('/toggle-image', methods=['POST'])
-def toggle_selected():
+def toggle_selected_images():
     image_data = request.json.get('image')
     image_name = image_data['name']
 
@@ -405,16 +405,44 @@ def toggle_selected():
         selected = True
     return jsonify({'selected': selected})
 
+@app.route('/toggle-audio', methods=['POST'])
+def toggle_selected_audio():
+    audio_data = request.json.get('audio')
+    audio_name = audio_data['name']
+
+    TEMP_DIR = './SelectedAudio/'
+    if not os.path.exists(TEMP_DIR):
+        os.makedirs(TEMP_DIR)
+
+    audio_path = os.path.join(TEMP_DIR, audio_name)
+    audio_selected = os.path.exists(audio_path)
+
+    if audio_selected:
+        os.remove(audio_path)
+    else:
+        with open(audio_path, 'wb') as f:
+            audio_bytes = base64.b64decode(audio_data['data'])
+            f.write(audio_bytes)
+    return
+
 @app.route('/empty-selected', methods=['POST'])
-def remove_all_selected_images():
+def remove_all_selected():
+    print("Removind all selected images/audio")
     TEMP_DIR = './Selected/'
     if os.path.exists(TEMP_DIR):
         for filename in os.listdir(TEMP_DIR):
             file_path = os.path.join(TEMP_DIR, filename)
             if os.path.isfile(file_path):
                 os.remove(file_path)
+
+    TEMP_DIR = './SelectedAudio/'
+    if os.path.exists(TEMP_DIR):
+        for filename in os.listdir(TEMP_DIR):
+            file_path = os.path.join(TEMP_DIR, filename)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
     
-    return jsonify({'message': 'All images removed from selection'})
+    return jsonify({'message': 'All images and audios removed from selection'})
 
 @app.route('/deleteUser')
 def delUser():

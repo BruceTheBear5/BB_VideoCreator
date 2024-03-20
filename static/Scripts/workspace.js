@@ -1,4 +1,5 @@
 var imageContainer = document.getElementById("imageContainer");
+var musicContainer = document.getElementById("musicContainer");
 var sortBySelect = document.getElementById("sortBy");
 var searchInput = document.getElementById("searchInput");
 
@@ -7,10 +8,10 @@ function loadImages(imageSet) {
         while (imageContainer.firstChild) {
             imageContainer.removeChild(imageContainer.firstChild);
         }
-        imageSet.forEach(function (imageSet) {
+        imageSet.forEach(function (image) {
             var img = document.createElement("img");
-            img.src = "data:image/jpeg;base64," + imageSet.data;
-            img.alt = imageSet.name;
+            img.src = "data:image/jpeg;base64," + image.data;
+            img.alt = image.name;
 
             var div = document.createElement("div");
             div.classList.add("image-item");
@@ -18,12 +19,12 @@ function loadImages(imageSet) {
             var selectButton = document.createElement("i");
             selectButton.classList.add("bi", "bi-check-circle", "close-button");
 
-            img.addEventListener('click', function () {
-                toggleImage(imageSet, selectButton);
+            img.addEventListener('click', () => {
+                toggleImage(image, selectButton);
             });
 
             var label = document.createElement('label');
-            label.textContent = imageSet.name;
+            label.textContent = image.name;
 
             div.appendChild(img);
             div.appendChild(selectButton);
@@ -35,14 +36,35 @@ function loadImages(imageSet) {
     }
 }
 
-function loadAudioOptions(audioSet) {
-    var audioSelect = document.getElementById("backgroundMusic");
-
+function loadAudio(audioSet) {
     audioSet.forEach(function (audio) {
-        var option = document.createElement("option");
-        option.value = audio.name;
-        option.textContent = audio.name;
-        audioSelect.appendChild(option);
+        var cell = document.createElement("div");
+        cell.classList.add('audioCell');
+
+        var check = document.createElement('input');
+        check.type = 'checkbox';
+        check.id = 'audio:' + audio.name;
+        
+        var name = document.createElement("label");
+        name.classList.add('audioName');
+        name.setAttribute('for', 'audio:'+audio.name)
+        name.textContent = "" + audio.name;
+        
+        var controls = document.createElement("audio");
+        controls.setAttribute('controls', '');
+
+        var clip = document.createElement("source");
+        clip.setAttribute('src', "data:audio/mpeg;base64," + audio.data);
+
+        check.addEventListener('click', () => {
+            toggleAudio(audio);
+        });
+
+        controls.appendChild(clip);
+        cell.appendChild(check);
+        cell.appendChild(name);
+        cell.appendChild(controls);
+        musicContainer.appendChild(cell);
     });
 }
 
@@ -57,16 +79,17 @@ window.onload = function () {
     fetch('/getPreloadedAudio')
         .then(response => response.json())
         .then(audios => {
-            loadAudioOptions(audios);
+            loadAudio(audios);
         })
         .catch(error => console.error('Error fetching images:', error));
 
     fetch('/getUploadedAudio')
         .then(response => response.json())
         .then(audios => {
-            loadAudioOptions(audios);
+            loadAudio(audios);
         })
         .catch(error => console.error('Error fetching images:', error));
+    emptyImages();
 }
 
 searchInput.addEventListener("keypress", function (event) {
@@ -149,6 +172,26 @@ function toggleImage(image, selectButton) {
         });
 }
 
+function toggleAudio(audio) {
+    fetch('/toggle-audio', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ audio :audio })
+    })
+        .then(response => {
+            if (response.ok) {
+                console.log('Audio select/deselect successfull');
+            } else {
+                console.error('Failed to toggle selected status for audio.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
 function emptyImages() {
     fetch('/empty-selected', {
         method: 'POST'
@@ -169,14 +212,21 @@ function emptyImages() {
 }
 
 var clear = document.getElementById("imageClear");
-clear.addEventListener('click', function () {
+clear.addEventListener('click', clearSelection);
+
+function clearSelection() {
     emptyImages();
     var checks = imageContainer.querySelectorAll('.bi.close-button.bi-check-circle-fill');
-    checks.forEach(function (element) {
+    checks.forEach(element => {
         element.classList.add('bi-check-circle');
         element.classList.remove('bi-check-circle-fill');
     });
-});
+    checks = musicContainer.querySelectorAll('input[type="checkbox"]');
+    checks.forEach(element => {
+        if(element.checked)
+            element.checked = false;
+    });
+}
 
 function generateVideo() {
     var imgDuration = document.getElementById("imageDuration").value;
@@ -209,3 +259,9 @@ function generateVideo() {
             console.error('Error generating video:', error);
         });
 }
+
+window.addEventListener('beforeunload', function(event) {
+    event.preventDefault();
+    clearSelection();
+    event.returnValue = 'Your selection of images and audio will not be saved.';
+});

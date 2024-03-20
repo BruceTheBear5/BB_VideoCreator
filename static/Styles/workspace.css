@@ -9,8 +9,8 @@ body{
 }
 
 .MainBody{
-    padding-left: 20%;
-    padding-right: 10%;
+    padding-left: 18%;
+    padding-right: 7.5%;
 }
 
 h1{
@@ -30,15 +30,13 @@ h1{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 0rem;
+    min-height: 40vh;
     width: 70vw;
-    height: 70vh;
+    max-height: 70vh;
     overflow: auto;
     scrollbar-width: none;
 }
 
-#imageContainer:has(.image-item){
-    display: grid;
-}
 
 #imageContainer::-webkit-scrollbar {
     height: 0;
@@ -52,7 +50,7 @@ h1{
     padding: 1rem;
     justify-self: center;
     align-self: center;
-    width: 80%;
+    width: 85%;
     height: auto; 
     text-align: center;
     text-decoration: none;
@@ -79,8 +77,56 @@ h1{
 }
 
 .image-item img:hover {
-    transform: scale(1.05) rotate(3deg);
+    transform: scale(1.05);
     filter: brightness(100%);
+}
+
+#musicContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: auto;
+    background-color: rgba(65, 105, 225, 0.4);;
+    padding: 2rem;
+    width: 70vw;
+    min-height: 30vh;
+    max-height: 50vh;
+    gap: 1rem;
+    overflow: auto;
+    scrollbar-width: none;
+    border-radius: 10vh;
+    border: solid 0.25rem rgba(255, 255, 255, 0.5);
+}
+
+#musicContainer .audioCell {
+    width: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: var(--bg);
+    border-radius: 1vh;
+    padding: 0.5rem;
+}
+#musicContainer input{
+    margin-left: 1rem;
+}
+#musicContainer .audioName {
+    margin-left: 1rem;
+    color: white;
+    font-size: 1rem;
+}
+
+#musicContainer audio {
+    flex-grow: 1;
+    flex-basis: 80%;
+}
+
+#musicContainer audio::-webkit-media-controls-timeline {
+    background-color: #1db954;
+}
+
+#musicContainer audio::-webkit-media-controls {
+    display: none !important;
 }
 
 #controlContainer {
