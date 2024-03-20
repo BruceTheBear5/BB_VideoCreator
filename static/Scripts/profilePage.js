@@ -30,7 +30,6 @@ function loadImages(imageSet) {
 
 function loadAudio(audioSet) {
     musicContainer.innerHTML = '';
-
     audioSet.forEach(function (audio) {
         var cell = document.createElement("div");
         cell.classList.add('audioCell');
@@ -54,6 +53,7 @@ function loadAudio(audioSet) {
 }
 
 window.onload = function () {
+    setLoader(imageContainer)
     fetch('/getUploadedImages')
         .then(response => response.json())
         .then(images => {
@@ -61,6 +61,7 @@ window.onload = function () {
         })
         .catch(error => console.error('Error fetching images:', error));
 
+    setLoader(musicContainer)
     fetch('/getUploadedAudio')
         .then(response => response.json())
         .then(audios => {
@@ -69,6 +70,15 @@ window.onload = function () {
         .catch(error => console.error('Error fetching images:', error));
 }
 
+function setLoader(parentTag) {
+    parentTag.innerHTML = "";
+    parentTag.style.display = 'flex';
+    parentTag.style.justifyContent = 'center';
+    parentTag.style.alignItems = 'center';
+    let loaderImg = document.createElement('img');
+    loaderImg.src = '../static/Images/loader1.gif';
+    parentTag.appendChild(loaderImg);
+}
 
 uploadButton.addEventListener('click', function () {
     let imgElement = document.getElementById('profilePic');
