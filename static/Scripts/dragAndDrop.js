@@ -41,8 +41,6 @@ function handleDrop(event) {
 }
 
 function downloadVideo() {
-    // Logic to trigger download of the video
-    // Replace the example URL with the actual URL of your video
     var videoUrl = document.getElementById('videoPlayer').src;
     var a = document.createElement('a');
     a.href = videoUrl;

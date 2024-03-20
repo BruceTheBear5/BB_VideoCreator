@@ -108,7 +108,6 @@ uploadButton.addEventListener('click', function () {
         return;
     }
 
-    console.log("1");
     const formData = new FormData();
     for (const file of fileInput.files) {
         formData.append('image', file);
@@ -117,7 +116,7 @@ uploadButton.addEventListener('click', function () {
     imgElement.src = '../static/Images/loader1.gif';
     fetch('/profileUpload', {
         method: 'POST',
-        body: formData 
+        body: formData
     })
         .then(response => {
             if (response.ok) {

@@ -455,8 +455,6 @@ def search_mysql(userId, searchStr):
                 image = Image(file_name, image_len, file_type, file_data, upload_date)
                 # image.display()
                 Images.append(image)
-
-        print(len(Images))
                 
         return Images
     
