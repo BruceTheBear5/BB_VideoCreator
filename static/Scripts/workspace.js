@@ -3,7 +3,6 @@ var sortBySelect = document.getElementById("sortBy");
 var searchInput = document.getElementById("searchInput");
 
 function loadImages(imageSet) {
-    // Ensure imageContainer exists before trying to modify it
     if (imageContainer) {
         while (imageContainer.firstChild) {
             imageContainer.removeChild(imageContainer.firstChild);

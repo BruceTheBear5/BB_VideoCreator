@@ -1,11 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, Response, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql, save_image_to_mysql, save_audio_to_mysql, start_connection_pool, close_connection_pool, sort_mysql, search_mysql
+from MySQL import User, retrieve_users_from_mysql, save_data_to_mysql, retrieve_image_from_mysql, retrieve_profile_image, upload_profile_image, AdminRetrieve, AdminRetrieveProfilePic, retrieve_audio_from_mysql, save_image_to_mysql, save_audio_to_mysql, start_connection_pool, close_connection_pool, sort_mysql, search_mysql, deleteUser
 from video import createVideo
 import os
 import base64
 import jwt
-import json
 import atexit
 
 app = Flask(__name__)
@@ -137,7 +136,7 @@ def profileData(username):
         print("Error:", e)
         return Response(status=500)
     
-@app.route('/getUploadedImages') #For JS
+@app.route('/getUploadedImages')
 def getUploadedImages():
     try:
         userId = session["userId"]
@@ -216,7 +215,7 @@ def getPreloadedAudio():
         print("Error:", e)
         return Response(status=500)
     
-@app.route('/getUploadedAudio') #For JS
+@app.route('/getUploadedAudio')
 def getUploadedAudio():
     try:
         audioData = []   
@@ -417,6 +416,16 @@ def remove_all_selected_images():
     
     return jsonify({'message': 'All images removed from selection'})
 
+@app.route('/deleteUser')
+def delUser():
+    try:
+        userId = session["userId"]
+        session.clear()
+        deleteUser(userId)
+        return redirect(url_for('home'))
+    except Exception as e:
+        print("Error:", e)
+        return Response(status=500)
 
 @app.route('/logout')
 def logout():

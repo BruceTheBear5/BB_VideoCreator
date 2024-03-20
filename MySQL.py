@@ -414,8 +414,6 @@ def sort_mysql(userId, sortBy):
         
         cursor.execute(query)
         rows = cursor.fetchall()
-        cursor.close()
-        connection.close()
 
         Images = []
         if rows:
@@ -451,8 +449,6 @@ def search_mysql(userId, searchStr):
         query = "SELECT file_data, file_name FROM images WHERE user_id = %s AND file_name LIKE %s"
         cursor.execute(query, (userId, f"{searchStr}%"))
         rows = cursor.fetchall()
-        cursor.close()
-        connection.close()
 
         Images = []
         if rows:
@@ -479,7 +475,34 @@ def search_mysql(userId, searchStr):
             cursor.close()
         if connection:
             release_connection(connection)
+            
+def deleteUser(userId):
+    connection = None
+    cursor = None
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        query = "DELETE FROM audio_files WHERE userid = %s"
+        cursor.execute(query, (userId, ))
+        query = "DELETE FROM images WHERE user_id = %s"
+        cursor.execute(query, (userId, ))
+        query = "DELETE FROM profile_pictures WHERE user_id = %s"
+        cursor.execute(query, (userId, ))
+        query = "DELETE FROM users WHERE userid = %s"
+        cursor.execute(query, (userId, ))
+        
+        connection.commit()
+        return
 
+    except psycopg2.Error as error:
+        print("Failed to retrieve users:", error)
+        return []
+        
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            release_connection(connection)
 
 # users = [
 #     User("John Doe", "johndoe", "john@example.com", "password123", isAdmin="False"),

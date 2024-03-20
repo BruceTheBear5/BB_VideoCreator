@@ -196,4 +196,4 @@ def createVideo(imgFolderName, audioFolderName, timePerImage = 3, resolution = "
     print("Video created successfully!")
 
 if __name__ == "__main__":
-    createVideo("./static/Images", "./SelectedAudio", timePerImage= 10)
+    createVideo("./Selected", "./SelectedAudio", timePerImage= 10)
