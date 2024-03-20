@@ -1,3 +1,5 @@
+var uploadButton = document.getElementById('uploadButton');
+var fileInput = document.getElementById('profileUpload');
 var imageContainer = document.getElementById("imageContainer");
 var musicContainer = document.getElementById("musicContainer");
 // var sortBySelect = document.getElementById("sortBy");
@@ -38,7 +40,7 @@ function loadAudio(audioSet) {
         var name = document.createElement("span");
         name.classList.add('audioName');
         name.textContent = "" + audio.name;
-        
+
         var controls = document.createElement("audio");
         controls.setAttribute('controls', '');
 
@@ -97,3 +99,36 @@ window.onload = function () {
 //             .catch(error => console.error('Error fetching sorted images:', error));
 //     }
 // });
+
+uploadButton.addEventListener('click', function () {
+    let imgElement = document.getElementById('profilePic');
+
+    if (fileInput.files.length === 0) {
+        console.log('No file selected');
+        return;
+    }
+
+    const formData = new FormData();
+    for (const file of fileInput.files) {
+        formData.append('image', file);
+    }
+
+    imgElement.src = '../static/Images/loader1.gif';
+    fetch('/profileUpload', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Network response was not ok.');
+        })
+        .then(data => {
+            const encodedImage = data[0].data;
+            imgElement.src = 'data:image/jpeg;base64,' + encodedImage;
+        })
+        .catch(error => {
+            console.error('Error uploading image:', error);
+        });
+});

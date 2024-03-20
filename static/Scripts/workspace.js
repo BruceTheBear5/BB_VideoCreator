@@ -8,6 +8,7 @@ function loadImages(imageSet) {
         while (imageContainer.firstChild) {
             imageContainer.removeChild(imageContainer.firstChild);
         }
+        imageContainer.style.display = 'grid';
         imageSet.forEach(function (image) {
             var img = document.createElement("img");
             img.src = "data:image/jpeg;base64," + image.data;
@@ -68,7 +69,18 @@ function loadAudio(audioSet) {
     });
 }
 
+function setLoader(parentTag) {
+    parentTag.innerHTML = "";
+    parentTag.style.display = 'flex';
+    parentTag.style.justifyContent = 'center';
+    parentTag.style.alignItems = 'center';
+    let loaderImg = document.createElement('img');
+    loaderImg.src = '../static/Images/loader1.gif';
+    parentTag.appendChild(loaderImg);
+}
+
 window.onload = function () {
+    setLoader(imageContainer)
     fetch('/getUploadedImages')
         .then(response => response.json())
         .then(images => {
@@ -95,6 +107,7 @@ window.onload = function () {
 searchInput.addEventListener("keypress", function (event) {
     if (event.key === 'Enter') {
         imageContainer.innerHTML = ""
+        setLoader(imageContainer)
         event.preventDefault();
         var searchValue = searchInput.value;
         console.log("Search value:", searchValue);
@@ -117,6 +130,7 @@ searchInput.addEventListener("keypress", function (event) {
 sortBySelect.addEventListener("change", function () {
     console.log(sortBySelect.value);
     imageContainer.innerHTML = ""
+    setLoader(imageContainer)
     var selectedValue = sortBySelect.value;
     if (selectedValue == "file_name") {
         fetch('/getSortedImageName')
@@ -248,7 +262,6 @@ function generateVideo() {
     })
         .then(response => {
             if (response.ok) {
-                console.log("Hi");
                 document.getElementById('videoPlayer').querySelector('source').src = '../static/output_video.mp4';
                 document.getElementById('videoPlayer').load();
             } else {

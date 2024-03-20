@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
             container.target = '_blank';
 
             let closeButton = document.createElement('i');
-            closeButton.classList.add('bi','bi-x-circle','close-button');
+            closeButton.classList.add('bi', 'bi-x-circle', 'close-button');
 
             closeButton.addEventListener('click', function () {
                 container.remove();
@@ -109,24 +109,24 @@ document.addEventListener('DOMContentLoaded', function () {
         allFiles.forEach(file => {
             formData.append('files[]', file);
         });
-    
+
         fetch('/Upload-images', {
             method: 'POST',
             body: formData
         })
-        .then(response => {
-            if (response.ok) {
-                return response.text();
-            }
-            alert("ERROR: Please upload an image.");
-        })
-        .then(data => {
-            console.log('Redirecting...');
-            window.location.href = '/workspace';
-        })
-        .catch(error => {
-            console.error('Error uploading images:', error);
-        });
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                }
+                alert("ERROR: Please upload an image.");
+            })
+            .then(data => {
+                console.log('Redirecting...');
+                window.location.href = '/workspace';
+            })
+            .catch(error => {
+                console.error('Error uploading images:', error);
+            });
     });
-    
+
 });
